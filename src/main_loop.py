@@ -9,13 +9,14 @@ class MainLoop:
     handle events, update game status, and draw sprites to screen_surface.
 
     """
-    def __init__(self, caption, screen_size, frame_rate):
+    def __init__(self, caption, screen_size, frame_rate, num_of_layers):
         # display-window top left corner always will be open in this coordinates (x=600; y=40)
         # os.environ['SDL_VIDEO_WINDOW_POS'] = f"{600},{40}"
 
         self.running = True
 
-        self.sprite_groups = []
+        # Create layers that determine draw order
+        self.drawing_layers = [pygame.sprite.Group() for _ in range(num_of_layers)]
 
         pygame.init()
         self.surface = pygame.display.set_mode(screen_size)
@@ -36,8 +37,8 @@ class MainLoop:
         self.all_sprites group contains all pygame.sprite.Sprite object in the game. Every main loop iteration
         this method use the update method of every sprite. So by this method, we can create animations.
         """
-        for group in self.sprite_groups:
-            group.update()
+        for layer in self.drawing_layers:
+            layer.update()
 
     def draw(self):
         """Draw all sprites into screen
@@ -45,8 +46,8 @@ class MainLoop:
         self.all_sprites group contains all pygame.sprite.Sprite object in the game. Every main loop iteration
         this method blit all sprites to the displayed surface
         """
-        for group in self.sprite_groups:
-            group.draw(self.surface)
+        for layer in self.drawing_layers:
+            layer.draw(self.surface)
 
     def handle_events(self):
         """Handle the player's inputs

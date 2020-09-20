@@ -3,8 +3,13 @@ import pygame_gui
 from src import settings as s
 
 
-class GUI:
+class GUI(pygame.sprite.Sprite):
     def __init__(self, main_loop):
+
+        super(GUI, self).__init__()
+        self.image = pygame.Surface(s.SCREEN_SIZE, flags=pygame.SRCALPHA)
+        self.rect = self.image.get_rect()
+
         self.main_loop = main_loop
         self.manager = pygame_gui.UIManager(s.SCREEN_SIZE)
 
@@ -50,5 +55,5 @@ class GUI:
     def update(self):
         self.manager.update(self.main_loop.time_delta)
 
-    def draw(self, surface):
-        self.manager.draw_ui(surface)
+        self.image.fill((0, 0, 0, 0))
+        self.manager.draw_ui(self.image)
