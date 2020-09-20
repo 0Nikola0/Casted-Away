@@ -13,9 +13,10 @@ class MainLoop:
         # display-window top left corner always will be open in this coordinates (x=600; y=40)
         # os.environ['SDL_VIDEO_WINDOW_POS'] = f"{600},{40}"
 
-        self.all_sprites = pygame.sprite.Group()
 
         self.running = True
+
+        self.sprite_groups = []
 
         pygame.init()
         self.surface = pygame.display.set_mode(screen_size)
@@ -23,10 +24,12 @@ class MainLoop:
 
         self.frame_rate = frame_rate
         self.clock = pygame.time.Clock()
+        self.time_delta = 0.0
 
         self.keydown_handlers = defaultdict(list)
         self.keyup_handlers = defaultdict(list)
         self.mouse_handlers = []
+        self.event_handlers = []
 
     def update(self):
         """Update game state
@@ -34,7 +37,8 @@ class MainLoop:
         self.all_sprites group contains all pygame.sprite.Sprite object in the game. Every main loop iteration
         this method use the update method of every sprite. So by this method, we can create animations.
         """
-        self.all_sprites.update()
+        for group in self.sprite_groups:
+            group.update()
 
     def draw(self):
         """Draw all sprites into screen
@@ -42,7 +46,8 @@ class MainLoop:
         self.all_sprites group contains all pygame.sprite.Sprite object in the game. Every main loop iteration
         this method blit all sprites to the displayed surface
         """
-        self.all_sprites.draw(self.surface)
+        for group in self.sprite_groups:
+            group.draw(self.surface)
 
     def handle_events(self):
         """Handle the player's inputs
@@ -58,6 +63,9 @@ class MainLoop:
         Then the object can update its state in reply to transmitted event (key, mouse move, or mouse button).
         """
         for event in pygame.event.get():
+            for handler in self.event_handlers:
+                handler(event)
+
             if event.type == pygame.QUIT:
                 self.running = False
             elif event.type == pygame.KEYDOWN:
@@ -69,6 +77,9 @@ class MainLoop:
             elif event.type in (pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP, pygame.MOUSEMOTION):
                 for handler in self.mouse_handlers:
                     handler(event.type, event.pos)
+
+    def add_event_handler(self, obj):
+        self.event_handlers.append(obj.handle_event)
 
     def add_up_down_key_handlers(self, obj, key):
         self.keydown_handlers[key].append(obj.handle_key_down)
@@ -82,4 +93,5 @@ class MainLoop:
             self.draw()
 
             pygame.display.update()
-            self.clock.tick(self.frame_rate)
+
+            self.time_delta = self.clock.tick(self.frame_rate) / 1000.0
