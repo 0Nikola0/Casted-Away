@@ -31,16 +31,15 @@ class MainLoop:
     def update(self):
         """Update game state
 
-        self.all_objects_groups contains all pygame.sprite.Group groups of sprites. Every main loop iteration
-        this method use the update method of every sprite (through sprite groups ofc). So by this method, we
-        can create animations.
+        self.all_sprites group contains all pygame.sprite.Sprite object in the game. Every main loop iteration
+        this method use the update method of every sprite. So by this method, we can create animations.
         """
         self.all_sprites.update()
 
     def draw(self):
         """Draw all sprites into screen
 
-        self.all_objects_groups contains all pygame.sprite.Group groups of sprites. Every main loop iteration
+        self.all_sprites group contains all pygame.sprite.Sprite object in the game. Every main loop iteration
         this method blit all sprites to the displayed surface
         """
         self.all_sprites.draw(self.surface)
