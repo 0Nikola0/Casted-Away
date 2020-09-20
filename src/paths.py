@@ -1,6 +1,11 @@
 import os
 
-ASSETS_DIRECTORY = os.path.abspath("./assets")
+PROJECT_DIRECTORY = os.path.abspath("./")
+
+REQUIREMENTS = os.path.join(PROJECT_DIRECTORY, "requirements.txt")
+
+# Assets
+ASSETS_DIRECTORY = os.path.join(PROJECT_DIRECTORY, "assets")
 IMGS_DIRECTORY = os.path.join(ASSETS_DIRECTORY, "imgs")
 
 ACTORS_DIRECTORY = os.path.join(IMGS_DIRECTORY, "actors")
