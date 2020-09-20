@@ -1,1 +1,10 @@
 __pycache__/
+
+# virtual environment
+.venv
+\venv
+
+# pycharm stuff
+.idea
+\idea
+
