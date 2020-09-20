@@ -5,23 +5,15 @@ usage:
 """
 
 import pygame
+import src.settings as s
 
-file_name = "./assets/imgs/actors/1 Old_man/Old_man_attack.png"
-old_man_size = (om_xs, om_ys) = (48, 48)
-
-# NAME = {
-#     '0': (om_xs * 1, om_ys * 0, *old_man_size),
-#     '1': (om_xs * 2, om_ys * 0, *old_man_size),
-#     '2': (),
-#     '3': (),
-# }
-
-NAME = {str(i): (om_xs * i + 1, 0, *old_man_size) for i in range(4)}
+size = sx, sy = s.SPRITES_SHEET_SPRITE_SIZE
+NAME = {str(i): (sx * i + 1, 0, *size) for i in range(99)}  # in ideal range(image_width) but I don't want to install labraries for that
 
 
 class SpriteSheet:
-    def __init__(self):
-        self.source_image = pygame.image.load(file_name).convert_alpha()
+    def __init__(self, sheet_path):
+        self.source_image = pygame.image.load(sheet_path).convert_alpha()
 
     def get_image(self, name, scale=False):
         image = self.get_image_by_coordinates(*NAME[name])

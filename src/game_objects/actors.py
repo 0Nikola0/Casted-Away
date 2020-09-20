@@ -4,12 +4,12 @@ from src.graphics import SpriteSheet
 
 
 class ActorAdult(pygame.sprite.Sprite):
-    def __init__(self, pos, image_name):
+    def __init__(self, pos, sheet_path):
         super(ActorAdult, self).__init__()
 
-        sheet = SpriteSheet()
+        sheet = SpriteSheet(sheet_path)
 
-        self.image = sheet.get_image(image_name)
+        self.image = sheet.get_image("0")
         pygame.transform.scale(self.image, s.ADULT_ACTOR_SIZE)
         self.rect = self.image.get_rect(topleft=pos)
 

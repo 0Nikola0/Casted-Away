@@ -35,7 +35,7 @@ class Game(MainLoop):
     def create_actors(self, positions):
         # __img = "./assets/imgs/actors/1 Old_man/Old_man.png"  # temporary for tests
         for x, y in positions:
-            actor = ActorAdult((x, y), "0")
+            actor = ActorAdult((x, y), s.SPRITE_OLD_WOMAN_ATTACK)
             self.actors.add(actor)
             self.all_sprites.add(actor)
 
