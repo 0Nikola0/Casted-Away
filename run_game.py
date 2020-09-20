@@ -20,6 +20,5 @@ except ImportError:
 Please ensure you have the following packages installed:
 
 {text}
-You can run 'pip install -r requirements.txt' to install these 
-(currently this will require a compiler to be configured).
+You can run 'pip install -r requirements.txt' to install these.
         """)
