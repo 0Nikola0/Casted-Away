@@ -21,7 +21,7 @@ class Game(MainLoop):
         self.create_sprites()
 
     def create_GUI(self):
-        gui = GUI(self)
+        gui = GUI()
         self.GUI.add(gui)
         self.add_event_handler(gui)
 
@@ -59,7 +59,6 @@ class Game(MainLoop):
 
     def create_map(self):
         pass
-
     def update(self):
         super(Game, self).update()
 

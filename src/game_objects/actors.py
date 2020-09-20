@@ -32,6 +32,9 @@ class ActorAdult(pygame.sprite.Sprite):
         self.anim_type = 0
         self.vel = 5
 
+        self.anim_delay = 0.2
+        self.time_in_frame = 0.0
+
     def move_left(self):
         self.rect.x -= self.vel
 
@@ -44,11 +47,15 @@ class ActorAdult(pygame.sprite.Sprite):
     def move_down(self):
         self.rect.y += self.vel
 
-    def update(self):
+    def update(self, time_delta, *args):
+        self.time_in_frame += time_delta
+
         for state in self.state.values():
             if self.current_state == state:
                 self.image = self.images[self.current_state][self.anim_type]
-                self.anim_type = (self.anim_type + 1) if self.anim_type < 3 else 0
+                if self.time_in_frame > self.anim_delay:
+                    self.anim_type = (self.anim_type + 1) if self.anim_type < 3 else 0
+                    self.time_in_frame = 0
 
 
 """

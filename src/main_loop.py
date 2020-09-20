@@ -38,7 +38,7 @@ class MainLoop:
         this method use the update method of every sprite. So by this method, we can create animations.
         """
         for layer in self.drawing_layers:
-            layer.update()
+            layer.update(self.time_delta)
 
     def draw(self):
         """Draw all sprites into screen

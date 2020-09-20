@@ -4,13 +4,12 @@ from src import settings as s
 
 
 class GUI(pygame.sprite.Sprite):
-    def __init__(self, main_loop):
+    def __init__(self):
 
         super(GUI, self).__init__()
         self.image = pygame.Surface(s.SCREEN_SIZE, flags=pygame.SRCALPHA)
         self.rect = self.image.get_rect()
 
-        self.main_loop = main_loop
         self.manager = pygame_gui.UIManager(s.SCREEN_SIZE)
 
         # TODO move these out into their own clases?
@@ -52,8 +51,8 @@ class GUI(pygame.sprite.Sprite):
 
         self.manager.process_events(event)
 
-    def update(self):
-        self.manager.update(self.main_loop.time_delta)
+    def update(self, time_delta, *args):
+        self.manager.update(time_delta)
 
         self.image.fill((0, 0, 0, 0))
         self.manager.draw_ui(self.image)
