@@ -15,7 +15,7 @@ class Game(MainLoop):
         # These groups NOT for draw and update.
         self.background = pygame.sprite.Group()
         self.actors = pygame.sprite.Group()
-        self.GUI = None
+        self.GUI = pygame.sprite.Group()
 
         self.__test_positions = ((50, 50), (100, 50))
 
@@ -23,7 +23,7 @@ class Game(MainLoop):
 
     def create_GUI(self):
         gui = GUI(self)
-        self.GUI = gui
+        self.GUI.add(gui)
         self.add_event_handler(gui)
 
     def create_sprites(self):
