@@ -8,7 +8,8 @@ class Actor(pygame.sprite.Sprite):
 
         self.posx, self.posy = pos
         self.sizex, self.sizey = s.ACTOR_SIZE
-        self.rect = pygame.Rect(self.posx, self.posy, self.sizex, self.sizey)
+        self.image = pygame.Surface(s.ACTOR_SIZE)
+        self.rect = self.image.get_rect(topleft=pos)
 
         self.vel = 5
 
