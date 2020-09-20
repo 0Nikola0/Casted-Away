@@ -3,9 +3,8 @@ import pygame_gui
 from src import settings as s
 
 
-class GUI():
+class GUI:
     def __init__(self, main_loop):
-        super(GUI, self).__init__()
 
         self.main_loop = main_loop
         self.manager = pygame_gui.UIManager(s.SCREEN_SIZE)

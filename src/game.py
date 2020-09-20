@@ -1,4 +1,3 @@
-# import src.gui_test
 import pygame
 
 from src.graphics import SpriteSheet
