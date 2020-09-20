@@ -8,7 +8,7 @@ import pygame
 import src.settings as s
 
 size = sx, sy = s.SPRITES_SHEET_SPRITE_SIZE
-NAME = {str(i): (sx * i + 1, 0, *size) for i in range(99)}  # in ideal range(image_width) but I don't want to install labraries for that
+NAME = {i: (sx * i + 1, 0, *size) for i in range(99)}  # in ideal range(image_width) but I don't want to install labraries for that
 
 
 class SpriteSheet:
