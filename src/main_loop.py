@@ -13,7 +13,6 @@ class MainLoop:
         # display-window top left corner always will be open in this coordinates (x=600; y=40)
         # os.environ['SDL_VIDEO_WINDOW_POS'] = f"{600},{40}"
 
-
         self.running = True
 
         self.sprite_groups = []
