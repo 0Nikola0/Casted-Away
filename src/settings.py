@@ -6,7 +6,7 @@ FPS = 60
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT) = (800, 600)
 
 # Layers
-NUM_OF_LAYERS = 4
+NUM_OF_LAYERS = 5
 
 # COLORS
 BLACK = pygame.color.THECOLORS["black"]
