@@ -15,8 +15,9 @@ GRAY = pygame.color.THECOLORS["gray"]
 ADULT_ACTOR_SIZE = 32, 32
 
 # Paths (temporary)
-ASSERTS_DIRECTORY = os.path.abspath("./assets")
-IMGS_DIRECTORY = os.path.join(ASSERTS_DIRECTORY, "imgs")
+ASSETS_DIRECTORY = os.path.abspath("./assets")
+IMGS_DIRECTORY = os.path.join(ASSETS_DIRECTORY, "imgs")
+
 ACTORS_DIRECTORY = os.path.join(IMGS_DIRECTORY, "actors")
 
 SPRITES_SHEET_SPRITE_SIZE = (48, 48)
