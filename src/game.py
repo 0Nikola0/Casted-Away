@@ -10,8 +10,9 @@ import src.settings as s
 
 class Game(MainLoop):
     def __init__(self):
-        super(Game, self).__init__(s.CAPTION, s.SCREEN_SIZE, s.FPS)
+        super(Game, self).__init__(s.CAPTION, s.SCREEN_SIZE, s.FPS, s.NUM_OF_LAYERS)
 
+        # These groups NOT for draw and update.
         self.background = pygame.sprite.Group()
         self.actors = pygame.sprite.Group()
         self.GUI = None
@@ -30,7 +31,21 @@ class Game(MainLoop):
         self.create_map()
         self.create_actors(self.__test_positions)
         self.create_GUI()
-        self.sprite_groups = [self.background, self.actors, self.GUI]
+
+        self.set_draw_order()
+
+    def set_draw_order(self):
+        """Determine order of drawing
+
+        Sprites in index -1 group will be drawn upper all others.
+        Vice versa for 0 index group – it will be background.
+        """
+        self.drawing_layers[0].add(self.background.sprites())
+        self.drawing_layers[1].add(self.actors.sprites())
+        self.drawing_layers[2].add()
+        self.drawing_layers[-1].add(self.GUI)
+
+        # self.sprite_groups = [self.background, self.actors, self.GUI]
 
     def create_background(self):
         b = Background(
@@ -40,7 +55,6 @@ class Game(MainLoop):
         self.background.add(b)
 
     def create_actors(self, positions):
-        # __img = "./assets/imgs/actors/1 Old_man/Old_man.png"  # temporary for tests
         for x, y in positions:
             actor = ActorAdult((x, y), s.OLD_MAN_SPRITE_SHEETS)
             self.actors.add(actor)

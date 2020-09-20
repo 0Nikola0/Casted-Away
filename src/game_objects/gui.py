@@ -3,8 +3,14 @@ import pygame_gui
 from src import settings as s
 
 
-class GUI:
+class GUI(pygame.sprite.Sprite):
     def __init__(self, main_loop):
+
+        super(GUI, self).__init__()
+        self.image = pygame.Surface((0, 0))
+        # self.image = pygame.Surface(s.SCREEN_SIZE)
+        self.rect = self.image.get_rect()
+
         self.main_loop = main_loop
         self.manager = pygame_gui.UIManager(s.SCREEN_SIZE)
 
