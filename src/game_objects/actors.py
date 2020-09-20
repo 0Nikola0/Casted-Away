@@ -9,16 +9,26 @@ class ActorAdult(pygame.sprite.Sprite):
 
         sh = {key: SpriteSheet(value) for key, value in sprite_sheets.items()}
 
-        self.images_idle = []
-        for i in range(4):
-            self.images_idle.append(sh["IDLE"].get_image(i))
+        self.images = []
+        for x in sh:
+            self.images_temp = []
+            for i in range(4):
+                self.images_temp.append(sh[x].get_image(i))
+            self.images.append(self.images_temp)
 
-        self.image = self.images_idle[0]
+        # Just to reference what type self.image should be
+        self.image = sh["IDLE"].get_image(0)
         pygame.transform.scale(self.image, s.ADULT_ACTOR_SIZE)
 
         self.rect = self.image.get_rect(topleft=pos)
         self.anim_type = 0
-        self.state = "idle"
+        self.state = {
+            "ATTACK": 0,
+            "DEATH": 1,
+            "HURT": 2,
+            "IDLE": 3,
+            "WALK": 4
+        }
         self.vel = 5
 
     def move_left(self):
@@ -34,6 +44,5 @@ class ActorAdult(pygame.sprite.Sprite):
         self.rect.y += self.vel
 
     def update(self):
-        self.image = self.images_idle[self.anim_type]
-        pygame.time.delay(100)
+        self.image = self.images[self.state["WALK"]][self.anim_type]
         self.anim_type = (self.anim_type + 1) if self.anim_type < 3 else 0
