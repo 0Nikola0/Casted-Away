@@ -27,3 +27,17 @@ class Game(MainLoop):
             actor = Actor((x, y))
             self.actors.add(actor)
             self.all_sprites.add(actor)
+
+    def create_map(self):
+        pass
+
+    def update(self):
+        super(Game, self).update()
+
+
+def main():
+    Game().run()
+
+
+if __name__ == "__main__":
+    main()
