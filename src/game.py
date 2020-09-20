@@ -1,10 +1,9 @@
 import pygame
 
-from src.graphics import SpriteSheet
-from src.main_loop import MainLoop
 from src.game_objects.actors import ActorAdult
 from src.game_objects.background import Background
 from src.game_objects.gui import GUI
+from src.main_loop import MainLoop
 import src.settings as s
 
 
@@ -40,7 +39,6 @@ class Game(MainLoop):
         self.background.add(b)
 
     def create_actors(self, positions):
-        # __img = "./assets/imgs/actors/1 Old_man/Old_man.png"  # temporary for tests
         for x, y in positions:
             actor = ActorAdult((x, y), s.OLD_MAN_SPRITE_SHEETS)
             self.actors.add(actor)
