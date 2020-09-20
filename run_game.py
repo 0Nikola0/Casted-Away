@@ -10,6 +10,7 @@ dist = Path(__file__).parent.resolve()
 
 try:
     from src.game import Game
+    Game().run()
 except ImportError:
     import traceback
     traceback.print_exc()

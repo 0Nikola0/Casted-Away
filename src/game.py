@@ -1,7 +1,7 @@
 # import src.gui_test
 import pygame
 from src.main_loop import MainLoop
-from src.game_objects.actors import Actor
+from src.game_objects.actors import ActorAdult
 from src.game_objects.background import Background
 import src.settings as s
 
@@ -13,6 +13,15 @@ class Game(MainLoop):
         self.background = pygame.sprite.Group()
         self.actors = pygame.sprite.Group()
 
+        self.__test_positions = ((50, 50), (100, 50))
+
+        self.create_sprites()
+
+    def create_sprites(self):
+        self.create_background()
+        self.create_map()
+        self.create_actors(self.__test_positions)
+
     def create_background(self):
         b = Background(
             s.SCREEN_SIZE,
@@ -22,9 +31,9 @@ class Game(MainLoop):
         self.all_sprites.add(b)
 
     def create_actors(self, positions):
-        positions = ((50, 50), (50, 100))  # for tests
+        __img = "./assets/imgs/actors/1 Old_man/Old_man.png"  # temporary for tests
         for x, y in positions:
-            actor = Actor((x, y))
+            actor = ActorAdult((x, y), __img)
             self.actors.add(actor)
             self.all_sprites.add(actor)
 

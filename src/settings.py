@@ -1,11 +1,13 @@
+import pygame
+
 CAPTION = "Castaway"
 FPS = 60
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT) = (800, 600)
 
 # COLORS
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-GRAY = (50, 50, 50)
+BLACK = pygame.color.THECOLORS["black"]
+WHITE = pygame.color.THECOLORS["white"]
+GRAY = pygame.color.THECOLORS["gray"]
 
 # ACTORS
-ACTOR_SIZE = 32, 32
+ADULT_ACTOR_SIZE = 32, 32
