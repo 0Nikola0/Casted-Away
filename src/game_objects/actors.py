@@ -21,7 +21,6 @@ class ActorAdult(pygame.sprite.Sprite):
         pygame.transform.scale(self.image, s.ADULT_ACTOR_SIZE)
 
         self.rect = self.image.get_rect(topleft=pos)
-        self.anim_type = 0
         self.state = {
             "ATTACK": 0,
             "DEATH": 1,
@@ -29,6 +28,8 @@ class ActorAdult(pygame.sprite.Sprite):
             "IDLE": 3,
             "WALK": 4
         }
+        self.current_state = 4
+        self.anim_type = 0
         self.vel = 5
 
     def move_left(self):
@@ -44,5 +45,14 @@ class ActorAdult(pygame.sprite.Sprite):
         self.rect.y += self.vel
 
     def update(self):
+        for state in self.state.values():
+            if self.current_state == state:
+                self.image = self.images[self.current_state][self.anim_type]
+                self.anim_type = (self.anim_type + 1) if self.anim_type < 3 else 0
+
+
+"""
+    def update(self):
         self.image = self.images[self.state["WALK"]][self.anim_type]
         self.anim_type = (self.anim_type + 1) if self.anim_type < 3 else 0
+"""
