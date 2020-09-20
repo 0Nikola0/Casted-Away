@@ -8,10 +8,34 @@ class GUI:
         self.main_loop = main_loop
         self.manager = pygame_gui.UIManager(s.SCREEN_SIZE)
 
-        self.hello_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((350, 275), (100, 50)),
-            text='Say Hello',
+        # TODO move these out into their own clases?
+        # Ths is just a mockup, once the layout is nailed down we can
+        # organize it better.
+        self.popup = pygame_gui.elements.UIWindow(
+            rect=pygame.Rect((200, 50), (300, 300)),
+            window_display_title='Popup',
             manager=self.manager
+        )
+
+        self.hello_button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect((50, 50), (100, 50)),
+            text='Say Hello',
+            container=self.popup,
+            manager=self.manager
+        )
+
+        self.panel = pygame_gui.elements.UIPanel(
+            relative_rect=pygame.Rect((600, 0),
+                                      (200, 400)),
+            manager=self.manager,
+            starting_layer_height=0
+        )
+
+        self.event_description = pygame_gui.elements.UITextBox(
+            relative_rect=pygame.Rect((0, s.SCREEN_HEIGHT - 200),
+                                      (s.SCREEN_WIDTH, 200)),
+            html_text='Event Description goes here',
+            manager=self.manager,
         )
 
     def handle_event(self, event):
