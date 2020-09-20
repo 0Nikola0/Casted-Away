@@ -37,8 +37,8 @@ class MainLoop:
         self.all_sprites group contains all pygame.sprite.Sprite object in the game. Every main loop iteration
         this method use the update method of every sprite. So by this method, we can create animations.
         """
-        for group in self.drawing_layers:
-            group.update()
+        for layer in self.drawing_layers:
+            layer.update()
 
     def draw(self):
         """Draw all sprites into screen
@@ -46,8 +46,8 @@ class MainLoop:
         self.all_sprites group contains all pygame.sprite.Sprite object in the game. Every main loop iteration
         this method blit all sprites to the displayed surface
         """
-        for group in self.drawing_layers:
-            group.draw(self.surface)
+        for layer in self.drawing_layers:
+            layer.draw(self.surface)
 
     def handle_events(self):
         """Handle the player's inputs
