@@ -11,14 +11,19 @@ class Game(MainLoop):
         super(Game, self).__init__(s.CAPTION, s.SCREEN_SIZE, s.FPS)
 
         self.background = pygame.sprite.Group()
+        self.actors = pygame.sprite.Group()
 
     def create_background(self):
-        self.background.add(Background(
+        b = Background(
             s.SCREEN_SIZE,
-            s.GRAY
-        ))
+            s.GRAY,
+        )
+        self.background.add(b)
+        self.all_sprites.add(b)
 
     def create_actors(self, positions):
-        actors = []
-        for i in positions:
-            actors.append()
+        positions = ((50, 50), (50, 100))  # for tests
+        for x, y in positions:
+            actor = Actor((x, y))
+            self.actors.add(actor)
+            self.all_sprites.add(actor)
