@@ -39,9 +39,11 @@ class Game(MainLoop):
         Sprites in index -1 group will be drawn upper all others.
         Vice versa for 0 index group – it will be background.
         """
-        self.drawing_layers[0].add(self.background)  # back layer
-        self.drawing_layers[1].add(self.actors)  # actors layer
-        self.drawing_layers[2].add()  # main actor (player) layer
+        self.drawing_layers[0].add(self.background)  # back (skies) layer
+        self.drawing_layers[1].add(self.background)  # floors layer
+        self.drawing_layers[2].add(self.background)  # walls layer
+        self.drawing_layers[3].add(self.actors)  # actors layer
+        self.drawing_layers[-3].add(self.__test_actors)  # main actor (player) layer
         self.drawing_layers[-2].add()  # before player (e.g. tree leaves or sheds)
         self.drawing_layers[-1].add(self.GUI)  # gui layer
 
