@@ -17,7 +17,7 @@ class Game(MainLoop):
         self.GUI = pygame.sprite.Group()
         self.__test_actors = pygame.sprite.Group()
 
-        self.__test_positions = ((50, 50), (100, 50))
+        self.__test_positions = ((200, 200), (300, 300))
 
         self.create_sprites()
 

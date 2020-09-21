@@ -1,3 +1,5 @@
+from random import randint, uniform
+
 import pygame
 import src.settings as s
 from src.graphics import SpriteSheet
@@ -30,22 +32,35 @@ class ActorAdult(pygame.sprite.Sprite):
         }
         self.current_state = 4
         self.anim_type = 0
-        self.vel = 5
-
         self.anim_delay = 0.2
         self.time_in_frame = 0.0
 
-    def move_left(self):
-        self.rect.x -= self.vel
+        self.directionx, self.directiony = 0, 0
+        self.vel = 5
 
-    def move_right(self):
-        self.rect.x += self.vel
+        self.time_to_change_dir = 0.0
+        self.dir_delay = 0.5
 
-    def move_up(self):
-        self.rect.y -= self.vel
+    def move(self):
+        self.rect.x += self.vel * self.directionx
+        self.rect.y += self.vel * self.directiony
 
-    def move_down(self):
-        self.rect.y += self.vel
+    # Needs to be updated i will fix it later
+    def update_directions(self, time_delta):
+        """
+        -1: Left / Up
+        0: No movement
+        1: Right / Down
+        """
+        self.time_to_change_dir += time_delta
+        if self.time_to_change_dir > self.dir_delay:
+            # So they walk random distances
+            self.dir_delay = uniform(0.05, 0.5)
+            print(self.dir_delay)
+
+            self.directionx = randint(-1, 1)
+            self.directiony = randint(-1, 1)
+            self.time_to_change_dir = 0.0
 
     def update(self, time_delta, *args):
         self.time_in_frame += time_delta
@@ -54,6 +69,10 @@ class ActorAdult(pygame.sprite.Sprite):
             if self.current_state == state:
                 self.image = self.images[self.current_state][self.anim_type]
                 if self.time_in_frame > self.anim_delay:
+                    # Temporarly called from here
+                    self.update_directions(time_delta)
+                    self.move()
+
                     self.anim_type = (self.anim_type + 1) if self.anim_type < 3 else 0
                     self.time_in_frame = 0
 
