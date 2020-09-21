@@ -1,3 +1,5 @@
+from random import randint
+
 import pygame
 import src.settings as s
 from src.graphics import SpriteSheet
@@ -47,6 +49,21 @@ class ActorAdult(pygame.sprite.Sprite):
     def move_down(self):
         self.rect.y += self.vel
 
+    def move(self, directionx, directiony):
+        self.rect.x += self.vel * directionx
+        self.rect.y += self.vel * directiony
+
+    # This shouldn't be called every loop
+    def auto_move(self):
+        """
+        -1: Left / Up
+        0: No movement
+        1: Right / Down
+        """
+        directionx = randint(-1, 1)
+        directiony = randint(-1, 1)
+        self.move(directionx, directiony)
+
     def update(self, time_delta, *args):
         self.time_in_frame += time_delta
 
@@ -54,6 +71,9 @@ class ActorAdult(pygame.sprite.Sprite):
             if self.current_state == state:
                 self.image = self.images[self.current_state][self.anim_type]
                 if self.time_in_frame > self.anim_delay:
+                    # Temporarly called from here
+                    self.auto_move()
+
                     self.anim_type = (self.anim_type + 1) if self.anim_type < 3 else 0
                     self.time_in_frame = 0
 
