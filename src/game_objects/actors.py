@@ -44,12 +44,31 @@ class ActorAdult(pygame.sprite.Sprite):
 
     def move(self):
         if self.directionx > 0:
-            self.rect.x += self.vel
-            self.current_state = 4
+            # If it doesnt go out of the screen
+            if (self.rect.x + self.vel) < s.PANEL_POS[0]:
+                self.rect.x += self.vel
+                self.current_state = 4
+            else:
+                # Changing direction to opposite
+                self.directionx *= -1
         else:
-            self.rect.x -= self.vel
-            self.current_state = 5
-        self.rect.y += self.vel * self.directiony
+            if (self.rect.x - self.vel) > 0:
+                self.rect.x -= self.vel
+                self.current_state = 5
+            else:
+                self.directionx *= -1
+
+        if self.directiony > 0:
+            if (self.rect.y + self.vel) < s.EVENT_DESC_POS[1]:
+                self.rect.y += self.vel
+            else:
+                # Change direction
+                self.directiony *= -1
+        else:
+            if (self.rect.y - self.vel) > 0:
+                self.rect.y -= self.vel
+            else:
+                self.directiony *= -1
 
     # Needs to be updated i will fix it later
     def update_directions(self, time_delta):
