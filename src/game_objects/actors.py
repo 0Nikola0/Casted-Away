@@ -28,9 +28,10 @@ class ActorAdult(pygame.sprite.Sprite):
             "DEATH": 1,
             "HURT": 2,
             "IDLE": 3,
-            "WALK": 4
+            "WALK": 4,
+            "WALK-L": 5
         }
-        self.current_state = 4
+        self.current_state = 5
         self.anim_type = 0
         self.anim_delay = 0.2
         self.time_in_frame = 0.0
@@ -42,7 +43,12 @@ class ActorAdult(pygame.sprite.Sprite):
         self.dir_delay = 0.5
 
     def move(self):
-        self.rect.x += self.vel * self.directionx
+        if self.directionx > 0:
+            self.rect.x += self.vel
+            self.current_state = 4
+        else:
+            self.rect.x -= self.vel
+            self.current_state = 5
         self.rect.y += self.vel * self.directiony
 
     # Needs to be updated i will fix it later

@@ -17,6 +17,8 @@ OLD_MAN_SPRITE_SHEETS = {
     "HURT": os.path.join(ACTOR_OLD_MAN_DIRECTORY, "Old_man_hurt.png"),
     "IDLE": os.path.join(ACTOR_OLD_MAN_DIRECTORY, "Old_man_idle.png"),
     "WALK": os.path.join(ACTOR_OLD_MAN_DIRECTORY, "Old_man_walk.png"),
+    "WALK-L": os.path.join(ACTOR_OLD_MAN_DIRECTORY, "Old_man_walk_l.png"),
+
 }
 
 ACTOR_OLD_WOMAN_DIRECTORY = os.path.join(ACTORS_DIRECTORY, "2 Old_woman")
