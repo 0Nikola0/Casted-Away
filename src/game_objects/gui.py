@@ -29,15 +29,13 @@ class GUI(pygame.sprite.Sprite):
         )
 
         self.panel = pygame_gui.elements.UIPanel(
-            relative_rect=pygame.Rect((600, 0),
-                                      (200, 400)),
+            relative_rect=pygame.Rect(s.PANEL_POS, s.PANEL_SIZE),
             manager=self.manager,
             starting_layer_height=0
         )
 
         self.event_description = pygame_gui.elements.UITextBox(
-            relative_rect=pygame.Rect((0, s.SCREEN_HEIGHT - 200),
-                                      (s.SCREEN_WIDTH, 200)),
+            relative_rect=pygame.Rect(s.EVENT_DESC_POS, s.EVENT_DES_SIZE),
             html_text='Event Description goes here',
             manager=self.manager,
         )
