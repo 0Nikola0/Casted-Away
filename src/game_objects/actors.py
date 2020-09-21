@@ -117,11 +117,11 @@ class TestActor(ActorAdult):
         if self.target is not None:
             tx, ty = self.target
             if self.rect.centerx < tx:
-                self.move_right()
+                self.rect.x += self.vel
             elif self.rect.centerx > tx:
-                self.move_left()
+                self.rect.x -= self.vel
 
             if self.rect.centery < ty:
-                self.move_down()
+                self.rect.y += self.vel
             elif self.rect.centery > ty:
-                self.move_up()
+                self.rect.y -= self.vel
