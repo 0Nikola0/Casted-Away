@@ -56,7 +56,6 @@ class ActorAdult(pygame.sprite.Sprite):
         if self.time_to_change_dir > self.dir_delay:
             # So they walk random distances
             self.dir_delay = uniform(0.05, 0.5)
-            print(self.dir_delay)
 
             self.directionx = randint(-1, 1)
             self.directiony = randint(-1, 1)
@@ -94,12 +93,12 @@ class TestActor(ActorAdult):
     def select_target(self, target_pos):
         self.target = target_pos
 
-    def handle_mouse_event(self, type, pos):
-        if type == pygame.MOUSEMOTION:
+    def handle_mouse_event(self, ev, pos):
+        if ev == pygame.MOUSEMOTION:
             self.handle_mouse_move(pos)
-        elif type == pygame.MOUSEBUTTONDOWN:
+        elif ev == pygame.MOUSEBUTTONDOWN:
             self.handle_mouse_down(pos)
-        elif type == pygame.MOUSEBUTTONUP:
+        elif ev == pygame.MOUSEBUTTONUP:
             self.handle_mouse_up(pos)
 
     def handle_mouse_move(self, pos):
