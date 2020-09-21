@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, uniform
 
 import pygame
 import src.settings as s
@@ -37,21 +37,9 @@ class ActorAdult(pygame.sprite.Sprite):
 
         self.directionx, self.directiony = 0, 0
         self.vel = 5
-        # Temporarly here
+
         self.time_to_change_dir = 0.0
-        self.dir_delay = 0.2
-
-    def move_left(self):
-        self.rect.x -= self.vel
-
-    def move_right(self):
-        self.rect.x += self.vel
-
-    def move_up(self):
-        self.rect.y -= self.vel
-
-    def move_down(self):
-        self.rect.y += self.vel
+        self.dir_delay = 0.5
 
     def move(self):
         self.rect.x += self.vel * self.directionx
@@ -66,6 +54,10 @@ class ActorAdult(pygame.sprite.Sprite):
         """
         self.time_to_change_dir += time_delta
         if self.time_to_change_dir > self.dir_delay:
+            # So they walk random distances
+            self.dir_delay = uniform(0.05, 0.5)
+            print(self.dir_delay)
+
             self.directionx = randint(-1, 1)
             self.directiony = randint(-1, 1)
             self.time_to_change_dir = 0.0
