@@ -1,4 +1,6 @@
 import pygame
+import pymunk
+import pymunk.pygame_util
 from collections import defaultdict
 
 
@@ -30,6 +32,14 @@ class MainLoop:
         self.keyup_handlers = defaultdict(list)
         self.mouse_handlers = []
         self.event_handlers = []
+
+        # physics stuff
+        self.space = pymunk.Space()
+        self.space.gravity = 0, 0
+
+        # Pymunk test draw
+        self.draw_options = pymunk.pygame_util.DrawOptions(self.surface)
+        self.is_test_mode = True
 
     def update(self):
         """Update game state
@@ -92,6 +102,11 @@ class MainLoop:
             self.update()
             self.draw()
 
+            if self.is_test_mode is True:
+                self.space.debug_draw(self.draw_options)
+
             pygame.display.update()
 
             self.time_delta = self.clock.tick(self.frame_rate) / 1000.0
+
+            self.space.step(1 / self.frame_rate)  # pymunk-physics clock.tick

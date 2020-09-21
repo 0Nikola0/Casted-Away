@@ -1,12 +1,28 @@
 from random import randint, uniform
 
 import pygame
+import pymunk as pm
+from pymunk import Vec2d
+
 import src.settings as s
 from src.graphics import SpriteSheet
 
 
 class ActorAdult(pygame.sprite.Sprite):
-    def __init__(self, pos, sprite_sheets):
+    def __init__(self, pos, sprite_sheets, space):
+        # pymunk stuff
+        self.body = pm.Body(mass=1, moment=pm.inf, body_type=pm.Body.DYNAMIC)
+        pm_x, pm_y = s.flip_y(pos)
+        pm_size_x, pm_size_y = s.ADULT_ACTOR_SIZE
+        self.body.position = pm_x + pm_size_x // 2, pm_y - pm_size_y // 2  # body.position == rect.center
+        self.shape = pm.Poly.create_box(self.body, s.ADULT_ACTOR_SIZE)
+        self.shape.elasticity = 0
+        self.shape.friction = 1
+        space.add(self.body, self.shape)
+
+        space.add(self.create_pivot(space.static_body))
+
+        # pygame stuff
         super(ActorAdult, self).__init__()
 
         sh = {key: SpriteSheet(value) for key, value in sprite_sheets.items()}
@@ -41,6 +57,13 @@ class ActorAdult(pygame.sprite.Sprite):
         self.time_to_change_dir = 0.0
         self.dir_delay = 0.5
 
+    def create_pivot(self, control_body):
+        """Emulate linear friction"""
+        pivot = pm.PivotJoint(control_body, self.body, (0, 0), (0, 0))
+        pivot.max_bias = 0  # disable joint correction
+        pivot.max_force = 1000
+        return pivot
+
     def move(self):
         self.rect.x += self.vel * self.directionx
         self.rect.y += self.vel * self.directiony
@@ -56,11 +79,15 @@ class ActorAdult(pygame.sprite.Sprite):
         if self.time_to_change_dir > self.dir_delay:
             # So they walk random distances
             self.dir_delay = uniform(0.05, 0.5)
-            print(self.dir_delay)
+            # print(self.dir_delay)
 
             self.directionx = randint(-1, 1)
             self.directiony = randint(-1, 1)
             self.time_to_change_dir = 0.0
+
+    def synchronize_rect_body(self):
+        """Synchronizes player rect with pymunk player shape"""
+        self.rect.center = s.flip_y(self.body.position)
 
     def update(self, time_delta, *args):
         self.time_in_frame += time_delta
@@ -86,13 +113,22 @@ class ActorAdult(pygame.sprite.Sprite):
 
 class TestActor(ActorAdult):
     """Test actor for physics tests"""
-    def __init__(self, pos, sprite_sheets):
-        super(TestActor, self).__init__(pos, sprite_sheets)
-        self.target = None
-        self.vel = 1
+    def __init__(self, pos, sprite_sheets, space):
+        # physics stuff
+        super(TestActor, self).__init__(pos, sprite_sheets, space)
+        self.vel = 30
+        self.shape.color = (255, 0, 0, 0)
+
+        self.control_body = pm.Body(body_type=pm.Body.KINEMATIC)
+        self.control_body.position = self.body.position
+        space.add(self.control_body)
+
+        space.add(self.create_pivot(self.control_body))
+
+        self.target_position = None
 
     def select_target(self, target_pos):
-        self.target = target_pos
+        self.target_position = s.flip_y(target_pos)
 
     def handle_mouse_event(self, type, pos):
         if type == pygame.MOUSEMOTION:
@@ -113,15 +149,30 @@ class TestActor(ActorAdult):
 
     def update(self, time_delta, *args):
         super(TestActor, self).update(time_delta, *args)
+        self.synchronize_rect_body()  # yes, need to call it twice :(
 
-        if self.target is not None:
-            tx, ty = self.target
-            if self.rect.centerx < tx:
-                self.rect.x += self.vel
-            elif self.rect.centerx > tx:
-                self.rect.x -= self.vel
+        if self.target_position is not None:
 
-            if self.rect.centery < ty:
-                self.rect.y += self.vel
-            elif self.rect.centery > ty:
-                self.rect.y -= self.vel
+            target_delta = self.target_position - self.body.position
+            if target_delta.get_length_sqrd() < self.vel ** 2:
+                self.control_body.velocity = 0, 0
+            else:
+
+                # Left-right direction
+                if self.target_position[0] > int(self.body.position.x):
+                    dir_lr = 1
+                elif self.target_position[0] < int(self.body.position.x):
+                    dir_lr = -1
+                else:
+                    dir_lr = 0
+
+                # Up-down direction
+                if self.target_position[1] < int(self.body.position.y):
+                    dir_ud = -1
+                elif self.target_position[1] > int(self.body.position.y):
+                    dir_ud = 1
+                else:
+                    dir_ud = 0
+
+                dv = Vec2d(self.vel * dir_lr, self.vel * dir_ud)
+                self.control_body.velocity = self.body.rotation_vector.cpvrotate(dv)
