@@ -32,10 +32,12 @@ class ActorAdult(pygame.sprite.Sprite):
         }
         self.current_state = 4
         self.anim_type = 0
-        self.vel = 5
-
         self.anim_delay = 0.2
         self.time_in_frame = 0.0
+
+        self.directionx, self.directiony = 0, 0
+        self.vel = 5
+        self.update_directions()
 
     def move_left(self):
         self.rect.x -= self.vel
@@ -49,20 +51,20 @@ class ActorAdult(pygame.sprite.Sprite):
     def move_down(self):
         self.rect.y += self.vel
 
-    def move(self, directionx, directiony):
-        self.rect.x += self.vel * directionx
-        self.rect.y += self.vel * directiony
+    def move(self):
+        self.rect.x += self.vel * self.directionx
+        self.rect.y += self.vel * self.directiony
 
     # This shouldn't be called every loop
-    def auto_move(self):
+    def update_directions(self):
         """
         -1: Left / Up
         0: No movement
         1: Right / Down
         """
-        directionx = randint(-1, 1)
-        directiony = randint(-1, 1)
-        self.move(directionx, directiony)
+        self.directionx = randint(-1, 1)
+        self.directiony = randint(-1, 1)
+        self.move()
 
     def update(self, time_delta, *args):
         self.time_in_frame += time_delta
@@ -72,7 +74,7 @@ class ActorAdult(pygame.sprite.Sprite):
                 self.image = self.images[self.current_state][self.anim_type]
                 if self.time_in_frame > self.anim_delay:
                     # Temporarly called from here
-                    self.auto_move()
+                    self.move()
 
                     self.anim_type = (self.anim_type + 1) if self.anim_type < 3 else 0
                     self.time_in_frame = 0
