@@ -1,6 +1,6 @@
 import pygame
 
-from src.game_objects.actors import ActorAdult
+from src.game_objects.actors import ActorAdult, TestActor
 from src.game_objects.background import Background
 from src.game_objects.gui import GUI
 from src.main_loop import MainLoop
@@ -15,6 +15,7 @@ class Game(MainLoop):
         self.background = pygame.sprite.Group()
         self.actors = pygame.sprite.Group()
         self.GUI = pygame.sprite.Group()
+        self.__test_actors = pygame.sprite.Group()
 
         self.__test_positions = ((50, 50), (100, 50))
 
@@ -30,6 +31,7 @@ class Game(MainLoop):
         self.create_map()
         self.create_actors(self.__test_positions)
         self.create_GUI()
+        # self.__create_test_actor()
 
         self.set_draw_order()
 
@@ -59,8 +61,15 @@ class Game(MainLoop):
             actor = ActorAdult((x, y), s.OLD_MAN_SPRITE_SHEETS)
             self.actors.add(actor)
 
+    def __create_test_actor(self):
+        pos = (200, 200)
+        __ta = TestActor(pos, s.OLD_MAN_SPRITE_SHEETS)
+        self.__test_actors.add(__ta)
+        self.mouse_handlers.append(__ta.handle_mouse_event)
+
     def create_map(self):
         pass
+
     def update(self):
         super(Game, self).update()
 

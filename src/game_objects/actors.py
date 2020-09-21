@@ -63,3 +63,46 @@ class ActorAdult(pygame.sprite.Sprite):
         self.image = self.images[self.state["WALK"]][self.anim_type]
         self.anim_type = (self.anim_type + 1) if self.anim_type < 3 else 0
 """
+
+
+class TestActor(ActorAdult):
+    """Test actor for physics tests"""
+    def __init__(self, pos, sprite_sheets):
+        super(TestActor, self).__init__(pos, sprite_sheets)
+        self.target = None
+        self.vel = 1
+
+    def select_target(self, target_pos):
+        self.target = target_pos
+
+    def handle_mouse_event(self, type, pos):
+        if type == pygame.MOUSEMOTION:
+            self.handle_mouse_move(pos)
+        elif type == pygame.MOUSEBUTTONDOWN:
+            self.handle_mouse_down(pos)
+        elif type == pygame.MOUSEBUTTONUP:
+            self.handle_mouse_up(pos)
+
+    def handle_mouse_move(self, pos):
+        pass
+
+    def handle_mouse_down(self, pos):
+        self.select_target(pos)
+
+    def handle_mouse_up(self, pos):
+        pass
+
+    def update(self, time_delta, *args):
+        super(TestActor, self).update(time_delta, *args)
+
+        if self.target is not None:
+            tx, ty = self.target
+            if self.rect.centerx < tx:
+                self.move_right()
+            elif self.rect.centerx > tx:
+                self.move_left()
+
+            if self.rect.centery < ty:
+                self.move_down()
+            elif self.rect.centery > ty:
+                self.move_up()
