@@ -48,8 +48,6 @@ class ActorAdult(pygame.sprite.Sprite):
         If at task movement stops and actor starts 'doing the task'
         """
         if self.rect.colliderect(task.rect):
-            # Do stuff when you approach the task
-            print("Actor is at task")
             # Stop movement
             self.directionx, self.directiony = 0, 0
             self.current_state = 0
@@ -71,34 +69,6 @@ class ActorAdult(pygame.sprite.Sprite):
 
             self.move()
 
-    def move(self):
-        if self.directionx > 0:
-            # If it doesnt go out of the screen
-            if (self.rect.x + self.vel) < s.PANEL_POS[0]:
-                self.rect.x += self.vel
-                self.current_state = 4
-            else:
-                # Changing direction to opposite
-                self.directionx *= -1
-        else:
-            if (self.rect.x - self.vel) > 0:
-                self.rect.x -= self.vel
-                self.current_state = 5
-            else:
-                self.directionx *= -1
-
-        if self.directiony > 0:
-            if (self.rect.y + self.vel) < s.EVENT_DESC_POS[1]:
-                self.rect.y += self.vel
-            else:
-                # Change direction
-                self.directiony *= -1
-        else:
-            if (self.rect.y - self.vel) > 0:
-                self.rect.y -= self.vel
-            else:
-                self.directiony *= -1
-
     # TODO Make IDLE to appear 50% more likely, so actors not in constant movement
     def update_directions(self, time_delta):
         """
@@ -111,11 +81,52 @@ class ActorAdult(pygame.sprite.Sprite):
             # So they walk random distances
             self.dir_delay = uniform(0.05, 0.5)
 
-            self.directionx = randint(-1, 1)
-            self.directiony = randint(-1, 1)
+            self.directionx = randint(-2, 2)
+            self.directiony = randint(-2, 2)
             self.time_to_change_dir = 0.0
 
         self.move()
+
+    # TODO Its when when directionx=0 directionsy=-1 (when moving straight down)
+    def move(self):
+        if self.directiony == 1:
+            if (self.rect.y + self.vel) < s.EVENT_DESC_POS[1]:
+                self.rect.y += self.vel
+                self.current_state = 4
+            else:
+                # Change direction
+                self.directiony *= -1
+
+        elif self.directiony == -1:
+            if (self.rect.y - self.vel) > 0:
+                self.rect.y -= self.vel
+                self.current_state = 4
+            else:
+                self.directiony *= -1
+
+        else:
+            self.directiony = 0
+            self.current_state = 3
+
+        if self.directionx == 1:
+            # If it doesnt go out of the screen
+            if (self.rect.x + self.vel) < s.PANEL_POS[0]:
+                self.rect.x += self.vel
+                self.current_state = 4
+            else:
+                # Changing direction to opposite
+                self.directionx *= -1
+
+        elif self.directionx == -1:
+            if (self.rect.x - self.vel) > 0:
+                self.rect.x -= self.vel
+                self.current_state = 5
+            else:
+                self.directionx *= -1
+
+        else:
+            self.directionx = 0
+            self.current_state = 4 if self.directiony is (1 or -1) else 3
 
     def update(self, time_delta, *args):
         self.time_in_frame += time_delta
@@ -125,9 +136,9 @@ class ActorAdult(pygame.sprite.Sprite):
                 self.image = self.images[self.current_state][self.anim_type]
                 if self.time_in_frame > self.anim_delay:
                     # Actor moves by himself
-                    # self.update_directions(time_delta)
+                    self.update_directions(time_delta)
 
-                    self.do_task(args[0])
+                    # self.do_task(args[0])
 
                     self.anim_type = (self.anim_type + 1) if self.anim_type < 3 else 0
                     self.time_in_frame = 0
