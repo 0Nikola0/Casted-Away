@@ -12,6 +12,27 @@ class Game(MainLoop):
     def __init__(self):
         super(Game, self).__init__(s.CAPTION, s.SCREEN_SIZE, s.FPS, s.NUM_OF_LAYERS)
 
+        self.test_scene = TestScene(self)
+        # self.reset() # This will clear the scene so another can take it's place
+
+    def update(self):
+        super(Game, self).update()
+
+
+class Scene():
+    """Handle creating, managing, and cleaning up sprites."""
+    def __init__(self, main_loop):
+        self.sprites = []
+        self.main_loop = main_loop
+        self.all_group = pygame.sprite.LayeredUpdates()
+
+    def load(self):
+        pass
+
+
+class TestScene(Scene):
+    def __init__(self, *args):
+        super().__init__(*args)
         self.GUI = None
 
         # These groups NOT for draw and update.
@@ -19,7 +40,6 @@ class Game(MainLoop):
         self.actors_group = pygame.sprite.Group()
         self.GUI_group = pygame.sprite.Group()
         self.__test_actors_group = pygame.sprite.Group()
-
         self.__test_positions = ((200, 200), (300, 300))
 
         self.create_sprites()
@@ -40,18 +60,18 @@ class Game(MainLoop):
         Sprites in index -1 group will be drawn upper all others.
         Vice versa for 0 index group – it will be background.
         """
-        self.drawing_layers[0].add(self.background_group)  # back (skies) layer
-        self.drawing_layers[1].add(self.background_group)  # floors layer
-        self.drawing_layers[2].add(self.background_group)  # walls layer
-        self.drawing_layers[3].add(self.actors_group)  # actors layer
-        self.drawing_layers[-3].add(self.__test_actors_group)  # main actor (player) layer
-        self.drawing_layers[-2].add()  # before player (e.g. tree leaves or sheds)
-        self.drawing_layers[-1].add(self.GUI_group)  # gui layer
+        self.main_loop.drawing_layers[0].add(self.background_group)  # back (skies) layer
+        self.main_loop.drawing_layers[1].add(self.background_group)  # floors layer
+        self.main_loop.drawing_layers[2].add(self.background_group)  # walls layer
+        self.main_loop.drawing_layers[3].add(self.actors_group)  # actors layer
+        self.main_loop.drawing_layers[-3].add(self.__test_actors_group)  # main actor (player) layer
+        self.main_loop.drawing_layers[-2].add()  # before player (e.g. tree leaves or sheds)
+        self.main_loop.drawing_layers[-1].add(self.GUI_group)  # gui layer
 
     def create_GUI(self):
         self.GUI = GUI()
         self.GUI_group.add(self.GUI)
-        self.add_event_handler(self.GUI)
+        self.main_loop.add_event_handler(self.GUI)
 
     def create_buttons(self):
         self.GUI.create_command_button(
@@ -83,9 +103,6 @@ class Game(MainLoop):
 
     def create_map(self):
         pass
-
-    def update(self):
-        super(Game, self).update()
 
 
 def main():

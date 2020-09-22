@@ -95,6 +95,14 @@ class MainLoop:
         self.keydown_handlers[key].append(obj.handle_key_down)
         self.keyup_handlers[key].append(obj.handle_key_up)
 
+    def reset(self):
+        self.keydown_handlers = defaultdict(list)
+        self.keyup_handlers = defaultdict(list)
+        self.mouse_handlers = []
+        self.event_handlers = []
+        for group in self.drawing_layers:
+            group.empty()
+
     def run(self):
         while self.running:
 
