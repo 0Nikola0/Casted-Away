@@ -24,9 +24,9 @@ class ActorAdult(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect(topleft=pos)
         self.state = {
-            "ATTACK": 0,
+            "ATTACK": 0,    # We can use attack when harvesting crops
             "DEATH": 1,
-            "HURT": 2,
+            "HURT": 2,      # This is only 2 frames not 4 like the others, might create problems
             "IDLE": 3,
             "WALK": 4,
             "WALK-L": 5
@@ -44,13 +44,13 @@ class ActorAdult(pygame.sprite.Sprite):
 
         self.should_move = True
 
-    def complete_task(self, task):
+    def do_task(self, task):
         if self.rect.colliderect(task.rect):
             # Do stuff when you approach the task
             print("Actor is at task")
             # Stop movement
             self.directionx, self.directiony = 0, 0
-            self.current_state = 3
+            self.current_state = 0
             self.should_move = False
         else:
             if self.rect.x > task.rect.x:
@@ -121,7 +121,8 @@ class ActorAdult(pygame.sprite.Sprite):
                 if self.time_in_frame > self.anim_delay:
                     # Temporarly called from here
                     # self.update_directions(time_delta)
-                    self.complete_task(args[0])
+                    self.do_task(args[0])
+                    # Must be in a if statement otherwise it will move left/right even if task is approached
                     if self.should_move:
                         self.move()
 
