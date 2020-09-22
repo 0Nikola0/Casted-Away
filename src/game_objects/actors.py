@@ -9,15 +9,16 @@ class ActorAdult(pygame.sprite.Sprite):
     def __init__(self, pos, sprite_sheets):
         super(ActorAdult, self).__init__()
 
-        sh = {key: SpriteSheet(value) for key, value in sprite_sheets.items()}
+        self.health, self.food = 100, 100
+        self.hungery = 0.2    # How fast the player gets hungry
 
+        sh = {key: SpriteSheet(value) for key, value in sprite_sheets.items()}
         self.images = []
         for x in sh:
             self.images_temp = []
             for i in range(4):
                 self.images_temp.append(sh[x].get_image(i))
             self.images.append(self.images_temp)
-
         # Just to reference what type self.image should be
         self.image = sh["IDLE"].get_image(0)
         pygame.transform.scale(self.image, s.ADULT_ACTOR_SIZE)
@@ -51,6 +52,8 @@ class ActorAdult(pygame.sprite.Sprite):
             # Stop movement
             self.directionx, self.directiony = 0, 0
             self.current_state = 0
+            # Start doing the task
+            task.do_task()
         else:
             if self.rect.x > task.rect.x:
                 self.directionx = -1
@@ -89,6 +92,8 @@ class ActorAdult(pygame.sprite.Sprite):
     # TODO Its when when directionx=0 directionsy=-1 (when moving straight down)
     def move(self):
         if self.directiony == 1:
+            # Actor food gets lower if he moves
+            self.food -= self.hungery
             if (self.rect.y + self.vel) < s.EVENT_DESC_POS[1]:
                 self.rect.y += self.vel
                 self.current_state = 4
@@ -97,6 +102,7 @@ class ActorAdult(pygame.sprite.Sprite):
                 self.directiony = -1
 
         elif self.directiony == -1:
+            self.food -= self.hungery
             if (self.rect.y - self.vel) > 0:
                 self.rect.y -= self.vel
                 self.current_state = 4
@@ -108,6 +114,7 @@ class ActorAdult(pygame.sprite.Sprite):
             self.current_state = 3
 
         if self.directionx == 1:
+            self.food -= self.hungery
             # If it doesnt go out of the screen
             if (self.rect.x + self.vel) < s.PANEL_POS[0]:
                 self.rect.x += self.vel
@@ -117,6 +124,7 @@ class ActorAdult(pygame.sprite.Sprite):
                 self.directionx = -1
 
         elif self.directionx == -1:
+            self.food -= self.hungery
             if (self.rect.x - self.vel) > 0:
                 self.rect.x -= self.vel
                 self.current_state = 5

@@ -10,3 +10,6 @@ class Task(pygame.sprite.Sprite):
 
     def draw(self, surface):
         pygame.draw.rect(surface, s.BLACK, self.rect)
+
+    def do_task(self):
+        pass
