@@ -19,7 +19,6 @@ class CommandPanel(pygame_gui.elements.UIPanel):
         position = (self.button_start_at[0],
                     self.button_start_at[1] + self.button_size[1] * self.button_n)
 
-        print(position)
         button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(position, self.button_size),
             text=name,
@@ -27,6 +26,7 @@ class CommandPanel(pygame_gui.elements.UIPanel):
             manager=self.manager
         )
         self.button_n += 1
+
         return button
 
 
