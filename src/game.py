@@ -3,6 +3,7 @@ import pygame
 from src.game_objects.actors import ActorAdult, TestActor
 from src.game_objects.background import Background
 from src.game_objects.gui import GUI
+# from src.game_objects.tasks import Task
 from src.main_loop import MainLoop
 import src.settings as s
 

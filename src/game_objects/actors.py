@@ -42,6 +42,24 @@ class ActorAdult(pygame.sprite.Sprite):
         self.time_to_change_dir = 0.0
         self.dir_delay = 0.5
 
+    def complete_task(self, task):
+        if self.rect.colliderect(task.rect):
+            # Do stuff when you approach the task
+            print("Actor is at task")
+            # Stop movement
+            self.directionx, self.directiony = 0, 0
+        else:
+            if self.rect.x > task.rect.x:
+                self.directionx = -1
+                self.current_state = 5
+            else:
+                self.directionx = 1
+                self.current_state = 4
+            if self.rect.y > task.rect.y:
+                self.directiony = -1
+            else:
+                self.directiony = 1
+
     def move(self):
         if self.directionx > 0:
             # If it doesnt go out of the screen
@@ -94,7 +112,8 @@ class ActorAdult(pygame.sprite.Sprite):
                 self.image = self.images[self.current_state][self.anim_type]
                 if self.time_in_frame > self.anim_delay:
                     # Temporarly called from here
-                    self.update_directions(time_delta)
+                    # self.update_directions(time_delta)
+                    self.complete_task(args[0])
                     self.move()
 
                     self.anim_type = (self.anim_type + 1) if self.anim_type < 3 else 0
