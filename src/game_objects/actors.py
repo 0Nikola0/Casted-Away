@@ -89,7 +89,6 @@ class ActorAdult(pygame.sprite.Sprite):
 
         self.move()
 
-    # TODO Its when when directionx=0 directionsy=-1 (when moving straight down)
     def move(self):
         if self.directiony == 1:
             # Actor food gets lower if he moves
