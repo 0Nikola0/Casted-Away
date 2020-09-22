@@ -4,21 +4,29 @@ from typing import Callable
 
 from src import settings as s
 
+class CallbackButton(pygame_gui.elements.UIButton):
+    """Extend UIButton with a 'callback' field"""
+    def __init__(self, callback=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.callback = callback
+
+
 class CommandPanel(pygame_gui.elements.UIPanel):
     def __init__(self, *args, **kwargs):
         super(CommandPanel, self).__init__(*args, **kwargs)
         self.manager = kwargs['manager']
         self.button_n = 0
-        self.button_start_at = (20, 50)
+        self.button_start_at = (20, 20)
         self.button_size = (150, 50)
         self.button_spacing = 20
 
-    def add_button(self, name) -> pygame_gui.elements.UIButton:
+    def add_button(self, name, callback=None) -> CallbackButton:
         """Adds a button to the panel returns the created object"""
         position = (self.button_start_at[0],
                     self.button_start_at[1] + self.button_size[1] * self.button_n)
 
-        button = pygame_gui.elements.UIButton(
+        button = CallbackButton(
+            callback=callback,
             relative_rect=pygame.Rect(position, self.button_size),
             text=name,
             container=self,
@@ -38,7 +46,7 @@ class GUI(pygame.sprite.Sprite):
 
         self.manager = pygame_gui.UIManager(s.SCREEN_SIZE, s.THEME)
 
-        self.buttons = []
+        self.all_buttons = []
 
         # TODO move these out into their own clases?
         # Ths is just a mockup, once the layout is nailed down we can
@@ -58,8 +66,15 @@ class GUI(pygame.sprite.Sprite):
 
     def create_command_button(self, text, callback: Callable):
         """Add a button to the command panel and bind a callback to it."""
-        self.buttons.append({'object': self.panel.add_button(text),
-                             'callback': callback })
+        self.all_buttons.append(self.panel.add_button(text, callback))
+
+    def clear_command_buttons(self):
+        """Kills all buttons in the command panel"""
+        for button in self.all_buttons:
+            button.kill()
+
+        self.all_buttons = []
+        self.panel.button_n = 0
 
     def handle_event(self, event):
         """Handles USEREVENT events for pygame_gui events
@@ -69,9 +84,9 @@ class GUI(pygame.sprite.Sprite):
 
         if event.type == pygame.USEREVENT:
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                for button in self.buttons:
-                    if event.ui_element == button['object']:
-                        button['callback']()
+                for button in self.all_buttons:
+                    if event.ui_element == button:
+                        button.callback()
 
         self.manager.process_events(event)
 

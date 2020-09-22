@@ -59,6 +59,8 @@ class Game(MainLoop):
             "Harvest", lambda : print("Pressed Harvest"))
         self.GUI.create_command_button(
             "Rest", lambda : print("Pressed Rest"))
+        # We can clear the buttons if necessary e.g. for a New Game menu
+        # self.GUI.clear_command_buttons()
 
     def create_background(self):
         b = Background(
