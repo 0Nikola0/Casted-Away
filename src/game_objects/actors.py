@@ -42,23 +42,31 @@ class ActorAdult(pygame.sprite.Sprite):
         self.time_to_change_dir = 0.0
         self.dir_delay = 0.5
 
+        self.should_move = True
+
     def complete_task(self, task):
         if self.rect.colliderect(task.rect):
             # Do stuff when you approach the task
             print("Actor is at task")
             # Stop movement
             self.directionx, self.directiony = 0, 0
+            self.current_state = 3
+            self.should_move = False
         else:
             if self.rect.x > task.rect.x:
                 self.directionx = -1
                 self.current_state = 5
-            else:
+            elif self.rect.x < task.rect.x:
                 self.directionx = 1
                 self.current_state = 4
+            else:
+                self.directionx = 0
             if self.rect.y > task.rect.y:
                 self.directiony = -1
-            else:
+            elif self.rect.y < task.rect.y:
                 self.directiony = 1
+            else:
+                self.directiony = 0
 
     def move(self):
         if self.directionx > 0:
@@ -114,7 +122,8 @@ class ActorAdult(pygame.sprite.Sprite):
                     # Temporarly called from here
                     # self.update_directions(time_delta)
                     self.complete_task(args[0])
-                    self.move()
+                    if self.should_move:
+                        self.move()
 
                     self.anim_type = (self.anim_type + 1) if self.anim_type < 3 else 0
                     self.time_in_frame = 0
