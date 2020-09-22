@@ -65,3 +65,6 @@ GIRL_SPRITE_SHEETS = {
     "IDLE": os.path.join(ACTOR_GIRL_DIRECTORY, "Girl_idle.png"),
     "WALK": os.path.join(ACTOR_GIRL_DIRECTORY, "Girl_walk.png"),
 }
+
+# GUI
+THEME = os.path.join(PROJECT_DIRECTORY, "src", "theme.json")

@@ -4,7 +4,6 @@ from typing import Callable
 
 from src import settings as s
 
-
 class CommandPanel(pygame_gui.elements.UIPanel):
     def __init__(self, *args, **kwargs):
         super(CommandPanel, self).__init__(*args, **kwargs)
@@ -37,7 +36,7 @@ class GUI(pygame.sprite.Sprite):
         self.image = pygame.Surface(s.SCREEN_SIZE, flags=pygame.SRCALPHA)
         self.rect = self.image.get_rect()
 
-        self.manager = pygame_gui.UIManager(s.SCREEN_SIZE)
+        self.manager = pygame_gui.UIManager(s.SCREEN_SIZE, s.THEME)
 
         self.buttons = []
 
