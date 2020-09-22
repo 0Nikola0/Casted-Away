@@ -69,7 +69,6 @@ class ActorAdult(pygame.sprite.Sprite):
 
             self.move()
 
-    # TODO Make IDLE to appear 50% more likely, so actors not in constant movement
     def update_directions(self, time_delta):
         """
         -1: Left / Up
@@ -81,8 +80,8 @@ class ActorAdult(pygame.sprite.Sprite):
             # So they walk random distances
             self.dir_delay = uniform(0.05, 0.5)
 
-            self.directionx = randint(-2, 2)
-            self.directiony = randint(-2, 2)
+            self.directionx = randint(-2, 1)
+            self.directiony = randint(-2, 1)
             self.time_to_change_dir = 0.0
 
         self.move()
@@ -95,14 +94,14 @@ class ActorAdult(pygame.sprite.Sprite):
                 self.current_state = 4
             else:
                 # Change direction
-                self.directiony *= -1
+                self.directiony = -1
 
         elif self.directiony == -1:
             if (self.rect.y - self.vel) > 0:
                 self.rect.y -= self.vel
                 self.current_state = 4
             else:
-                self.directiony *= -1
+                self.directiony = 1
 
         else:
             self.directiony = 0
@@ -115,18 +114,18 @@ class ActorAdult(pygame.sprite.Sprite):
                 self.current_state = 4
             else:
                 # Changing direction to opposite
-                self.directionx *= -1
+                self.directionx = -1
 
         elif self.directionx == -1:
             if (self.rect.x - self.vel) > 0:
                 self.rect.x -= self.vel
                 self.current_state = 5
             else:
-                self.directionx *= -1
+                self.directionx = 1
 
         else:
             self.directionx = 0
-            self.current_state = 4 if self.directiony is (1 or -1) else 3
+            self.current_state = 4 if (self.directiony == 1) or (self.directiony == -1) else 3
 
     def update(self, time_delta, *args):
         self.time_in_frame += time_delta
