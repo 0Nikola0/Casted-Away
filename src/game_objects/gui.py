@@ -11,7 +11,54 @@ class CallbackButton(pygame_gui.elements.UIButton):
         self.callback = callback
 
 
+class BarValue(pygame.sprite.Sprite):
+    """This is simply a container for bar values.
+
+    It is necessary because UIScreenSpaceHealthBar requires a sprite
+    with hardcoded 'health_capacity' and 'current_health' properties."""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.health_capacity = 100
+        self.current_health = 20
+
+
+class ActorPanel(pygame_gui.elements.UIPanel):
+    """A Panel to display information about an Actor"""
+    def __init__(self, *args, **kwargs):
+        super(ActorPanel, self).__init__(*args, **kwargs)
+        self.manager = kwargs['manager']
+
+        # TODO these are test values, must be linked to real data
+        self.actor_name = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect((20, 0), (100, 20)),
+            text="John Doe",
+            manager=self.manager,
+            container=self)
+
+        self.health_bar_value = BarValue()
+        self.health_bar = pygame_gui.elements.UIScreenSpaceHealthBar(
+            relative_rect=pygame.Rect((20, 20), (100, 20)),
+            manager=self.manager,
+            container=self)
+        self.health_bar.set_sprite_to_monitor(self.health_bar_value)
+
+        self.food_bar_value = BarValue()
+        self.food_bar = pygame_gui.elements.UIScreenSpaceHealthBar(
+            relative_rect=pygame.Rect((20, 40), (100, 20)),
+            manager=self.manager,
+            container=self)
+        self.food_bar.set_sprite_to_monitor(self.food_bar_value)
+
+        self.water_bar_value = BarValue()
+        self.water_bar = pygame_gui.elements.UIScreenSpaceHealthBar(
+            relative_rect=pygame.Rect((20, 60), (100, 20)),
+            manager=self.manager,
+            container=self)
+        self.water_bar.set_sprite_to_monitor(self.water_bar_value)
+
+
 class CommandPanel(pygame_gui.elements.UIPanel):
+    """A Panel with buttons go give commands to our Actors"""
     def __init__(self, *args, **kwargs):
         super(CommandPanel, self).__init__(*args, **kwargs)
         self.manager = kwargs['manager']
@@ -51,6 +98,12 @@ class GUI(pygame.sprite.Sprite):
         # TODO move these out into their own clases?
         # Ths is just a mockup, once the layout is nailed down we can
         # organize it better.
+
+        self.actor_panel = ActorPanel(
+            relative_rect=pygame.Rect(s.ACTOR_POS, s.ACTOR_SIZE),
+            manager=self.manager,
+            starting_layer_height=0
+        )
 
         self.panel = CommandPanel(
             relative_rect=pygame.Rect(s.PANEL_POS, s.PANEL_SIZE),
