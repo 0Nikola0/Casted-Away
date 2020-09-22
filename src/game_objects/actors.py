@@ -31,7 +31,7 @@ class ActorAdult(pygame.sprite.Sprite):
             "WALK": 4,
             "WALK-L": 5
         }
-        self.current_state = 5
+        self.current_state = 3
         self.anim_type = 0
         self.anim_delay = 0.2
         self.time_in_frame = 0.0
@@ -42,16 +42,17 @@ class ActorAdult(pygame.sprite.Sprite):
         self.time_to_change_dir = 0.0
         self.dir_delay = 0.5
 
-        self.should_move = True
-
     def do_task(self, task):
+        """
+        Actor moves towards the task
+        If at task movement stops and actor starts 'doing the task'
+        """
         if self.rect.colliderect(task.rect):
             # Do stuff when you approach the task
             print("Actor is at task")
             # Stop movement
             self.directionx, self.directiony = 0, 0
             self.current_state = 0
-            self.should_move = False
         else:
             if self.rect.x > task.rect.x:
                 self.directionx = -1
@@ -67,6 +68,8 @@ class ActorAdult(pygame.sprite.Sprite):
                 self.directiony = 1
             else:
                 self.directiony = 0
+
+            self.move()
 
     def move(self):
         if self.directionx > 0:
@@ -96,7 +99,7 @@ class ActorAdult(pygame.sprite.Sprite):
             else:
                 self.directiony *= -1
 
-    # Needs to be updated i will fix it later
+    # TODO Make IDLE to appear 50% more likely, so actors not in constant movement
     def update_directions(self, time_delta):
         """
         -1: Left / Up
@@ -112,6 +115,8 @@ class ActorAdult(pygame.sprite.Sprite):
             self.directiony = randint(-1, 1)
             self.time_to_change_dir = 0.0
 
+        self.move()
+
     def update(self, time_delta, *args):
         self.time_in_frame += time_delta
 
@@ -119,12 +124,10 @@ class ActorAdult(pygame.sprite.Sprite):
             if self.current_state == state:
                 self.image = self.images[self.current_state][self.anim_type]
                 if self.time_in_frame > self.anim_delay:
-                    # Temporarly called from here
+                    # Actor moves by himself
                     # self.update_directions(time_delta)
+
                     self.do_task(args[0])
-                    # Must be in a if statement otherwise it will move left/right even if task is approached
-                    if self.should_move:
-                        self.move()
 
                     self.anim_type = (self.anim_type + 1) if self.anim_type < 3 else 0
                     self.time_in_frame = 0
