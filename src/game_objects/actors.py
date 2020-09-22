@@ -9,7 +9,7 @@ from src.graphics import SpriteSheet
 
 
 class ActorAdult(pygame.sprite.Sprite):
-    def __init__(self, pos, sprite_sheets, space):
+    def __init__(self, pos, sprite_sheets, space, static_pivot=True):
         # pymunk stuff
         self.body = pm.Body(mass=1, moment=pm.inf, body_type=pm.Body.DYNAMIC)
         pm_x, pm_y = s.flip_y(pos)
@@ -20,7 +20,9 @@ class ActorAdult(pygame.sprite.Sprite):
         self.shape.friction = 1
         space.add(self.body, self.shape)
 
-        space.add(self.create_pivot(space.static_body))
+        if static_pivot is True:
+            pivot = self.create_pivot(space.static_body)
+            space.add(pivot)
 
         # pygame stuff
         super(ActorAdult, self).__init__()
@@ -92,6 +94,8 @@ class ActorAdult(pygame.sprite.Sprite):
     def update(self, time_delta, *args):
         self.time_in_frame += time_delta
 
+        self.synchronize_rect_body()
+
         for state in self.state.values():
             if self.current_state == state:
                 self.image = self.images[self.current_state][self.anim_type]
@@ -115,7 +119,7 @@ class TestActor(ActorAdult):
     """Test actor for physics tests"""
     def __init__(self, pos, sprite_sheets, space):
         # physics stuff
-        super(TestActor, self).__init__(pos, sprite_sheets, space)
+        super(TestActor, self).__init__(pos, sprite_sheets, space, static_pivot=False)
         self.vel = 30
         self.shape.color = (255, 0, 0, 0)
 
@@ -123,7 +127,8 @@ class TestActor(ActorAdult):
         self.control_body.position = self.body.position
         space.add(self.control_body)
 
-        space.add(self.create_pivot(self.control_body))
+        pivot = self.create_pivot(self.control_body)
+        space.add(pivot)
 
         self.target_position = None
 
