@@ -5,7 +5,7 @@ from src.game_objects.actors import ActorAdult, TestActor
 from src.game_objects.background import Background
 from src.game_objects.floor import TestFloor
 from src.game_objects.gui import GUI
-from src.game_objects.wall import Wall
+from src.game_objects.level_borders import LevelBorders
 from src.main_loop import MainLoop
 import src.settings as s
 
@@ -73,24 +73,15 @@ class Game(MainLoop):
         self.mouse_handlers.append(__ta.handle_mouse_event)
 
     def create_map(self):
-        f = TestFloor((50, 50), (320, 320), s.BROWN)
+        __map_topleft = 50, 50
+        __map_bottomright = 320, 320
+
+        f = TestFloor(__map_topleft, __map_bottomright, s.BROWN)
         self.floor.add(f)
 
-        # walls
-        pts = [s.flip_y((50, 50)), s.flip_y((50 + 320, 50)), s.flip_y((50 + 320, 50 + 320)), s.flip_y((50, 50 + 320))]
-        sizes = ((320, 10), (10, 320), (320, 10), (10, 320))
-        for i, size in enumerate(sizes):
-            seg = pm.Segment(self.space.static_body, pts[i], pts[(i + 1) % 4], 2)
-            seg.elasticity = 1
-            self.space.add(seg)
-
-            pos = s.flip_y(pts[i])
-            top_left = True
-            if i > 1:
-                top_left = False
-
-            w = Wall(pos, *size, top_left)
-            self.walls.add(w)
+        __p0 = __map_topleft[0] + s.LB_THICKNESS, __map_topleft[1] + s.LB_THICKNESS
+        __p1 = __p0[0] + __map_bottomright[0], __p0[1] + __map_bottomright[1]
+        LevelBorders(s.flip_y(__p0), s.flip_y(__p1), space=self.space, d=s.LB_THICKNESS)
 
     def update(self):
         super(Game, self).update()

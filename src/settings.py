@@ -21,6 +21,9 @@ ADULT_ACTOR_SIZE = 32, 32
 SPRITES_SHEET_SPRITE_SIZE = (48, 48)
 
 
+# Level borders
+LB_THICKNESS = 2
+
 def flip_y(pos):
     """Convert pymunk physics to pygame coordinates
 

@@ -39,7 +39,7 @@ class MainLoop:
 
         # Pymunk test draw
         self.draw_options = pymunk.pygame_util.DrawOptions(self.surface)
-        self.is_test_mode = True
+        self.is_prototyping_mode = True
 
     def update(self):
         """Update game state
@@ -102,7 +102,7 @@ class MainLoop:
             self.update()
             self.draw()
 
-            if self.is_test_mode is True:
+            if self.is_prototyping_mode is True:
                 self.space.debug_draw(self.draw_options)
 
             pygame.display.update()
