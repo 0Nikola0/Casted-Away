@@ -1,6 +1,33 @@
 import pygame
 import pygame_gui
+from typing import Callable
+
 from src import settings as s
+
+
+class CommandPanel(pygame_gui.elements.UIPanel):
+    def __init__(self, *args, **kwargs):
+        super(CommandPanel, self).__init__(*args, **kwargs)
+        self.manager = kwargs['manager']
+        self.button_n = 0
+        self.button_start_at = (20, 50)
+        self.button_size = (150, 50)
+        self.button_spacing = 20
+
+    def add_button(self, name) -> pygame_gui.elements.UIButton:
+        """Adds a button to the panel returns the created object"""
+        position = (self.button_start_at[0],
+                    self.button_start_at[1] + self.button_size[1] * self.button_n)
+
+        print(position)
+        button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect(position, self.button_size),
+            text=name,
+            container=self,
+            manager=self.manager
+        )
+        self.button_n += 1
+        return button
 
 
 class GUI(pygame.sprite.Sprite):
@@ -12,23 +39,13 @@ class GUI(pygame.sprite.Sprite):
 
         self.manager = pygame_gui.UIManager(s.SCREEN_SIZE)
 
+        self.buttons = []
+
         # TODO move these out into their own clases?
         # Ths is just a mockup, once the layout is nailed down we can
         # organize it better.
-        self.popup = pygame_gui.elements.UIWindow(
-            rect=pygame.Rect((200, 50), (300, 300)),
-            window_display_title='Popup',
-            manager=self.manager
-        )
 
-        self.hello_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((50, 50), (100, 50)),
-            text='Say Hello',
-            container=self.popup,
-            manager=self.manager
-        )
-
-        self.panel = pygame_gui.elements.UIPanel(
+        self.panel = CommandPanel(
             relative_rect=pygame.Rect(s.PANEL_POS, s.PANEL_SIZE),
             manager=self.manager,
             starting_layer_height=0
@@ -40,12 +57,22 @@ class GUI(pygame.sprite.Sprite):
             manager=self.manager,
         )
 
+    def create_command_button(self, text, callback: Callable):
+        """Add a button to the command panel and bind a callback to it."""
+        self.buttons.append({'object': self.panel.add_button(text),
+                             'callback': callback })
+
     def handle_event(self, event):
-        """Handles USEREVENT events for pygame_gui events"""
+        """Handles USEREVENT events for pygame_gui events
+
+        If the event is UI_BUTTON_PRESSED, iterate over all the buttons and
+        call the bound function."""
+
         if event.type == pygame.USEREVENT:
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                if event.ui_element == self.hello_button:
-                    print('Hello World!')
+                for button in self.buttons:
+                    if event.ui_element == button['object']:
+                        button['callback']()
 
         self.manager.process_events(event)
 

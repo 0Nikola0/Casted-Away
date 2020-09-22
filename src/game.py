@@ -15,16 +15,13 @@ class Game(MainLoop):
         self.background = pygame.sprite.Group()
         self.actors = pygame.sprite.Group()
         self.GUI = pygame.sprite.Group()
+        self.gui_object = None
         self.__test_actors = pygame.sprite.Group()
 
         self.__test_positions = ((200, 200), (300, 300))
 
         self.create_sprites()
-
-    def create_GUI(self):
-        gui = GUI()
-        self.GUI.add(gui)
-        self.add_event_handler(gui)
+        self.create_buttons()
 
     def create_sprites(self):
         self.create_background()
@@ -48,6 +45,19 @@ class Game(MainLoop):
         self.drawing_layers[-3].add(self.__test_actors)  # main actor (player) layer
         self.drawing_layers[-2].add()  # before player (e.g. tree leaves or sheds)
         self.drawing_layers[-1].add(self.GUI)  # gui layer
+
+    def create_GUI(self):
+        self.gui_object = GUI()
+        self.GUI.add(self.gui_object)
+        self.add_event_handler(self.gui_object)
+
+    def create_buttons(self):
+        self.gui_object.create_command_button(
+            "Plant", lambda : print("Pressed Plant"))
+        self.gui_object.create_command_button(
+            "Harvest", lambda : print("Pressed Harvest"))
+        self.gui_object.create_command_button(
+            "Rest", lambda : print("Pressed Rest"))
 
     def create_background(self):
         b = Background(
