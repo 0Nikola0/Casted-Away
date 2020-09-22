@@ -34,7 +34,7 @@ class MainLoop:
         self.event_handlers = []
 
         # Testing for tasks
-        self.task01 = Task("Harvest", (300, 200), (60, 60))
+        self.task01 = Task("Harvest", 1.0, (300, 200), (60, 60))
 
 
     def update(self):
