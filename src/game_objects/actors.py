@@ -10,6 +10,8 @@ from src.graphics import SpriteSheet
 
 class ActorAdult(pygame.sprite.Sprite):
     __ACTOR_ID = s.ADULT_ACTOR_COLLISION_TYPE
+    assert __ACTOR_ID < 1000, "Invalid actor id. " \
+                              "Perhaps you added too much objects or did too much Scene reset() calls."
 
     def __init__(self, pos, sprite_sheets, space):
         # pymunk stuff
@@ -23,8 +25,8 @@ class ActorAdult(pygame.sprite.Sprite):
         self.control_body.position = self.body.position
 
         self.shape = pm.Poly.create_box(self.body, s.ADULT_ACTOR_SIZE)
-        # self.shape.collision_type = ActorAdult.get_id()  # for collisions
-        self.shape.collision_type = ActorAdult.__ACTOR_ID  # for collisions
+
+        self.shape.collision_type = ActorAdult.get_id()  # for collisions
 
         self.pivot = pm.PivotJoint(self.control_body, self.body, (0, 0), (0, 0))
         self.pivot.max_bias = 0  # disable joint correction
@@ -122,24 +124,6 @@ class ActorAdult(pygame.sprite.Sprite):
 
         self.move()
 
-    def change_direction(self, arbiter=0, space=0, data=0):
-        """
-
-        Pymunk stuff
-        """
-        data["actor"].directionx = -data["actor"].directionx
-        data["actor"].directiony = -data["actor"].directiony
-        print(data["actor"].control_body.velocity)
-        data["actor"].control_body.velocity = -data["actor"].control_body.velocity
-        print(data["actor"].control_body.velocity)
-
-        # self.directionx = -self.directionx
-        # self.directiony = -self.directiony
-        # print(self.control_body.velocity)
-        # self.control_body.velocity = -self.control_body.velocity
-        # print(self.control_body.velocity)
-        return True
-
     def move(self):
 
         dv = Vec2d(self.vel * self.directionx, self.vel * self.directiony)
@@ -202,10 +186,24 @@ class ActorAdult(pygame.sprite.Sprite):
                     self.anim_type = (self.anim_type + 1) if self.anim_type < 3 else 0
                     self.time_in_frame = 0
 
+    def change_direction(self, arbiter, space, data):
+        """Change self directions and velocity to opposite ones
+
+        Function what called by pymunk collision handler.
+        Basically it's a static method but placed here for code
+        grouping (actors collisions are built-in actors class).
+        """
+        assert data["actor"] is self, "Collision error. Collision data and self aren't match!"
+
+        data["actor"].directionx = -data["actor"].directionx
+        data["actor"].directiony = -data["actor"].directiony
+        data["actor"].control_body.velocity = -data["actor"].control_body.velocity
+        return True
+
     @staticmethod
     def get_id():
-        # TODO: We have a limit in 100 IDs. Killed actors also occupy IDы although they no longer need them.
-        #  #  Needs to fix later, but for testing it's ok
+        # TODO: We have a limit in 100 IDs. Killed actors also occupy IDы although they no longer need them or even
+        #  Scene resets devour free IDs. Needs to fix later, but for testing it's ok
         new_id = ActorAdult.__ACTOR_ID
         ActorAdult.__ACTOR_ID += 1
         return new_id

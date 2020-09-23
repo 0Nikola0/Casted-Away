@@ -41,7 +41,7 @@ class MainLoop:
 
         # Pymunk test draw
         self.draw_options = pymunk.pygame_util.DrawOptions(self.surface)
-        self.is_prototyping_mode = True
+        self.is_prototyping_mode = False
 
         # Testing for tasks
         self.task01 = Task("Harvest", 1.0, (300, 200), (60, 60))

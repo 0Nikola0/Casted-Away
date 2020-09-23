@@ -110,7 +110,8 @@ class TestScene(Scene):
         Vice versa for 0 index group – it will be background.
         """
         self.main_loop.drawing_layers[0].add(self.background_group)  # back (skies) layer
-        self.main_loop.drawing_layers[1].add(self.floor_group)  # floors layer self.main_loop.drawing_layers[2].add(self.background_group)  # walls layer
+        self.main_loop.drawing_layers[1].add(self.floor_group)  # floors layer
+        self.main_loop.drawing_layers[2].add()  # walls layer
         self.main_loop.drawing_layers[3].add(self.actors_group)  # actors layer
         self.main_loop.drawing_layers[-3].add(self.__test_actors_group)  # main actor (player) layer
         self.main_loop.drawing_layers[-2].add()  # before player (e.g. tree leaves or sheds)
@@ -141,18 +142,18 @@ class TestScene(Scene):
         self.background_group.add(b)
 
     def create_actors(self, positions):
-        for x, y in positions:
-            actor = ActorAdult((x, y), s.OLD_MAN_SPRITE_SHEETS, self.main_loop.space)
-            self.actors_group.add(actor)
-            print(actor.shape.collision_type)
-
-            print(self.level_border_actor_collision)
+        def add_actors_collisions():
+            """Code block for all actors collisions"""
             self.level_border_actor_collision.append(
                 self.main_loop.space.add_collision_handler(s.LEVEL_BORDERS_COLLISION_TYPE, actor.shape.collision_type)
-            )
+            )  # add collision handler
             self.level_border_actor_collision[-1].data["actor"] = actor  # add ref to actor to collision handler
             self.level_border_actor_collision[-1].begin = actor.change_direction  # collision handler's func
-            print(self.level_border_actor_collision)
+
+        for x, y in positions:
+            actor = ActorAdult((x, y), s.OLD_MAN_SPRITE_SHEETS, self.main_loop.space)
+            add_actors_collisions()
+            self.actors_group.add(actor)
 
     def __create_test_actor(self):
         pos = (230, 250)
