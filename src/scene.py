@@ -65,8 +65,8 @@ class GameScene(Scene):
         # We are using the 'layer' parameter of the LayeredUpdates class which
         # acts the same as a Sprite Group.
         self.all.add(Background(s.SCREEN_SIZE, s.GRAY), layer=0)
-        self.all.add(ActorAdult((200, 200), s.MAN_SPRITE_SHEETS, self.main_loop.space), layer=1)
-        self.all.add(ActorAdult((200, 250), s.MAN_SPRITE_SHEETS, self.main_loop.space), layer=1)
+        self.all.add(ActorAdult((200, 200), s.BOY_SPRITE_SHEETS, self.main_loop.space), layer=1)
+        self.all.add(ActorAdult((200, 250), s.GIRL_SPRITE_SHEETS, self.main_loop.space), layer=1)
         self.all.add(self.GUI, layer=6)
         self.main_loop.add_event_handler(self.GUI)
 
@@ -152,7 +152,7 @@ class TestScene(Scene):
             self.level_border_actor_collision[-1].begin = actor.change_direction  # collision handler's func
 
         for x, y in positions:
-            actor = ActorAdult((x, y), s.OLD_MAN_SPRITE_SHEETS, self.main_loop.space)
+            actor = ActorAdult((x, y), s.WOMAN_SPRITE_SHEETS, self.main_loop.space)
             add_actors_collisions()
             self.actors_group.add(actor)
 

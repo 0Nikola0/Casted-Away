@@ -28,6 +28,8 @@ OLD_WOMAN_SPRITE_SHEETS = {
     "HURT": os.path.join(ACTOR_OLD_WOMAN_DIRECTORY, "Old_woman_hurt.png"),
     "IDLE": os.path.join(ACTOR_OLD_WOMAN_DIRECTORY, "Old_woman_idle.png"),
     "WALK": os.path.join(ACTOR_OLD_WOMAN_DIRECTORY, "Old_woman_walk.png"),
+    "WALK-L": os.path.join(ACTOR_OLD_WOMAN_DIRECTORY, "Old_woman_walk_l.png"),
+
 }
 
 ACTOR_MAN_DIRECTORY = os.path.join(ACTORS_DIRECTORY, "3 Man")
@@ -48,6 +50,8 @@ WOMAN_SPRITE_SHEETS = {
     "HURT": os.path.join(ACTOR_WOMAN_DIRECTORY, "Woman_hurt.png"),
     "IDLE": os.path.join(ACTOR_WOMAN_DIRECTORY, "Woman_idle.png"),
     "WALK": os.path.join(ACTOR_WOMAN_DIRECTORY, "Woman_walk.png"),
+    "WALK-L": os.path.join(ACTOR_WOMAN_DIRECTORY, "Woman_walk_l.png"),
+
 }
 
 ACTOR_BOY_DIRECTORY = os.path.join(ACTORS_DIRECTORY, "5 Boy")
@@ -57,6 +61,8 @@ BOY_SPRITE_SHEETS = {
     "HURT": os.path.join(ACTOR_BOY_DIRECTORY, "Boy_hurt.png"),
     "IDLE": os.path.join(ACTOR_BOY_DIRECTORY, "Boy_idle.png"),
     "WALK": os.path.join(ACTOR_BOY_DIRECTORY, "Boy_walk.png"),
+    "WALK-L": os.path.join(ACTOR_BOY_DIRECTORY, "Boy_walk_l.png"),
+
 }
 
 ACTOR_GIRL_DIRECTORY = os.path.join(ACTORS_DIRECTORY, "6 Girl")
@@ -66,6 +72,7 @@ GIRL_SPRITE_SHEETS = {
     "HURT": os.path.join(ACTOR_GIRL_DIRECTORY, "Girl_hurt.png"),
     "IDLE": os.path.join(ACTOR_GIRL_DIRECTORY, "Girl_idle.png"),
     "WALK": os.path.join(ACTOR_GIRL_DIRECTORY, "Girl_walk.png"),
+    "WALK-L": os.path.join(ACTOR_GIRL_DIRECTORY, "Girl_walk_l.png"),
 }
 
 # GUI
