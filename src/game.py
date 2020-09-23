@@ -1,87 +1,38 @@
 import pygame
 import pymunk as pm
 
-from src.game_objects.actors import ActorAdult, TestActor
-from src.game_objects.background import Background
-from src.game_objects.floor import TestFloor
-from src.game_objects.gui import GUI
-from src.game_objects.level_borders import LevelBorders
 from src.main_loop import MainLoop
+from src.scene import Scene, MenuScene, GameScene, TestScene
+from src.events import SWITCH_SCENE
+
 import src.settings as s
 
 
 class Game(MainLoop):
+    """Basically a manager for all the Scenes."""
     def __init__(self):
         super(Game, self).__init__(s.CAPTION, s.SCREEN_SIZE, s.FPS, s.NUM_OF_LAYERS)
 
-        # These groups NOT for draw and update.
-        self.background = pygame.sprite.Group()
-        self.actors = pygame.sprite.Group()
-        self.floor = pygame.sprite.Group()
-        self.GUI = pygame.sprite.Group()
-        self.__test_actors = pygame.sprite.Group()
-        self.walls = pygame.sprite.Group()
+        # We set up a Menu Scene, and let it fire the scene change events
+        self.scene = MenuScene(self)
+        self.add_event_handler(self)
 
-        self.__test_positions = ((200, 200), (300, 300))
+    def handle_event(self, event):
+        """Scans for scene change events, and changes scenes."""
+        if event.type == SWITCH_SCENE:
+            self.reset()
 
-        self.create_sprites()
+            # TODO Kind of dirty, we should put these in a dict in scene.py
+            if event.scene == 'game':
+                self.scene = GameScene(self)
+            elif event.scene == 'menu':
+                self.scene = MenuScene(self)
+            elif event.scene == 'test':
+                self.scene = TestScene(self)
 
-    def create_GUI(self):
-        gui = GUI()
-        self.GUI.add(gui)
-        self.add_event_handler(gui)
-
-    def create_sprites(self):
-        self.create_background()
-        self.create_map()
-        self.create_actors(self.__test_positions)
-        self.create_GUI()
-        self.__create_test_actor()
-
-        self.set_draw_order()
-
-    def set_draw_order(self):
-        """Determine order of drawing
-
-        Sprites in index -1 group will be drawn upper all others.
-        Vice versa for 0 index group – it will be background.
-        """
-        self.drawing_layers[0].add(self.background)  # back (skies) layer
-        self.drawing_layers[1].add(self.floor)  # floors layer
-        self.drawing_layers[2].add(self.walls)  # walls layer
-        self.drawing_layers[3].add(self.actors)  # actors layer
-        self.drawing_layers[-3].add(self.__test_actors)  # main actor (player) layer
-        self.drawing_layers[-2].add()  # before player (e.g. tree leaves or sheds)
-        self.drawing_layers[-1].add(self.GUI)  # gui layer
-
-    def create_background(self):
-        b = Background(
-            s.SCREEN_SIZE,
-            s.GRAY,
-        )
-        self.background.add(b)
-
-    def create_actors(self, positions):
-        for x, y in positions:
-            actor = ActorAdult((x, y), s.OLD_MAN_SPRITE_SHEETS, self.space)
-            self.actors.add(actor)
-
-    def __create_test_actor(self):
-        pos = (250, 250)
-        __ta = TestActor(pos, s.OLD_MAN_SPRITE_SHEETS, self.space)
-        self.__test_actors.add(__ta)
-        self.mouse_handlers.append(__ta.handle_mouse_event)
-
-    def create_map(self):
-        __map_topleft = 50, 50
-        __map_bottomright = 320, 320
-
-        f = TestFloor(__map_topleft, __map_bottomright, s.BROWN)
-        self.floor.add(f)
-
-        __p0 = __map_topleft[0] + s.LB_THICKNESS, __map_topleft[1] + s.LB_THICKNESS
-        __p1 = __p0[0] + __map_bottomright[0], __p0[1] + __map_bottomright[1]
-        LevelBorders(s.flip_y(__p0), s.flip_y(__p1), space=self.space, d=s.LB_THICKNESS)
+            # We must re-add the handler as we have reset everything
+            self.add_event_handler(self)
+            self.scene.GUI.console_println("switched to scene: " + event.scene)
 
     def update(self):
         super(Game, self).update()

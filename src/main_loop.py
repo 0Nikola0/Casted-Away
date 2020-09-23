@@ -3,6 +3,8 @@ import pymunk
 import pymunk.pygame_util
 from collections import defaultdict
 
+from src.game_objects.tasks import Task
+
 
 class MainLoop:
     """Display initialization and the main loop
@@ -41,6 +43,9 @@ class MainLoop:
         self.draw_options = pymunk.pygame_util.DrawOptions(self.surface)
         self.is_prototyping_mode = True
 
+        # Testing for tasks
+        self.task01 = Task("Harvest", 1.0, (300, 200), (60, 60))
+
     def update(self):
         """Update game state
 
@@ -48,7 +53,8 @@ class MainLoop:
         this method use the update method of every sprite. So by this method, we can create animations.
         """
         for layer in self.drawing_layers:
-            layer.update(self.time_delta)
+            # self.task01 - just for testing
+            layer.update(self.time_delta, self.task01)
 
     def draw(self):
         """Draw all sprites into screen
@@ -58,6 +64,9 @@ class MainLoop:
         """
         for layer in self.drawing_layers:
             layer.draw(self.surface)
+
+        # Testing
+        self.task01.draw(self.surface)
 
     def handle_events(self):
         """Handle the player's inputs
@@ -94,6 +103,14 @@ class MainLoop:
     def add_up_down_key_handlers(self, obj, key):
         self.keydown_handlers[key].append(obj.handle_key_down)
         self.keyup_handlers[key].append(obj.handle_key_up)
+
+    def reset(self):
+        self.keydown_handlers = defaultdict(list)
+        self.keyup_handlers = defaultdict(list)
+        self.mouse_handlers = []
+        self.event_handlers = []
+        for group in self.drawing_layers:
+            group.empty()
 
     def run(self):
         while self.running:

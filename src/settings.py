@@ -20,9 +20,21 @@ ADULT_ACTOR_SIZE = 32, 32
 # Sprite sheets
 SPRITES_SHEET_SPRITE_SIZE = (48, 48)
 
+# GUI
+# HELLO_BUTTON_POS, HELLO_BUTTON_SIZE = (50, 50), (100, 50)
+# ### Need these to set limit to where the player can move
+PANEL_POS, PANEL_SIZE = (600, 100), (200, 300)
+ACTOR_POS, ACTOR_SIZE = (600, 0), (200, 100)
+EVENT_DESC_POS, EVENT_DES_SIZE = (0, SCREEN_HEIGHT - 200), (SCREEN_WIDTH, 200)
+
+# GLOBAL SUPPLIES
+FOOD_SUPPLY = 100
+WATER_SUPPLY = 100
+
 
 # Level borders
 LB_THICKNESS = 2
+
 
 def flip_y(pos):
     """Convert pymunk physics to pygame coordinates
