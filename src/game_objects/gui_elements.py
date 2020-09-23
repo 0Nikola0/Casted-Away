@@ -83,3 +83,30 @@ class CommandPanel(pygame_gui.elements.UIPanel):
         self.button_n += 1
 
         return button
+
+class Console():
+    """A console you can print lines to, use .println(text) to add a line."""
+    def __init__(self, relative_rect, manager):
+        self.relative_rect = relative_rect
+        self.manager = manager
+        self.text = "Welcome."
+
+        self.text_box = None
+
+        self.__create_text_box(self.text)
+
+    def __create_text_box(self, text):
+        """Replace the old text box with new, this is the way it is done."""
+        if self.text_box:
+            self.text_box.kill()
+
+        self.text_box = pygame_gui.elements.UITextBox(
+            relative_rect=self.relative_rect,
+            html_text=text,
+            manager=self.manager,
+        )
+
+    def println(self, text):
+        """Add a line to the console and recreate the text box."""
+        self.text = text + '<br>' + self.text
+        self.__create_text_box(self.text)

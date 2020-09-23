@@ -41,6 +41,8 @@ class GameScene(Scene):
         self.GUI = GUI()
         self.GUI.create_command_button(
             "Quit", lambda : pygame.event.post(pygame.event.Event(pygame.QUIT)))
+        self.GUI.create_command_button(
+            "Log", lambda : self.GUI.console_println("I am a log."))
 
         # We are using the 'layer' parameter of the LayeredUpdates class which
         # acts the same as a Sprite Group.

@@ -3,7 +3,7 @@ import pygame_gui
 from typing import Callable
 
 from src import settings as s
-from src.game_objects.gui_elements import CallbackButton, BarValue, ActorPanel, CommandPanel
+from src.game_objects.gui_elements import *
 
 
 class GUI(pygame.sprite.Sprite):
@@ -33,11 +33,7 @@ class GUI(pygame.sprite.Sprite):
             starting_layer_height=0
         )
 
-        self.event_description = pygame_gui.elements.UITextBox(
-            relative_rect=pygame.Rect(s.EVENT_DESC_POS, s.EVENT_DES_SIZE),
-            html_text='Event Description goes here',
-            manager=self.manager,
-        )
+        self.console = Console(pygame.Rect(s.EVENT_DESC_POS, s.EVENT_DES_SIZE), self.manager)
 
     def create_command_button(self, text, callback: Callable):
         """Add a button to the command panel and bind a callback to it."""
@@ -50,6 +46,9 @@ class GUI(pygame.sprite.Sprite):
 
         self.all_buttons = []
         self.panel.button_n = 0
+
+    def console_println(self, text):
+        self.console.println(text)
 
     def handle_event(self, event):
         """Handles USEREVENT events for pygame_gui events
