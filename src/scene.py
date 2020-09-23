@@ -11,6 +11,8 @@ from src.main_loop import MainLoop
 import src.settings as s
 from src.events import SWITCH_SCENE
 
+from src.state import State
+
 
 MENU = pygame.event.Event(SWITCH_SCENE, {'scene': 'menu'})
 GAME = pygame.event.Event(SWITCH_SCENE, {'scene': 'game'})
@@ -53,6 +55,8 @@ class GameScene(Scene):
     def __init__(self, *args):
         super().__init__(*args)
 
+        self.state = State()
+
         # Here, for the Quit button, we just post a QUIT event up to MainLoop
         self.GUI = GUI()
         self.GUI.create_command_button(
@@ -68,6 +72,7 @@ class GameScene(Scene):
         self.all.add(ActorAdult((200, 200), s.MAN_SPRITE_SHEETS, self.main_loop.space), layer=1)
         self.all.add(ActorAdult((200, 250), s.MAN_SPRITE_SHEETS, self.main_loop.space), layer=1)
         self.all.add(self.GUI, layer=6)
+        self.all.add(self.state, layer=0) # add state so that it gets updates
         self.main_loop.add_event_handler(self.GUI)
 
         # Stick it in one layer, the LayeredUpdates Group will take care of it
