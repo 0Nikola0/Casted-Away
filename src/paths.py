@@ -37,6 +37,8 @@ MAN_SPRITE_SHEETS = {
     "HURT": os.path.join(ACTOR_MAN_DIRECTORY, "Man_hurt.png"),
     "IDLE": os.path.join(ACTOR_MAN_DIRECTORY, "Man_idle.png"),
     "WALK": os.path.join(ACTOR_MAN_DIRECTORY, "Man_walk.png"),
+    "WALK-L": os.path.join(ACTOR_MAN_DIRECTORY, "Man_walk_l.png"),
+
 }
 
 ACTOR_WOMAN_DIRECTORY = os.path.join(ACTORS_DIRECTORY, "4 Woman")

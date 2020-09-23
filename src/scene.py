@@ -65,8 +65,8 @@ class GameScene(Scene):
         # We are using the 'layer' parameter of the LayeredUpdates class which
         # acts the same as a Sprite Group.
         self.all.add(Background(s.SCREEN_SIZE, s.GRAY), layer=0)
-        self.all.add(ActorAdult((200, 200), s.OLD_MAN_SPRITE_SHEETS, self.main_loop.space), layer=1)
-        self.all.add(ActorAdult((200, 250), s.OLD_MAN_SPRITE_SHEETS, self.main_loop.space), layer=1)
+        self.all.add(ActorAdult((200, 200), s.MAN_SPRITE_SHEETS, self.main_loop.space), layer=1)
+        self.all.add(ActorAdult((200, 250), s.MAN_SPRITE_SHEETS, self.main_loop.space), layer=1)
         self.all.add(self.GUI, layer=6)
         self.main_loop.add_event_handler(self.GUI)
 
