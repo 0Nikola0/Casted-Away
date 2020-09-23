@@ -1,4 +1,5 @@
 import pymunk as pm
+import src.settings as s
 
 
 class LevelBorders:
@@ -10,9 +11,12 @@ class LevelBorders:
         """
         x0, y0 = p0
         x1, y1 = p1
-        pts = [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]
+        pts = [(x0 - d, y0 + d), (x1 + d, y0 + d), (x1 + d, y1 - d), (x0 - d, y1 - d)]
         for i in range(len(pts)):
             segment = pm.Segment(space.static_body, pts[i], pts[(i + 1) % 4], d)
             segment.elasticity = 0
             segment.friction = 1
+
+            segment.collision_type = s.LEVEL_BORDERS_COLLISION_TYPE
+
             space.add(segment)

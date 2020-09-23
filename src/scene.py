@@ -1,8 +1,11 @@
 import pygame
+from pymunk import Vec2d
 
 from src.game_objects.actors import ActorAdult, TestActor
 from src.game_objects.background import Background
+from src.game_objects.floor import TestFloor
 from src.game_objects.gui import GUI
+from src.game_objects.level_borders import LevelBorders
 from src.main_loop import MainLoop
 
 import src.settings as s
@@ -80,9 +83,13 @@ class TestScene(Scene):
         # These groups NOT for draw and update.
         self.background_group = pygame.sprite.Group()
         self.actors_group = pygame.sprite.Group()
+        self.floor_group = pygame.sprite.Group()
         self.GUI_group = pygame.sprite.Group()
         self.__test_actors_group = pygame.sprite.Group()
         self.__test_positions = ((200, 200), (300, 300))
+
+        # Collisions
+        self.level_border_actor_collision = []
 
         self.create_sprites()
         self.create_buttons()
@@ -92,7 +99,7 @@ class TestScene(Scene):
         self.create_map()
         self.create_actors(self.__test_positions)
         self.create_GUI()
-        self.__create_test_actor()
+        # self.__create_test_actor()
 
         self.set_draw_order()
 
@@ -103,7 +110,7 @@ class TestScene(Scene):
         Vice versa for 0 index group – it will be background.
         """
         self.main_loop.drawing_layers[0].add(self.background_group)  # back (skies) layer
-        self.main_loop.drawing_layers[1].add(self.background_group)  # floors layer self.main_loop.drawing_layers[2].add(self.background_group)  # walls layer
+        self.main_loop.drawing_layers[1].add(self.floor_group)  # floors layer self.main_loop.drawing_layers[2].add(self.background_group)  # walls layer
         self.main_loop.drawing_layers[3].add(self.actors_group)  # actors layer
         self.main_loop.drawing_layers[-3].add(self.__test_actors_group)  # main actor (player) layer
         self.main_loop.drawing_layers[-2].add()  # before player (e.g. tree leaves or sheds)
@@ -137,6 +144,15 @@ class TestScene(Scene):
         for x, y in positions:
             actor = ActorAdult((x, y), s.OLD_MAN_SPRITE_SHEETS, self.main_loop.space)
             self.actors_group.add(actor)
+            print(actor.shape.collision_type)
+
+            print(self.level_border_actor_collision)
+            self.level_border_actor_collision.append(
+                self.main_loop.space.add_collision_handler(s.LEVEL_BORDERS_COLLISION_TYPE, actor.shape.collision_type)
+            )
+            self.level_border_actor_collision[-1].data["actor"] = actor  # add ref to actor to collision handler
+            self.level_border_actor_collision[-1].begin = actor.change_direction  # collision handler's func
+            print(self.level_border_actor_collision)
 
     def __create_test_actor(self):
         pos = (230, 250)
@@ -145,4 +161,11 @@ class TestScene(Scene):
         self.main_loop.mouse_handlers.append(__ta.handle_mouse_event)
 
     def create_map(self):
-        pass
+        topleft = 50, 50
+        bottomright = 500, 300
+        f = TestFloor(topleft, bottomright, s.BROWN)
+        self.floor_group.add(f)
+
+        p0 = Vec2d(topleft)
+        p1 = p0 + Vec2d(bottomright)
+        LevelBorders(s.flip_y(p0), s.flip_y(p1), space=self.main_loop.space, d=s.LEVEL_BORDERS_THICKNESS)
