@@ -7,12 +7,14 @@ from src.game_objects.gui import GUI
 from src.main_loop import MainLoop
 import src.settings as s
 
-
 class Game(MainLoop):
+    """Basically a manager for all the Scenes."""
     def __init__(self):
         super(Game, self).__init__(s.CAPTION, s.SCREEN_SIZE, s.FPS, s.NUM_OF_LAYERS)
 
-        self.test_scene = TestScene(self)
+        self.scene = TestScene(self)
+        self.reset()
+        self.scene = GameScene(self)
         # self.reset() # This will clear the scene so another can take it's place
 
     def update(self):
@@ -24,13 +26,37 @@ class Scene():
     def __init__(self, main_loop):
         self.sprites = []
         self.main_loop = main_loop
-        self.all_group = pygame.sprite.LayeredUpdates()
+        self.all = pygame.sprite.LayeredUpdates()
 
     def load(self):
         pass
 
 
+class GameScene(Scene):
+    """The main Game Scene."""
+    def __init__(self, *args):
+        super().__init__(*args)
+
+        # Here, for the Quit button, we just post a QUIT event up to MainLoop
+        self.GUI = GUI()
+        self.GUI.create_command_button(
+            "Quit", lambda : pygame.event.post(pygame.event.Event(pygame.QUIT)))
+
+        # We are using the 'layer' parameter of the LayeredUpdates class which
+        # acts the same as a Sprite Group.
+        self.all.add(Background(s.SCREEN_SIZE, s.GRAY), layer=0)
+        self.all.add(ActorAdult((200, 200), s.OLD_MAN_SPRITE_SHEETS), layer=1)
+        self.all.add(ActorAdult((200, 250), s.OLD_MAN_SPRITE_SHEETS), layer=1)
+        self.all.add(self.GUI, layer=6)
+        self.main_loop.add_event_handler(self.GUI)
+
+        # Stick it in one layer, the LayeredUpdates Group will take care of it
+        # TODO maybe remove the layer code?
+        self.main_loop.drawing_layers[0].add(self.all)
+
+
 class TestScene(Scene):
+    """This scene is used for testing code. Put your hacks and test here."""
     def __init__(self, *args):
         super().__init__(*args)
         self.GUI = None
