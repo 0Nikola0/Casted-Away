@@ -139,7 +139,7 @@ class TestScene(Scene):
             self.actors_group.add(actor)
 
     def __create_test_actor(self):
-        pos = (200, 200)
+        pos = (230, 250)
         __ta = TestActor(pos, s.OLD_MAN_SPRITE_SHEETS, self.main_loop.space)
         self.__test_actors_group.add(__ta)
         self.main_loop.mouse_handlers.append(__ta.handle_mouse_event)

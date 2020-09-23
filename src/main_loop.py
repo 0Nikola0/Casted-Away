@@ -112,6 +112,17 @@ class MainLoop:
         for group in self.drawing_layers:
             group.empty()
 
+        # pymunk reset
+        if self.space.shapes:
+            for s in self.space.shapes:
+                self.space.remove(s)
+        if self.space.bodies:
+            for b in self.space.bodies:
+                self.space.remove(b)
+        if self.space.constraints:
+            for c in self.space.constraints:
+                self.space.remove(c)
+
     def run(self):
         while self.running:
 
