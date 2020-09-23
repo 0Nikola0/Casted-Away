@@ -12,9 +12,13 @@ NUM_OF_LAYERS = 7
 BLACK = pygame.color.THECOLORS["black"]
 WHITE = pygame.color.THECOLORS["white"]
 GRAY = pygame.color.THECOLORS["gray"]
+BROWN = pygame.color.THECOLORS["brown"]
 
 # ACTORS
 ADULT_ACTOR_SIZE = 32, 32
+ADULT_ACTOR_VELOCITY = 30
+
+ADULT_ACTOR_COLLISION_TYPE = 0
 
 # Sprite sheets
 SPRITES_SHEET_SPRITE_SIZE = (48, 48)
@@ -29,3 +33,22 @@ EVENT_DESC_POS, EVENT_DES_SIZE = (0, SCREEN_HEIGHT - 200), (SCREEN_WIDTH, 200)
 # GLOBAL SUPPLIES
 FOOD_SUPPLY = 100
 WATER_SUPPLY = 100
+
+
+# Level borders
+LEVEL_BORDERS_THICKNESS = 2
+LEVEL_BORDERS_COLLISION_TYPE = 1000
+
+
+def flip_y(pos):
+    """Convert pymunk physics to pygame coordinates
+
+    In pymunk positive y is up
+    """
+    # if type(pos) is tuple or type(pos) is list:
+    try:
+        return pos[0], SCREEN_HEIGHT - pos[1]
+    except TypeError:
+        # else:
+        y = pos
+        return SCREEN_HEIGHT - y

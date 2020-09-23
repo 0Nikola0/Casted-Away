@@ -1,4 +1,6 @@
 import pygame
+import pymunk
+import pymunk.pygame_util
 from collections import defaultdict
 
 from src.game_objects.tasks import Task
@@ -33,9 +35,16 @@ class MainLoop:
         self.mouse_handlers = []
         self.event_handlers = []
 
+        # physics stuff
+        self.space = pymunk.Space()
+        self.space.gravity = 0, 0
+
+        # Pymunk test draw
+        self.draw_options = pymunk.pygame_util.DrawOptions(self.surface)
+        self.is_prototyping_mode = False
+
         # Testing for tasks
         self.task01 = Task("Harvest", 1.0, (300, 200), (60, 60))
-
 
     def update(self):
         """Update game state
@@ -103,6 +112,17 @@ class MainLoop:
         for group in self.drawing_layers:
             group.empty()
 
+        # pymunk reset
+        if self.space.shapes:
+            for s in self.space.shapes:
+                self.space.remove(s)
+        if self.space.bodies:
+            for b in self.space.bodies:
+                self.space.remove(b)
+        if self.space.constraints:
+            for c in self.space.constraints:
+                self.space.remove(c)
+
     def run(self):
         while self.running:
 
@@ -110,6 +130,11 @@ class MainLoop:
             self.update()
             self.draw()
 
+            if self.is_prototyping_mode is True:
+                self.space.debug_draw(self.draw_options)
+
             pygame.display.update()
 
             self.time_delta = self.clock.tick(self.frame_rate) / 1000.0
+
+            self.space.step(1 / self.frame_rate)  # pymunk-physics clock.tick

@@ -1,4 +1,5 @@
 import pygame
+import pymunk as pm
 
 from src.main_loop import MainLoop
 from src.scene import Scene, MenuScene, GameScene, TestScene
