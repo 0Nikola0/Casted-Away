@@ -5,6 +5,8 @@ from typing import Callable
 from src import settings as s
 from src.game_objects.gui_elements import *
 
+from src.events import CONSOLE_PRINT
+
 
 class GUI(pygame.sprite.Sprite):
     def __init__(self):
@@ -56,6 +58,8 @@ class GUI(pygame.sprite.Sprite):
         If the event is UI_BUTTON_PRESSED, iterate over all the buttons and
         call the bound function."""
 
+        if event.type == CONSOLE_PRINT:
+            self.console.println(event.text)
         if event.type == pygame.USEREVENT:
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 for button in self.all_buttons:
@@ -69,3 +73,8 @@ class GUI(pygame.sprite.Sprite):
 
         self.image.fill((0, 0, 0, 0))
         self.manager.draw_ui(self.image)
+
+
+def console_print_event(text):
+    """Generate an event for the console to print some text"""
+    pygame.event.post(pygame.event.Event(CONSOLE_PRINT, {'text': text}))
