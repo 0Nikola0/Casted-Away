@@ -17,7 +17,7 @@ GAME = pygame.event.Event(SWITCH_SCENE, {'scene': 'game'})
 TEST = pygame.event.Event(SWITCH_SCENE, {'scene': 'test'})
 
 
-class Scene():
+class Scene:
     """Handle creating, managing, and cleaning up sprites."""
     def __init__(self, main_loop):
         self.sprites = []
@@ -36,16 +36,17 @@ class MenuScene(Scene):
         self.GUI = GUI()
         self.main_loop.add_event_handler(self.GUI)
         self.GUI.create_command_button(
-            "Game Scene", lambda : pygame.event.post(GAME))
+            "Game Scene", lambda: pygame.event.post(GAME))
         self.GUI.create_command_button(
-            "Test Scene", lambda : pygame.event.post(TEST))
+            "Test Scene", lambda: pygame.event.post(TEST))
         self.GUI.create_command_button(
-            "Quit Program", lambda : pygame.event.post(pygame.event.Event(pygame.QUIT)))
+            "Quit Program", lambda: pygame.event.post(pygame.event.Event(pygame.QUIT)))
 
         self.all.add(Background(s.SCREEN_SIZE, s.GRAY), layer=0)
         self.all.add(self.GUI, layer=6)
 
         self.main_loop.drawing_layers[0].add(self.all)
+
 
 class GameScene(Scene):
     """The main Game Scene."""
@@ -55,11 +56,11 @@ class GameScene(Scene):
         # Here, for the Quit button, we just post a QUIT event up to MainLoop
         self.GUI = GUI()
         self.GUI.create_command_button(
-            "Quit to Menu", lambda : pygame.event.post(MENU))
+            "Quit to Menu", lambda: pygame.event.post(MENU))
         self.GUI.create_command_button(
-            "Test Scene", lambda : pygame.event.post(TEST))
+            "Test Scene", lambda: pygame.event.post(TEST))
         self.GUI.create_command_button(
-            "Log", lambda : self.GUI.console_println("I am a log."))
+            "Log", lambda: self.GUI.console_println("I am a log."))
 
         # We are using the 'layer' parameter of the LayeredUpdates class which
         # acts the same as a Sprite Group.
@@ -124,13 +125,13 @@ class TestScene(Scene):
 
     def create_buttons(self):
         self.GUI.create_command_button(
-            "Plant", lambda : print("Pressed Plant"))
+            "Plant", lambda: print("Pressed Plant"))
         self.GUI.create_command_button(
-            "Harvest", lambda : print("Pressed Harvest"))
+            "Harvest", lambda: print("Pressed Harvest"))
         self.GUI.create_command_button(
-            "Rest", lambda : print("Pressed Rest"))
+            "Rest", lambda: print("Pressed Rest"))
         self.GUI.create_command_button(
-            "Quit to Menu", lambda : pygame.event.post(MENU))
+            "Quit to Menu", lambda: pygame.event.post(MENU))
         # We can clear the buttons if necessary e.g. for a New Game menu
         # self.GUI.clear_command_buttons()
 

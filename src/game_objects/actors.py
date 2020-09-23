@@ -48,8 +48,7 @@ class ActorAdult(pygame.sprite.Sprite):
                 self.images_temp.append(sh[x].get_image(i))
             self.images.append(self.images_temp)
         # Just to reference what type self.image should be
-        self.image = sh["IDLE"].get_image(0)
-        pygame.transform.scale(self.image, s.ADULT_ACTOR_SIZE)
+        self.image = sh["IDLE"].get_image(3)
 
         self.rect = self.image.get_rect(topleft=pos)
         self.state = {
@@ -155,7 +154,6 @@ class ActorAdult(pygame.sprite.Sprite):
             if (self.rect.x + self.vel) < s.PANEL_POS[0]:
                 self.current_state = 4
             else:
-                # Changing direction to opposite
                 self.directionx = -1
 
         elif self.directionx == -1:

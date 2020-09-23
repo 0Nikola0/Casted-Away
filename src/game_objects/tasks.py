@@ -15,7 +15,7 @@ class Task(pygame.sprite.Sprite):
         self.rect = pygame.Rect(pos, size)
 
     def draw(self, surface):
-        pygame.draw.rect(surface, s.BLACK, self.rect)
+        pygame.draw.rect(surface, s.BLACK, self.rect, 1)
 
     def do_task(self):
         # Checks which ID the task is assigned and calls the corresponding function

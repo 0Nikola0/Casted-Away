@@ -44,7 +44,7 @@ class MainLoop:
         self.is_prototyping_mode = False
 
         # Testing for tasks
-        self.task01 = Task("Harvest", 1.0, (300, 200), (60, 60))
+        self.task01 = Task(0, 1.0, (300, 200), (60, 60))
 
     def update(self):
         """Update game state
