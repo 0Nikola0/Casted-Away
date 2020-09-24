@@ -80,24 +80,25 @@ class ActorAdult(pygame.sprite.Sprite):
         Actor moves towards the task
         If at task movement stops and actor starts 'doing the task'
         """
-        if self.rect.colliderect(task.rect):
+        pm_task_pos = s.flip_y(task.rect.center)
+        task_delta = pm_task_pos - self.body.position
+        if task_delta.get_length_sqrd() < self.vel ** 2:
             # Stop movement
             self.directionx, self.directiony = 0, 0
             self.current_state = 0
             # Start doing the task
             task.do_task()
         else:
-            if self.rect.x > task.rect.x:
-                self.directionx = -1
-                self.current_state = 5
-            elif self.rect.x < task.rect.x:
+            if pm_task_pos[0] > int(self.body.position.x):
                 self.directionx = 1
-                self.current_state = 4
+            elif pm_task_pos[0] < int(self.body.position.x):
+                self.directionx = -1
             else:
                 self.directionx = 0
-            if self.rect.y > task.rect.y:
+
+            if pm_task_pos[1] < int(self.body.position.y):
                 self.directiony = -1
-            elif self.rect.y < task.rect.y:
+            elif pm_task_pos[1] > int(self.body.position.y):
                 self.directiony = 1
             else:
                 self.directiony = 0
