@@ -11,10 +11,12 @@ from src.graphics import SpriteSheet
 class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
     __ACTORS_IDS = {}
 
-    def __init__(self, pos, sprite_sheets, space):
+    def __init__(self, pos, sprite_sheets, sounds, space):
         self.id = s.get_id(self, ActorAdult.__ACTORS_IDS)
         ActorAdultRigidBody.__init__(self, pos, s.ADULT_ACTOR_SIZE, self.id, space)
         pygame.sprite.Sprite.__init__(self)
+
+        self.sounds = {key: pygame.mixer.Sound(sound) for key, sound in sounds.items()}
 
         self.health, self.food = 100, 100
         self.hungery = 0.2    # How fast the player gets hungry
@@ -138,6 +140,8 @@ class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
         self.food -= self.hungery
 
     def switch_selection(self):
+        if self.selected is False:
+            self.sounds[f"SELECT{randint(1, 2)}"].play()
         self.selected = not self.selected
 
     def update(self, time_delta, *args):

@@ -194,7 +194,7 @@ class TestScene(Scene):
                 self.level_border_actor_collision[-1].begin = actor.change_direction  # collision handler's func
 
         for x, y in positions:
-            actor = ActorAdult((x, y), s.WOMAN_SPRITE_SHEETS, self.main_loop.space)
+            actor = ActorAdult((x, y), s.OLD_MAN_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space)
             add_actors_collisions()
             self.actors_group.add(actor)
 
