@@ -17,9 +17,11 @@ class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
         pygame.sprite.Sprite.__init__(self)
 
         self.sounds = {key: pygame.mixer.Sound(sound) for key, sound in sounds.items()}
+        list(map(lambda sound: sound.set_volume(0.5), self.sounds.values()))  # hungry sounds are too noisy omg
+        self.do_hungry_sound = True
 
         self.health, self.food = 100, 100
-        self.hungery = 0.2    # How fast the player gets hungry
+        self.hungery = 0.2  # How fast the player gets hungry
 
         self.directionx, self.directiony = 0, 0
         self.vel = s.ADULT_ACTOR_VELOCITY
@@ -144,10 +146,21 @@ class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
             self.sounds[f"SELECT{randint(1, 2)}"].play()
         self.selected = not self.selected
 
+    def eat(self, amount):
+        self.sounds["EAT"].play()
+        self.food += amount
+        self.do_hungry_sound = True
+        print(f"Actor.food = {self.food}")
+
     def update(self, time_delta, *args):
         self.time_in_frame += time_delta
 
         self.synchronize_rect_body()
+
+        if self.food < 30:
+            if self.do_hungry_sound is True:
+                self.sounds["HUNGRY"].play()
+                self.do_hungry_sound = False
 
         for state in self.state.values():
             if self.current_state == state:
@@ -169,6 +182,7 @@ class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
 
 class TestActor(ActorAdult):
     """Test actor for physics tests"""
+
     def __init__(self, pos, sprite_sheets, space):
         # physics stuff
         super(TestActor, self).__init__(pos, sprite_sheets, space)

@@ -85,6 +85,8 @@ SOUNDS_ACTOR_OLD_MAN_DIRECTORY = os.path.join(SOUNDS_ACTORS_DIRECTORY, "1 Old_ma
 OLD_MAN_SOUNDS = {
     "SELECT1": os.path.join(SOUNDS_ACTOR_OLD_MAN_DIRECTORY, "select1.wav"),
     "SELECT2": os.path.join(SOUNDS_ACTOR_OLD_MAN_DIRECTORY, "select2.wav"),
+    "HUNGRY": os.path.join(SOUNDS_ACTOR_OLD_MAN_DIRECTORY, "hungry.wav"),
+    "EAT": os.path.join(SOUNDS_ACTOR_OLD_MAN_DIRECTORY, "eat.wav"),
 }
 
 # GUI

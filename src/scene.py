@@ -27,10 +27,30 @@ class Scene:
         self.all = pygame.sprite.LayeredUpdates()
         self.selected_actor = pygame.sprite.GroupSingle()
 
+        self.shortcuts = s.SHORTCUTS
+
         self.main_loop.mouse_handlers.append(self.handle_mouse_event)
+        for key in self.shortcuts.values():
+            self.main_loop.add_up_down_key_handlers(self, key)
 
     def load(self):
         pass
+
+    def feed_selected_actor(self):
+        pass
+
+    def handle_key_down(self, key):
+        pass
+
+    def handle_key_up(self, key):
+        if key == self.shortcuts["FEED_SELECTED_ACTOR"]:
+            if self.selected_actor.sprite is not None:
+                if s.FOOD_SUPPLY > 15:
+                    self.selected_actor.sprite.eat(15)
+                    s.FOOD_SUPPLY -= 15
+                    print(f"FOOD_SUPPLY = {s.FOOD_SUPPLY}")
+                else:
+                    print("Need more food!")
 
     def handle_mouse_event(self, ev, pos):
         if ev == pygame.MOUSEMOTION:
@@ -103,10 +123,10 @@ class GameScene(Scene):
         # We are using the 'layer' parameter of the LayeredUpdates class which
         # acts the same as a Sprite Group.
         self.all.add(Background(s.SCREEN_SIZE, s.GRAY), layer=0)
-        self.all.add(ActorAdult((200, 200), s.BOY_SPRITE_SHEETS, self.main_loop.space), layer=1)
-        self.all.add(ActorAdult((200, 250), s.GIRL_SPRITE_SHEETS, self.main_loop.space), layer=1)
+        self.all.add(ActorAdult((200, 200), s.BOY_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space), layer=1)
+        self.all.add(ActorAdult((200, 250), s.GIRL_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space), layer=1)
         self.all.add(self.GUI, layer=6)
-        self.all.add(self.state, layer=0) # add state so that it gets updates
+        self.all.add(self.state, layer=0)  # add state so that it gets updates
         self.main_loop.add_event_handler(self.GUI)
 
         # Stick it in one layer, the LayeredUpdates Group will take care of it

@@ -36,6 +36,10 @@ WATER_SUPPLY = 100
 # Level borders
 LEVEL_BORDERS_THICKNESS = 2
 
+SHORTCUTS = {
+    "FEED_SELECTED_ACTOR": pygame.K_f,
+}
+
 # IDs.
 ALL_ID = {}
 
