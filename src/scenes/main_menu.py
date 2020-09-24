@@ -6,7 +6,6 @@ screen = pygame.display.set_mode(s.SCREEN_SIZE)
 FONT = pygame.font.SysFont("Mono", 32, bold=True)
 
 IMGS_PATH = "../../assets/imgs/menu/"
-print(pygame.font.get_fonts())
 
 
 class Background(pygame.sprite.Sprite):
