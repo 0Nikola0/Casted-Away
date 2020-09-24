@@ -14,6 +14,7 @@ BLACK = pygame.color.THECOLORS["black"]
 WHITE = pygame.color.THECOLORS["white"]
 GRAY = pygame.color.THECOLORS["gray"]
 BROWN = pygame.color.THECOLORS["brown"]
+GREEN = pygame.color.THECOLORS["green"]
 
 # ACTORS
 ADULT_ACTOR_SIZE = 32, 32

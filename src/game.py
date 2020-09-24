@@ -1,6 +1,7 @@
 import pygame
 import pymunk as pm
 
+from src.game_objects.selection_box import SelectionBox
 from src.main_loop import MainLoop
 from src.scene import Scene, MenuScene, GameScene, TestScene
 from src.events import SWITCH_SCENE
@@ -36,6 +37,9 @@ class Game(MainLoop):
 
     def update(self):
         super(Game, self).update()
+
+        if self.scene.selected_actor.sprite is not None:
+            pass
 
     @staticmethod
     def take_object_by_id(id_):

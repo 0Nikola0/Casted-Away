@@ -6,6 +6,7 @@ from src.game_objects.background import Background
 from src.game_objects.floor import TestFloor
 from src.game_objects.gui import GUI
 from src.game_objects.level_borders import LevelBorders
+from src.game_objects.selection_box import SelectionBox
 from src.main_loop import MainLoop
 
 import src.settings as s
@@ -145,6 +146,7 @@ class TestScene(Scene):
         self.actors_group = pygame.sprite.Group()
         self.floor_group = pygame.sprite.Group()
         self.GUI_group = pygame.sprite.Group()
+        self.selection_box = pygame.sprite.GroupSingle()
         self.__test_positions = ((200, 200), (300, 300))
 
         # Not sprite groups
@@ -162,6 +164,9 @@ class TestScene(Scene):
         self.create_actors(self.__test_positions)
         self.create_GUI()
 
+        selection_box = SelectionBox(self.actors_group.sprites()[0].rect, s.GREEN)
+        self.selection_box.add(selection_box)
+
         self.set_draw_order()
 
     def set_draw_order(self):
@@ -175,7 +180,7 @@ class TestScene(Scene):
         self.main_loop.drawing_layers[2].add()  # walls layer
         self.main_loop.drawing_layers[3].add(self.actors_group)  # actors layer
         self.main_loop.drawing_layers[-3].add()  # main actor (player) layer
-        self.main_loop.drawing_layers[-2].add()  # before player (e.g. tree leaves or sheds)
+        self.main_loop.drawing_layers[-2].add(self.selection_box)  # before player (e.g. tree leaves or sheds)
         self.main_loop.drawing_layers[-1].add(self.GUI_group)  # gui layer
 
     def create_GUI(self):
