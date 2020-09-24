@@ -76,7 +76,7 @@ class GameScene(Scene):
         self.main_loop.add_event_handler(self.GUI)
 
         # Stick it in one layer, the LayeredUpdates Group will take care of it
-        # TODO maybe remove the layer code?
+        # TODO maybe remove the layer code? Good idea
         self.main_loop.drawing_layers[0].add(self.all)
 
 

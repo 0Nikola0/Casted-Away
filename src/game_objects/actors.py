@@ -89,17 +89,34 @@ class ActorAdult(pygame.sprite.Sprite):
             # Start doing the task
             task.do_task()
         else:
+            # TODO: Kind of dirty. Maybe rewrite later.
+            to_close_for_move = 2
+            fix_num = 5
+            # x
             if pm_task_pos[0] > int(self.body.position.x):
                 self.directionx = 1
+
+                if task_delta[0] < to_close_for_move:
+                    self.directionx //= fix_num
             elif pm_task_pos[0] < int(self.body.position.x):
                 self.directionx = -1
+
+                if task_delta[0] < to_close_for_move:
+                    self.directionx //= fix_num
             else:
                 self.directionx = 0
 
+            # y
             if pm_task_pos[1] < int(self.body.position.y):
                 self.directiony = -1
+
+                if task_delta[1] < to_close_for_move:
+                    self.directionx //= fix_num
             elif pm_task_pos[1] > int(self.body.position.y):
                 self.directiony = 1
+
+                if task_delta[1] < to_close_for_move:
+                    self.directionx //= fix_num
             else:
                 self.directiony = 0
 
