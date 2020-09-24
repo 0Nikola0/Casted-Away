@@ -51,9 +51,7 @@ def get_id(ids):
             ALL_ID.add(new_id)
             ids.add(new_id)
             return new_id
-    else:
-        assert True is False and False is True, "Universe in danger! How it even possible? " \
-                                                "Do we have more than 10000000 objects?"
+    raise Exception("Universe in danger! How it even possible? Do we have more than 10000000 objects?")
 
 
 def unbind_id(id_, ids):
