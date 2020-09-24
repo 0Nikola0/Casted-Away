@@ -40,38 +40,36 @@ class ActorAdult(pygame.sprite.Sprite):
         self.health, self.food = 100, 100
         self.hungery = 0.2    # How fast the player gets hungry
 
-        sh = {key: SpriteSheet(value) for key, value in sprite_sheets.items()}
-        self.images = []
-        for x in sh:
-            self.images_temp = []
-            for i in range(4):
-                self.images_temp.append(sh[x].get_image(i))
-            self.images.append(self.images_temp)
-        # Just to reference what type self.image should be
-        self.image = sh["IDLE"].get_image(3)
+        self.directionx, self.directiony = 0, 0
+        self.vel = s.ADULT_ACTOR_VELOCITY
 
+        self.target_position = None
+
+        # self.image, self.rect, and animation
+        shs = {key: SpriteSheet(value) for key, value in sprite_sheets.items()}
+        animation_length = 4
+        # self.images = [[shs[sh].get_image(i) for i in range(4)] for sh in shs] could replace double for loop
+        self.animation_sets = []
+        for sh in shs:
+            image_set = []
+            for i in range(animation_length):
+                image_set.append(shs[sh].get_image(i))
+            self.animation_sets.append(image_set)
+
+        self.state = {state_name: i for i, state_name in enumerate(shs)}
+        # "HURT" is only 2 frames not 4 like the others, might create problems
+
+        self.current_state = self.state["IDLE"]
+        self.current_frame = 0
+
+        self.image = self.animation_sets[self.current_state][self.current_frame]
         self.rect = self.image.get_rect(topleft=pos)
-        self.state = {
-            "ATTACK": 0,    # We can use attack when harvesting crops
-            "DEATH": 1,
-            "HURT": 2,      # This is only 2 frames not 4 like the others, might create problems
-            "IDLE": 3,
-            "WALK": 4,
-            "WALK-L": 5
-        }
-        self.current_state = 3
-        self.anim_type = 0
+
         self.anim_delay = 0.2
         self.time_in_frame = 0.0
 
-        self.directionx, self.directiony = 0, 0
-        # self.vel = 5
-        self.vel = s.ADULT_ACTOR_VELOCITY
-
         self.time_to_change_dir = 0.0
         self.dir_delay = 0.5
-
-        self.target_position = None
 
     def synchronize_rect_body(self):
         """Synchronizes player rect with pymunk player shape"""
@@ -174,14 +172,14 @@ class ActorAdult(pygame.sprite.Sprite):
 
         for state in self.state.values():
             if self.current_state == state:
-                self.image = self.images[self.current_state][self.anim_type]
+                self.image = self.animation_sets[self.current_state][self.current_frame]
                 if self.time_in_frame > self.anim_delay:
                     # Actor moves by himself
                     self.update_directions(time_delta)
 
                     # self.do_task(args[0])
 
-                    self.anim_type = (self.anim_type + 1) if self.anim_type < 3 else 0
+                    self.current_frame = (self.current_frame + 1) if self.current_frame < 3 else 0
                     self.time_in_frame = 0
 
     def change_direction(self, arbiter, space, data):
