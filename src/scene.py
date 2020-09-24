@@ -94,7 +94,7 @@ class TestScene(Scene):
         self.__test_positions = ((200, 200), (300, 300))
 
         # Not sprite groups
-        self.level_borders_ids = set()
+        self.level_borders_ids = {}
 
         # Collisions
         self.level_border_actor_collision = []
@@ -151,7 +151,7 @@ class TestScene(Scene):
     def create_actors(self, positions):
         def add_actors_collisions():
             """Code block for all actors collisions"""
-            for lb_id in self.level_borders_ids:
+            for lb_id in self.level_borders_ids.keys():
                 self.level_border_actor_collision.append(self.main_loop.space.add_collision_handler(
                         lb_id,  # level border id
                         actor.shape.collision_type,  # current actor id

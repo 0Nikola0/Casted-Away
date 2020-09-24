@@ -3,7 +3,7 @@ import src.settings as s
 
 
 class LevelBorders:
-    __LEVEL_BORDERS_IDS = set()
+    __LEVEL_BORDERS_IDS = {}
 
     def __init__(self, p0, p1, /, space, d):
         self.segments = []
@@ -16,7 +16,7 @@ class LevelBorders:
             segment.elasticity = 0
             segment.friction = 1
 
-            segment.collision_type = s.get_id(LevelBorders.__LEVEL_BORDERS_IDS)
+            segment.collision_type = s.get_id(self, LevelBorders.__LEVEL_BORDERS_IDS)
 
             space.add(segment)
             self.segments.append(segment)

@@ -9,10 +9,11 @@ from src.graphics import SpriteSheet
 
 
 class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
-    __ACTORS_IDS = set()
+    __ACTORS_IDS = {}
 
     def __init__(self, pos, sprite_sheets, space):
-        ActorAdultRigidBody.__init__(self, pos, s.ADULT_ACTOR_SIZE, s.get_id(ActorAdult.__ACTORS_IDS), space)
+        self.id = s.get_id(self, ActorAdult.__ACTORS_IDS)
+        ActorAdultRigidBody.__init__(self, pos, s.ADULT_ACTOR_SIZE, self.id, space)
         pygame.sprite.Sprite.__init__(self)
 
         self.health, self.food = 100, 100

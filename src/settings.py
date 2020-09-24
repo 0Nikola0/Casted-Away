@@ -37,21 +37,26 @@ WATER_SUPPLY = 100
 LEVEL_BORDERS_THICKNESS = 2
 
 # IDs.
-ALL_ID = set()
+ALL_ID = {}
 
 
-def get_id(ids):
+def get_id(object_, ids):
     """Returns unique integer
 
     Currently used for pymunk collisions.
+    :type object_: reference to object that called method
     :type ids: set of IDs of class that called method
     """
     for new_id in range(10000000):  # infinity number
         if new_id not in ALL_ID:
-            ALL_ID.add(new_id)
-            ids.add(new_id)
+            ALL_ID[new_id] = object_
+            ids[new_id] = object_
             return new_id
-    raise Exception("Universe in danger! How it even possible? Do we have more than 10000000 objects?")
+    raise Exception(
+        """
+        Universe in danger! How it even possible? 
+        Perhaps you created to many objects or did to many main_loop resets!
+        """)
 
 
 def unbind_id(id_, ids):
@@ -62,8 +67,8 @@ def unbind_id(id_, ids):
     :type ids: set of IDs of class that called method
     """
     assert id_ in ALL_ID, "This method needs to be called only in sprite class kill() method "
-    ALL_ID.remove(id_)
-    ids.remove(id_)
+    del ALL_ID[id_]
+    del ids[id_]
 
 
 def flip_y(pos):
