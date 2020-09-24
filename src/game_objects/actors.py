@@ -1,41 +1,21 @@
 from random import randint, uniform
 
 import pygame
-import pymunk as pm
 from pymunk import Vec2d
 
 import src.settings as s
+from src.game_objects.pymunk_bodies import ActorAdultRigidBody
 from src.graphics import SpriteSheet
 
 
-class ActorAdult(pygame.sprite.Sprite):
+class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
     __ACTOR_ID = s.ADULT_ACTOR_COLLISION_TYPE
     assert __ACTOR_ID < 1000, "Invalid actor id. " \
                               "Perhaps you added too much objects or did too much Scene reset() calls."
 
     def __init__(self, pos, sprite_sheets, space):
-        # pymunk stuff
-        self.body = pm.Body(mass=1, moment=pm.inf, body_type=pm.Body.DYNAMIC)
-        self.control_body = pm.Body(body_type=pm.Body.KINEMATIC)
-
-        pm_x, pm_y = s.flip_y(pos)
-        pm_size_x, pm_size_y = s.ADULT_ACTOR_SIZE
-
-        self.body.position = pm_x + pm_size_x // 2, pm_y - pm_size_y // 2  # body.position == rect.center
-        self.control_body.position = self.body.position
-
-        self.shape = pm.Poly.create_box(self.body, s.ADULT_ACTOR_SIZE)
-
-        self.shape.collision_type = ActorAdult.get_id()  # for collisions
-
-        self.pivot = pm.PivotJoint(self.control_body, self.body, (0, 0), (0, 0))
-        self.pivot.max_bias = 0  # disable joint correction
-        self.pivot.max_force = 1000  # Emulate linear friction
-
-        space.add(self.control_body, self.body, self.shape, self.pivot)
-
-        # pygame stuff
-        super(ActorAdult, self).__init__()
+        ActorAdultRigidBody.__init__(self, pos, s.ADULT_ACTOR_SIZE, ActorAdult.get_id(), space)
+        pygame.sprite.Sprite.__init__(self)
 
         self.health, self.food = 100, 100
         self.hungery = 0.2    # How fast the player gets hungry
@@ -172,20 +152,6 @@ class ActorAdult(pygame.sprite.Sprite):
 
                     self.current_frame = (self.current_frame + 1) if self.current_frame < 3 else 0
                     self.time_in_frame = 0
-
-    def change_direction(self, arbiter, space, data):
-        """Change self directions and velocity to opposite ones
-
-        Function what called by pymunk collision handler.
-        Basically it's a static method but placed here for code
-        grouping (actors collisions are built-in actors class).
-        """
-        assert data["actor"] is self, "Collision error. Collision data and self aren't match!"
-
-        data["actor"].directionx = -data["actor"].directionx
-        data["actor"].directiony = -data["actor"].directiony
-        data["actor"].control_body.velocity = -data["actor"].control_body.velocity
-        return True
 
     @staticmethod
     def get_id():
