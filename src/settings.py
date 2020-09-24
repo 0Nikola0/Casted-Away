@@ -1,6 +1,7 @@
 import pygame
 from src.paths import *
 
+# General
 CAPTION = "Castaway"
 FPS = 60
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT) = (800, 600)
@@ -18,8 +19,6 @@ BROWN = pygame.color.THECOLORS["brown"]
 ADULT_ACTOR_SIZE = 32, 32
 ADULT_ACTOR_VELOCITY = 30
 
-ADULT_ACTOR_COLLISION_TYPE = 0
-
 # Sprite sheets
 SPRITES_SHEET_SPRITE_SIZE = (48, 48)
 
@@ -34,10 +33,39 @@ EVENT_DESC_POS, EVENT_DES_SIZE = (0, SCREEN_HEIGHT - 200), (SCREEN_WIDTH, 200)
 FOOD_SUPPLY = 100
 WATER_SUPPLY = 100
 
-
 # Level borders
 LEVEL_BORDERS_THICKNESS = 2
-LEVEL_BORDERS_COLLISION_TYPE = 1000
+
+# IDs.
+ALL_ID = set()
+
+
+def get_id(ids):
+    """Returns unique integer
+
+    Currently used for pymunk collisions.
+    :type ids: set of IDs of class that called method
+    """
+    for new_id in range(10000000):  # infinity number
+        if new_id not in ALL_ID:
+            ALL_ID.add(new_id)
+            ids.add(new_id)
+            return new_id
+    else:
+        assert True is False and False is True, "Universe in danger! How it even possible? " \
+                                                "Do we have more than 10000000 objects?"
+
+
+def unbind_id(id_, ids):
+    """Remove id from all sets
+
+    This method needs to be called only in sprite class kill() method
+    :type id_: unique int
+    :type ids: set of IDs of class that called method
+    """
+    assert id_ in ALL_ID, "This method needs to be called only in sprite class kill() method "
+    ALL_ID.remove(id_)
+    ids.remove(id_)
 
 
 def flip_y(pos):

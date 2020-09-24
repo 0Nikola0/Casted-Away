@@ -94,6 +94,9 @@ class TestScene(Scene):
         self.__test_actors_group = pygame.sprite.Group()
         self.__test_positions = ((200, 200), (300, 300))
 
+        # Not sprite groups
+        self.level_borders = []
+
         # Collisions
         self.level_border_actor_collision = []
 
@@ -150,11 +153,14 @@ class TestScene(Scene):
     def create_actors(self, positions):
         def add_actors_collisions():
             """Code block for all actors collisions"""
-            self.level_border_actor_collision.append(
-                self.main_loop.space.add_collision_handler(s.LEVEL_BORDERS_COLLISION_TYPE, actor.shape.collision_type)
-            )  # add collision handler
-            self.level_border_actor_collision[-1].data["actor"] = actor  # add ref to actor to collision handler
-            self.level_border_actor_collision[-1].begin = actor.change_direction  # collision handler's func
+            lb_ids = list(map(lambda id_: id_.collision_type, *self.level_borders))  # ids of level borders
+            for lb_id in lb_ids:
+                self.level_border_actor_collision.append(self.main_loop.space.add_collision_handler(
+                        lb_id,  # level border id
+                        actor.shape.collision_type,  # current actor id
+                    ))  # add collision handler
+                self.level_border_actor_collision[-1].data["actor"] = actor  # add ref to actor to collision handler
+                self.level_border_actor_collision[-1].begin = actor.change_direction  # collision handler's func
 
         for x, y in positions:
             actor = ActorAdult((x, y), s.WOMAN_SPRITE_SHEETS, self.main_loop.space)
@@ -175,4 +181,8 @@ class TestScene(Scene):
 
         p0 = Vec2d(topleft)
         p1 = p0 + Vec2d(bottomright)
-        LevelBorders(s.flip_y(p0), s.flip_y(p1), space=self.main_loop.space, d=s.LEVEL_BORDERS_THICKNESS)
+        self.level_borders.append(LevelBorders(
+            s.flip_y(p0),
+            s.flip_y(p1),
+            space=self.main_loop.space,
+            d=s.LEVEL_BORDERS_THICKNESS).get_segments)

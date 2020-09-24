@@ -9,12 +9,10 @@ from src.graphics import SpriteSheet
 
 
 class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
-    __ACTOR_ID = s.ADULT_ACTOR_COLLISION_TYPE
-    assert __ACTOR_ID < 1000, "Invalid actor id. " \
-                              "Perhaps you added too much objects or did too much Scene reset() calls."
+    __ACTORS_IDS = set()
 
     def __init__(self, pos, sprite_sheets, space):
-        ActorAdultRigidBody.__init__(self, pos, s.ADULT_ACTOR_SIZE, ActorAdult.get_id(), space)
+        ActorAdultRigidBody.__init__(self, pos, s.ADULT_ACTOR_SIZE, s.get_id(ActorAdult.__ACTORS_IDS), space)
         pygame.sprite.Sprite.__init__(self)
 
         self.health, self.food = 100, 100
@@ -153,13 +151,10 @@ class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
                     self.current_frame = (self.current_frame + 1) if self.current_frame < 3 else 0
                     self.time_in_frame = 0
 
-    @staticmethod
-    def get_id():
-        # TODO: We have a limit in 100 IDs. Killed actors also occupy IDы although they no longer need them or even
-        #  Scene resets devour free IDs. Needs to fix later, but for testing it's ok
-        new_id = ActorAdult.__ACTOR_ID
-        ActorAdult.__ACTOR_ID += 1
-        return new_id
+    def kill(self):
+        s.unbind_id(self.shape.collision_type, ActorAdult.__ACTORS_IDS)
+        print(f"ID[{self.shape.collision_type}] was unbind")
+        pygame.sprite.Sprite.kill(self)
 
 
 class TestActor(ActorAdult):
