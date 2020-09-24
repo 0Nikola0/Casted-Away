@@ -223,6 +223,11 @@ class TestScene(Scene):
 
         for x, y in positions:
             actor = ActorAdult((x, y), s.OLD_MAN_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space)
+
+            # For testing death, can be removed
+            actor.food = 10
+            actor.health = 10
+
             add_actors_collisions()
             self.actors_group.add(actor)
 

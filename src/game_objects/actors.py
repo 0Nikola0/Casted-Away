@@ -6,6 +6,7 @@ from pymunk import Vec2d
 import src.settings as s
 from src.game_objects.pymunk_bodies import ActorAdultRigidBody
 from src.graphics import SpriteSheet
+from src.game_objects.gui import console_print_event
 
 
 class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
@@ -23,6 +24,7 @@ class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
         self.name = name or "Actor ID: " + str(self.id)
         self.health, self.food = 100, 100
         self.hungery = 0.2  # How fast the player gets hungry
+        self.hunger_damage_rate = 0.1
 
         self.directionx, self.directiony = 0, 0
         self.vel = s.ADULT_ACTOR_VELOCITY
@@ -141,6 +143,10 @@ class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
 
     def get_hungry(self):
         self.food -= self.hungery
+        self.food = max(0, self.food)
+
+    def starve(self):
+        self.health -= self.hunger_damage_rate
 
     def switch_selection(self):
         if self.selected is False:
@@ -162,6 +168,14 @@ class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
             if self.do_hungry_sound is True:
                 self.sounds["HUNGRY"].play()
                 self.do_hungry_sound = False
+
+        if self.food <= 0:
+            self.starve()
+
+        if self.health <= 0:
+            console_print_event(f"{self.name} has died!")
+            # TODO put dying code here, we must clean up pymunk maybe?
+            self.kill()
 
         for state in self.state.values():
             if self.current_state == state:
