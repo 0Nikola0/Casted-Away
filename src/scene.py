@@ -115,20 +115,19 @@ class GameScene(Scene):
 
         self.state = State()
 
-        # Here, for the Quit button, we just post a QUIT event up to MainLoop
         self.GUI = GUI()
         self.GUI.create_command_button(
             "Quit to Menu", lambda: pygame.event.post(MENU))
         self.GUI.create_command_button(
             "Test Scene", lambda: pygame.event.post(TEST))
-        self.GUI.create_command_button(
-            "Log", lambda: self.GUI.console_println("I am a log."))
 
         # We are using the 'layer' parameter of the LayeredUpdates class which
         # acts the same as a Sprite Group.
         self.all.add(Background(s.SCREEN_SIZE, s.GRAY), layer=0)
-        self.all.add(ActorAdult((200, 200), s.BOY_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space), layer=1)
-        self.all.add(ActorAdult((200, 250), s.GIRL_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space), layer=1)
+        self.all.add(ActorAdult((200, 200), s.BOY_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space,
+                                name="Jimmy", health=5, food=5), layer=1)
+        self.all.add(ActorAdult((200, 250), s.GIRL_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space,
+                                name="Sally"), layer=1)
         self.all.add(self.GUI, layer=6)
         self.all.add(self.state, layer=0)  # add state so that it gets updates
         self.main_loop.add_event_handler(self.GUI)
