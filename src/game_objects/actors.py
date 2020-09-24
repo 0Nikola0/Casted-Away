@@ -115,55 +115,28 @@ class ActorAdult(pygame.sprite.Sprite):
             # So they walk random distances
             self.dir_delay = uniform(0.05, 0.5)
 
-            self.directionx = randint(-2, 1)
-            self.directiony = randint(-2, 1)
+            self.directionx = randint(-1, 1)
+            self.directiony = randint(-1, 1)
             self.time_to_change_dir = 0.0
 
         self.move()
 
     def move(self):
+        self.control_body.velocity = Vec2d(self.vel * self.directionx, self.vel * self.directiony)
 
-        dv = Vec2d(self.vel * self.directionx, self.vel * self.directiony)
-        self.control_body.velocity = self.body.rotation_vector.cpvrotate(dv)  # actual moving
-
-        if self.directiony == 1:
-            # Actor food gets lower if he moves
-            self.food -= self.hungery
-            if (self.rect.y + self.vel) < s.EVENT_DESC_POS[1]:
-                self.current_state = 4
-            else:
-                # Change direction
-                self.directiony = -1
-
-        elif self.directiony == -1:
-            self.food -= self.hungery
-            if (self.rect.y - self.vel) > 0:
-                self.current_state = 4
-            else:
-                self.directiony = 1
-
-        else:
-            self.directiony = 0
+        if self.directionx == 0 and self.directiony == 0:
             self.current_state = 3
-
-        if self.directionx == 1:
-            self.food -= self.hungery
-            # If it doesnt go out of the screen
-            if (self.rect.x + self.vel) < s.PANEL_POS[0]:
-                self.current_state = 4
-            else:
-                self.directionx = -1
-
-        elif self.directionx == -1:
-            self.food -= self.hungery
-            if (self.rect.x - self.vel) > 0:
-                self.current_state = 5
-            else:
-                self.directionx = 1
-
         else:
-            self.directionx = 0
-            self.current_state = 4 if (self.directiony == 1) or (self.directiony == -1) else 3
+            self.current_state = 4 if self.directionx == 1 else 5
+
+        if self.directiony != 0:
+            self.get_hungry()
+
+        if self.directionx != 0:
+            self.get_hungry()
+
+    def get_hungry(self):
+        self.food -= self.hungery
 
     def update(self, time_delta, *args):
         self.time_in_frame += time_delta
