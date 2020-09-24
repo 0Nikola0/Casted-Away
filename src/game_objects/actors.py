@@ -1,7 +1,7 @@
 from random import randint, uniform
 
 import pygame
-from pymunk import Vec2d
+from pymunk.vec2d import Vec2d
 
 import src.settings as s
 from src.game_objects.pymunk_bodies import ActorAdultRigidBody
