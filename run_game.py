@@ -8,7 +8,15 @@ if sys.version_info < (3, 8):
 
 try:
     from src.game import Game
-    Game().run()
+    from src.scenes.main_menu import MainMenu
+
+    # Let MainMenu make a selection then handle it
+    selection = MainMenu().run()
+
+    if selection == 'play':
+        Game().run()
+    else:
+        pass # just run off the end for now
 
 except ImportError:
     import traceback

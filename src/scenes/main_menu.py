@@ -1,11 +1,9 @@
 import pygame
+import os
 from src import settings as s
 
-pygame.init()
-screen = pygame.display.set_mode(s.SCREEN_SIZE)
-FONT = pygame.font.SysFont("Mono", 32, bold=True)
 
-IMGS_PATH = "../../assets/imgs/menu/"
+IMGS_PATH = os.path.join("assets", "imgs", "menu", "")
 
 
 class Background(pygame.sprite.Sprite):
@@ -20,19 +18,21 @@ class Background(pygame.sprite.Sprite):
         self.image_rect = self.image.get_rect()
         self.image_rect.topleft = (0, 0)
 
-    def draw(self):
-        screen.blit(self.image, self.image_rect)
-        screen.blit(self.logo, self.logo_rect)
+    def draw(self, surface):
+        surface.blit(self.image, self.image_rect)
+        surface.blit(self.logo, self.logo_rect)
 
 
 class Button(pygame.sprite.Sprite):
-    def __init__(self, name, pos, size):
+    def __init__(self, name, pos, size, font, callback=None):
         super(Button, self).__init__()
 
+        self.font = font
         self.pos = pos
+        self.callback = callback
 
         self.name = name
-        self.surface_text = FONT.render(self.name, True, s.WHITE)
+        self.surface_text = font.render(self.name, True, s.WHITE)
         self.text_rect = self.surface_text.get_rect()
         self.text_rect.center = round(self.pos[0]), round(self.pos[1])
 
@@ -56,44 +56,61 @@ class Button(pygame.sprite.Sprite):
             self.image = self.image_clicked
             # Functionality here
             print(f"Clicked {self.name}")
+            if self.callback:
+                self.callback()
         else:
             self.image = self.image_inactive
 
-    def draw(self):
+    def draw(self, surface):
         self.rect = self.image.get_rect()
         self.rect.center = round(self.pos[0]), round(self.pos[1])
-        screen.blit(self.image, self.rect)
-        screen.blit(self.surface_text, self.text_rect)
+        surface.blit(self.image, self.rect)
+        surface.blit(self.surface_text, self.text_rect)
 
 
-def main():
-    background = Background()
-    posx, posy = 150, s.SCREEN_HEIGHT / 2
-    buttons = [
-        Button("Play", pos=(posx, posy + 240), size=(200, 80)),
-        Button("Help", pos=(s.SCREEN_WIDTH / 2, posy + 240), size=(200, 80)),
-        Button("About", pos=(s.SCREEN_WIDTH - posx, posy + 240), size=(200, 80)),
-    ]
-    while True:
-        for ev in pygame.event.get():
-            if ev.type == pygame.QUIT:
-                return False
+class MainMenu():
+    def run(self):
+        pygame.init()
+        screen = pygame.display.set_mode(s.SCREEN_SIZE)
+        font = pygame.font.SysFont("Mono", 32, bold=True)
+        background = Background()
+        posx, posy = 150, s.SCREEN_HEIGHT / 2
 
-        mouse_pos = pygame.mouse.get_pos()
-        mouse_pressed = pygame.mouse.get_pressed()
+        self.selection = None
 
-        for button in buttons:
-            button.on_hover(mouse_pos)
+        buttons = [
+            Button("Play", pos=(posx, posy + 240), size=(200, 80), font=font,
+                   callback=lambda : self.select('play')),
+            Button("Help", pos=(s.SCREEN_WIDTH / 2, posy + 240), size=(200, 80), font=font),
+            Button("About", pos=(s.SCREEN_WIDTH - posx, posy + 240), size=(200, 80), font=font),
+        ]
 
-        for button in buttons:
-            if mouse_pressed[0]:    # If left click
-                button.on_click(mouse_pos)
+        self.clock = pygame.time.Clock()
+        while True:
+            self.clock.tick(s.FPS)
 
-        background.draw()
-        for button in buttons:
-            button.draw()
-        pygame.display.flip()
+            # If something is selected, handle it here
+            if self.selection == 'play':
+                return self.selection
 
+            for ev in pygame.event.get():
+                if ev.type == pygame.QUIT:
+                    return False
 
-if __name__ == "__main__":
-    main()
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+
+            for button in buttons:
+                button.on_hover(mouse_pos)
+
+            for button in buttons:
+                if mouse_pressed[0]:    # If left click
+                    button.on_click(mouse_pos)
+
+            background.draw(screen)
+            for button in buttons:
+                button.draw(screen)
+            pygame.display.flip()
+
+    def select(self, selection):
+        self.selection = selection
