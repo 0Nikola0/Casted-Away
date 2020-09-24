@@ -25,8 +25,42 @@ class Scene:
         self.sprites = []
         self.main_loop = main_loop
         self.all = pygame.sprite.LayeredUpdates()
+        self.selected_actor = pygame.sprite.GroupSingle()
+
+        self.main_loop.mouse_handlers.append(self.handle_mouse_event)
 
     def load(self):
+        pass
+
+    def handle_mouse_event(self, ev, pos):
+        if ev == pygame.MOUSEMOTION:
+            self.handle_mouse_move(pos)
+        elif ev == pygame.MOUSEBUTTONDOWN:
+            self.handle_mouse_down(pos)
+        elif ev == pygame.MOUSEBUTTONUP:
+            self.handle_mouse_up(pos)
+
+    def handle_mouse_move(self, pos):
+        pass
+
+    def handle_mouse_down(self, pos):
+        pos = s.flip_y(pos)
+        for shape in self.main_loop.space.shapes:
+            dist, info = shape.point_query(pos)
+            if dist < 0:
+                clicked_object = self.main_loop.take_object_by_id(shape.collision_type)
+                if isinstance(clicked_object, ActorAdult):
+                    actor = clicked_object
+                    if len(self.selected_actor) == 0:
+                        print(f"Actor with ID[{actor.id}] was selected")
+                        actor.switch_selection()
+                        self.selected_actor.add(actor)
+                    elif self.selected_actor.sprite == actor:
+                        print(f"Actor with ID[{actor.id}] was unselected")
+                        self.selected_actor.sprite.switch_selection()  # unselect actor
+                        self.selected_actor.remove(self.selected_actor.sprite)
+
+    def handle_mouse_up(self, pos):
         pass
 
 

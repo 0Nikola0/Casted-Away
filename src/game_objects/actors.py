@@ -24,6 +24,8 @@ class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
 
         self.target_position = None
 
+        self.selected = False
+
         # self.image, self.rect, and animation
         shs = {key: SpriteSheet(value) for key, value in sprite_sheets.items()}
         animation_length = 4
@@ -134,6 +136,9 @@ class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
 
     def get_hungry(self):
         self.food -= self.hungery
+
+    def switch_selection(self):
+        self.selected = not self.selected
 
     def update(self, time_delta, *args):
         self.time_in_frame += time_delta

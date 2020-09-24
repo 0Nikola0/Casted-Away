@@ -37,6 +37,12 @@ class Game(MainLoop):
     def update(self):
         super(Game, self).update()
 
+    @staticmethod
+    def take_object_by_id(id_):
+        for key, value in s.ALL_ID.items():
+            if id_ == key:
+                return value
+
 
 def main():
     Game().run()
