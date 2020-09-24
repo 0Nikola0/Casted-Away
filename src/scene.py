@@ -7,6 +7,7 @@ from src.game_objects.floor import TestFloor
 from src.game_objects.gui import GUI
 from src.game_objects.level_borders import LevelBorders
 from src.game_objects.selection_box import SelectionBox
+from src.game_objects.empty_sprite import EmptySprite
 from src.main_loop import MainLoop
 
 import src.settings as s
@@ -19,6 +20,9 @@ MENU = pygame.event.Event(SWITCH_SCENE, {'scene': 'menu'})
 GAME = pygame.event.Event(SWITCH_SCENE, {'scene': 'game'})
 TEST = pygame.event.Event(SWITCH_SCENE, {'scene': 'test'})
 
+# Layers
+SELECTION_L = 5
+
 
 class Scene:
     """Handle creating, managing, and cleaning up sprites."""
@@ -28,6 +32,8 @@ class Scene:
         self.GUI = None
         self.all = pygame.sprite.LayeredUpdates()
         self.selected_actor = pygame.sprite.GroupSingle()
+        self.selection_box = SelectionBox(s.GREEN)
+        self.all.add(self.selection_box, layer=SELECTION_L)
 
         self.shortcuts = s.SHORTCUTS
 
@@ -78,11 +84,16 @@ class Scene:
                         actor.switch_selection()
                         self.selected_actor.add(actor)
                         self.GUI.select_actor(actor)
+
+                        self.selection_box.bind_to(actor)
+
                     elif self.selected_actor.sprite == actor:
                         print(f"Actor with ID[{actor.id}] was unselected")
                         self.selected_actor.sprite.switch_selection()  # unselect actor
                         self.selected_actor.remove(self.selected_actor.sprite)
                         self.GUI.select_actor(None)
+
+                        self.selection_box.reset()
 
     def handle_mouse_up(self, pos):
         pass
@@ -105,7 +116,7 @@ class MenuScene(Scene):
         self.all.add(Background(s.SCREEN_SIZE, s.GRAY), layer=0)
         self.all.add(self.GUI, layer=6)
 
-        self.main_loop.drawing_layers[0].add(self.all)
+        self.main_loop.drawing_layers[1].add(self.all)
 
 
 class GameScene(Scene):
@@ -113,131 +124,75 @@ class GameScene(Scene):
     def __init__(self, *args):
         super().__init__(*args)
 
+        self.level_borders_ids = {}
+        self.level_border_actor_collision = []
+
         self.state = State()
 
+        # Gui and Buttons
         self.GUI = GUI()
         self.GUI.create_command_button(
             "Quit to Menu", lambda: pygame.event.post(MENU))
         self.GUI.create_command_button(
             "Test Scene", lambda: pygame.event.post(TEST))
-
-        # We are using the 'layer' parameter of the LayeredUpdates class which
-        # acts the same as a Sprite Group.
-        self.all.add(Background(s.SCREEN_SIZE, s.GRAY), layer=0)
-        self.all.add(ActorAdult((200, 200), s.BOY_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space,
-                                name="Jimmy", health=5, food=5), layer=1)
-        self.all.add(ActorAdult((200, 250), s.GIRL_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space,
-                                name="Sally"), layer=1)
-        self.all.add(self.GUI, layer=6)
-        self.all.add(self.state, layer=0)  # add state so that it gets updates
         self.main_loop.add_event_handler(self.GUI)
 
-        # Stick it in one layer, the LayeredUpdates Group will take care of it
-        # TODO maybe remove the layer code? Good idea
+
+        # Layers
+        self.all.add(self.state, layer=0)  # add state so that it gets updates
+        self.all.add(Background(s.SCREEN_SIZE, s.GRAY), layer=0)
+        self.all.add(self.create_map(), layer=2)
+        self.all.add(self.create_actor((200, 200)), layer=3)
+        self.all.add(self.create_actor((200, 250)), layer=3)
+        self.all.add(self.GUI, layer=6)
+
+        # TODO This is a hack; remove old layer code
         self.main_loop.drawing_layers[0].add(self.all)
 
+    def create_actor(self, position) -> ActorAdult:
+        actor = ActorAdult(position, s.OLD_MAN_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space)
 
-class TestScene(Scene):
-    """This scene is used for testing code. Put your hacks and test here."""
-    def __init__(self, *args):
-        super().__init__(*args)
-        self.GUI = None
+        # set up collisions
+        for lb_id in self.level_borders_ids.keys():
+            self.level_border_actor_collision.append(self.main_loop.space.add_collision_handler(
+                    lb_id,  # level border id
+                    actor.shape.collision_type,  # current actor id
+                ))  # add collision handler
+            self.level_border_actor_collision[-1].data["actor"] = actor  # add ref to actor to collision handler
+            self.level_border_actor_collision[-1].begin = actor.change_direction  # collision handler's func
 
-        # These groups NOT for draw and update.
-        self.background_group = pygame.sprite.Group()
-        self.actors_group = pygame.sprite.Group()
-        self.floor_group = pygame.sprite.Group()
-        self.GUI_group = pygame.sprite.Group()
-        self.selection_box = pygame.sprite.GroupSingle()
-        self.__test_positions = ((200, 200), (300, 300))
+        return actor
 
-        # Not sprite groups
-        self.level_borders_ids = {}
-
-        # Collisions
-        self.level_border_actor_collision = []
-
-        self.create_sprites()
-        self.create_buttons()
-
-    def create_sprites(self):
-        self.create_background()
-        self.create_map()
-        self.create_actors(self.__test_positions)
-        self.create_GUI()
-
-        selection_box = SelectionBox(self.actors_group.sprites()[0].rect, s.GREEN)
-        self.selection_box.add(selection_box)
-
-        self.set_draw_order()
-
-    def set_draw_order(self):
-        """Determine order of drawing
-
-        Sprites in index -1 group will be drawn upper all others.
-        Vice versa for 0 index group – it will be background.
-        """
-        self.main_loop.drawing_layers[0].add(self.background_group)  # back (skies) layer
-        self.main_loop.drawing_layers[1].add(self.floor_group)  # floors layer
-        self.main_loop.drawing_layers[2].add()  # walls layer
-        self.main_loop.drawing_layers[3].add(self.actors_group)  # actors layer
-        self.main_loop.drawing_layers[-3].add()  # main actor (player) layer
-        self.main_loop.drawing_layers[-2].add(self.selection_box)  # before player (e.g. tree leaves or sheds)
-        self.main_loop.drawing_layers[-1].add(self.GUI_group)  # gui layer
-
-    def create_GUI(self):
-        self.GUI = GUI()
-        self.GUI_group.add(self.GUI)
-        self.main_loop.add_event_handler(self.GUI)
-
-    def create_buttons(self):
-        self.GUI.create_command_button(
-            "Plant", lambda: print("Pressed Plant"))
-        self.GUI.create_command_button(
-            "Harvest", lambda: print("Pressed Harvest"))
-        self.GUI.create_command_button(
-            "Rest", lambda: print("Pressed Rest"))
-        self.GUI.create_command_button(
-            "Quit to Menu", lambda: pygame.event.post(MENU))
-        # We can clear the buttons if necessary e.g. for a New Game menu
-        # self.GUI.clear_command_buttons()
-
-    def create_background(self):
-        b = Background(
-            s.SCREEN_SIZE,
-            s.GRAY,
-        )
-        self.background_group.add(b)
-
-    def create_actors(self, positions):
-        def add_actors_collisions():
-            """Code block for all actors collisions"""
-            for lb_id in self.level_borders_ids.keys():
-                self.level_border_actor_collision.append(self.main_loop.space.add_collision_handler(
-                        lb_id,  # level border id
-                        actor.shape.collision_type,  # current actor id
-                    ))  # add collision handler
-                self.level_border_actor_collision[-1].data["actor"] = actor  # add ref to actor to collision handler
-                self.level_border_actor_collision[-1].begin = actor.change_direction  # collision handler's func
-
-        for x, y in positions:
-            actor = ActorAdult((x, y), s.OLD_MAN_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space)
-
-            # For testing death, can be removed
-            actor.food = 10
-            actor.health = 10
-
-            add_actors_collisions()
-            self.actors_group.add(actor)
-
-    def create_map(self):
+    def create_map(self) -> pygame.sprite.Sprite:
+        """Create the map and return the floor Sprite"""
         topleft = 50, 50
         bottomright = 500, 300
         f = TestFloor(topleft, bottomright, s.BROWN)
-        self.floor_group.add(f)
 
         p0 = Vec2d(topleft)
         p1 = p0 + Vec2d(bottomright)
         self.level_borders_ids.update(
-            LevelBorders(s.flip_y(p0), s.flip_y(p1), space=self.main_loop.space, d=s.LEVEL_BORDERS_THICKNESS).get_ids
+            LevelBorders(s.flip_y(p0), s.flip_y(p1),
+                         space=self.main_loop.space,
+                         d=s.LEVEL_BORDERS_THICKNESS).get_ids
         )
+
+        return f
+
+
+class TestScene(GameScene):
+    """This scene is used for testing code. Put your hacks and test here."""
+    def __init__(self, *args):
+        super().__init__(*args)
+
+        self.test = pygame.sprite.LayeredUpdates()
+        self.test.add(ActorAdult((200, 200), s.BOY_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space,
+                                name="Jimmy", health=5, food=5), layer=0)
+        self.test.add(ActorAdult((200, 250), s.GIRL_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space,
+                                name="Sally"), layer=0)
+
+        # TODO, this is broken as we cannot simply add to self.all,
+        # the layering is incorrect
+        self.main_loop.drawing_layers[0].add(self.test)
+
+
