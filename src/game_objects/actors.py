@@ -11,7 +11,7 @@ from src.graphics import SpriteSheet
 class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
     __ACTORS_IDS = {}
 
-    def __init__(self, pos, sprite_sheets, sounds, space):
+    def __init__(self, pos, sprite_sheets, sounds, space, name=None):
         self.id = s.get_id(self, ActorAdult.__ACTORS_IDS)
         ActorAdultRigidBody.__init__(self, pos, s.ADULT_ACTOR_SIZE, self.id, space)
         pygame.sprite.Sprite.__init__(self)
@@ -20,6 +20,7 @@ class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
         list(map(lambda sound: sound.set_volume(0.5), self.sounds.values()))  # hungry sounds are too noisy omg
         self.do_hungry_sound = True
 
+        self.name = name or "Actor ID: " + str(self.id)
         self.health, self.food = 100, 100
         self.hungery = 0.2  # How fast the player gets hungry
 

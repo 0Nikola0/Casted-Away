@@ -23,8 +23,9 @@ TEST = pygame.event.Event(SWITCH_SCENE, {'scene': 'test'})
 class Scene:
     """Handle creating, managing, and cleaning up sprites."""
     def __init__(self, main_loop):
-        self.sprites = []
         self.main_loop = main_loop
+
+        self.GUI = None
         self.all = pygame.sprite.LayeredUpdates()
         self.selected_actor = pygame.sprite.GroupSingle()
 
@@ -76,10 +77,12 @@ class Scene:
                         print(f"Actor with ID[{actor.id}] was selected")
                         actor.switch_selection()
                         self.selected_actor.add(actor)
+                        self.GUI.select_actor(actor)
                     elif self.selected_actor.sprite == actor:
                         print(f"Actor with ID[{actor.id}] was unselected")
                         self.selected_actor.sprite.switch_selection()  # unselect actor
                         self.selected_actor.remove(self.selected_actor.sprite)
+                        self.GUI.select_actor(None)
 
     def handle_mouse_up(self, pos):
         pass

@@ -20,7 +20,13 @@ class BarValue(pygame.sprite.Sprite):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.health_capacity = 100
-        self.current_health = 20
+        self.current_health = 0
+
+    def set_max_value(self, max_value):
+        self.health_capacity = max_value
+
+    def set_value(self, value):
+        self.current_health = int(value)
 
 
 class ActorPanel(pygame_gui.elements.UIPanel):
@@ -28,34 +34,44 @@ class ActorPanel(pygame_gui.elements.UIPanel):
     def __init__(self, *args, **kwargs):
         super(ActorPanel, self).__init__(*args, **kwargs)
         self.manager = kwargs['manager']
+        self.actor = None
 
-        # TODO these are test values, must be linked to real data
         self.actor_name = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((20, 0), (100, 20)),
-            text="John Doe",
-            manager=self.manager,
-            container=self)
+            relative_rect=pygame.Rect((0, 0), (200, 20)),
+            text="NO ACTOR SELECTED",
+            manager=self.manager, container=self)
 
         self.health_bar_value = BarValue()
         self.health_bar = pygame_gui.elements.UIScreenSpaceHealthBar(
-            relative_rect=pygame.Rect((20, 20), (100, 20)),
-            manager=self.manager,
-            container=self)
+            relative_rect=pygame.Rect((50, 20), (100, 20)),
+            manager=self.manager, container=self)
         self.health_bar.set_sprite_to_monitor(self.health_bar_value)
 
         self.food_bar_value = BarValue()
         self.food_bar = pygame_gui.elements.UIScreenSpaceHealthBar(
-            relative_rect=pygame.Rect((20, 40), (100, 20)),
-            manager=self.manager,
-            container=self)
+            relative_rect=pygame.Rect((50, 40), (100, 20)),
+            manager=self.manager, container=self)
         self.food_bar.set_sprite_to_monitor(self.food_bar_value)
 
-        self.water_bar_value = BarValue()
-        self.water_bar = pygame_gui.elements.UIScreenSpaceHealthBar(
-            relative_rect=pygame.Rect((20, 60), (100, 20)),
-            manager=self.manager,
-            container=self)
-        self.water_bar.set_sprite_to_monitor(self.water_bar_value)
+    def load_actor(self, actor):
+        self.actor = actor
+        self.update()
+
+    def clear_actor(self):
+        self.actor = None
+        self.update()
+
+    def update(self, *args):
+        if self.actor:
+            self.actor_name.text = self.actor.name
+            self.actor_name.rebuild()
+            self.health_bar_value.set_value(self.actor.health)
+            self.food_bar_value.set_value(self.actor.food)
+        else:
+            self.actor_name.text = "No Actor"
+            self.actor_name.rebuild()
+            self.health_bar_value.set_value(0)
+            self.food_bar_value.set_value(0)
 
 
 class CommandPanel(pygame_gui.elements.UIPanel):

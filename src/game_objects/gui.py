@@ -52,6 +52,9 @@ class GUI(pygame.sprite.Sprite):
     def console_println(self, text):
         self.console.println(text)
 
+    def select_actor(self, actor=None):
+        self.actor_panel.load_actor(actor)
+
     def handle_event(self, event):
         """Handles USEREVENT events for pygame_gui events
 
