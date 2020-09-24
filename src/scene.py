@@ -91,11 +91,10 @@ class TestScene(Scene):
         self.actors_group = pygame.sprite.Group()
         self.floor_group = pygame.sprite.Group()
         self.GUI_group = pygame.sprite.Group()
-        self.__test_actors_group = pygame.sprite.Group()
         self.__test_positions = ((200, 200), (300, 300))
 
         # Not sprite groups
-        self.level_borders = []
+        self.level_borders_ids = set()
 
         # Collisions
         self.level_border_actor_collision = []
@@ -108,7 +107,6 @@ class TestScene(Scene):
         self.create_map()
         self.create_actors(self.__test_positions)
         self.create_GUI()
-        # self.__create_test_actor()
 
         self.set_draw_order()
 
@@ -122,7 +120,7 @@ class TestScene(Scene):
         self.main_loop.drawing_layers[1].add(self.floor_group)  # floors layer
         self.main_loop.drawing_layers[2].add()  # walls layer
         self.main_loop.drawing_layers[3].add(self.actors_group)  # actors layer
-        self.main_loop.drawing_layers[-3].add(self.__test_actors_group)  # main actor (player) layer
+        self.main_loop.drawing_layers[-3].add()  # main actor (player) layer
         self.main_loop.drawing_layers[-2].add()  # before player (e.g. tree leaves or sheds)
         self.main_loop.drawing_layers[-1].add(self.GUI_group)  # gui layer
 
@@ -153,8 +151,7 @@ class TestScene(Scene):
     def create_actors(self, positions):
         def add_actors_collisions():
             """Code block for all actors collisions"""
-            lb_ids = list(map(lambda id_: id_.collision_type, *self.level_borders))  # ids of level borders
-            for lb_id in lb_ids:
+            for lb_id in self.level_borders_ids:
                 self.level_border_actor_collision.append(self.main_loop.space.add_collision_handler(
                         lb_id,  # level border id
                         actor.shape.collision_type,  # current actor id
@@ -167,12 +164,6 @@ class TestScene(Scene):
             add_actors_collisions()
             self.actors_group.add(actor)
 
-    def __create_test_actor(self):
-        pos = (230, 250)
-        __ta = TestActor(pos, s.OLD_MAN_SPRITE_SHEETS, self.main_loop.space)
-        self.__test_actors_group.add(__ta)
-        self.main_loop.mouse_handlers.append(__ta.handle_mouse_event)
-
     def create_map(self):
         topleft = 50, 50
         bottomright = 500, 300
@@ -181,8 +172,6 @@ class TestScene(Scene):
 
         p0 = Vec2d(topleft)
         p1 = p0 + Vec2d(bottomright)
-        self.level_borders.append(LevelBorders(
-            s.flip_y(p0),
-            s.flip_y(p1),
-            space=self.main_loop.space,
-            d=s.LEVEL_BORDERS_THICKNESS).get_segments)
+        self.level_borders_ids.update(
+            LevelBorders(s.flip_y(p0), s.flip_y(p1), space=self.main_loop.space, d=s.LEVEL_BORDERS_THICKNESS).get_ids
+        )

@@ -22,5 +22,5 @@ class LevelBorders:
             self.segments.append(segment)
 
     @property
-    def get_segments(self):
-        return self.segments
+    def get_ids(self):
+        return LevelBorders.__LEVEL_BORDERS_IDS
