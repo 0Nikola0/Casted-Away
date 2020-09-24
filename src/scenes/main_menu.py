@@ -82,15 +82,16 @@ class MainMenu():
             Button("Play", pos=(posx, posy + 240), size=(200, 80), font=font,
                    callback=lambda : self.select('play')),
             Button("Help", pos=(s.SCREEN_WIDTH / 2, posy + 240), size=(200, 80), font=font),
-            Button("About", pos=(s.SCREEN_WIDTH - posx, posy + 240), size=(200, 80), font=font),
+            Button("Quit", pos=(s.SCREEN_WIDTH - posx, posy + 240), size=(200, 80), font=font,
+                   callback=lambda : self.select('quit')),
         ]
 
         self.clock = pygame.time.Clock()
         while True:
             self.clock.tick(s.FPS)
 
-            # If something is selected, handle it here
-            if self.selection == 'play':
+            # If something is selected, let our caller handle it
+            if self.selection:
                 return self.selection
 
             for ev in pygame.event.get():

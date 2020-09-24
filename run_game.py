@@ -15,7 +15,7 @@ try:
 
     if selection == 'play':
         Game().run()
-    else:
+    elif selection == 'quit':
         pass # just run off the end for now
 
 except ImportError:
