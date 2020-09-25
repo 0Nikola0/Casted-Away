@@ -44,7 +44,8 @@ class MainLoop:
         self.is_prototyping_mode = False
 
         # Testing for tasks
-        self.task01 = Task(0, 1.0, (300, 200), (60, 60))
+        self.task01 = Task(0, 1.0, (73, 135), (140, 140))   # Harvest
+        self.task02 = Task(1, 1.0, (540, 245), (60, 10))    # Get water
 
     def update(self):
         """Update game state
