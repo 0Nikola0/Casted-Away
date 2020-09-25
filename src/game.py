@@ -11,11 +11,16 @@ import src.settings as s
 
 class Game(MainLoop):
     """Basically a manager for all the Scenes."""
-    def __init__(self):
+    def __init__(self, debug=False):
         super(Game, self).__init__(s.CAPTION, s.SCREEN_SIZE, s.FPS, s.NUM_OF_LAYERS)
 
-        # We set up a Menu Scene, and let it fire the scene change events
-        self.scene = MenuScene(self)
+        # If debugging we go to the TestScene
+        # Else: We set up a Menu Scene, and let it fire the scene change events
+        if debug == True:
+            self.scene = TestScene(self)
+        else:
+            self.scene = MenuScene(self)
+
         self.add_event_handler(self)
 
     def handle_event(self, event):
