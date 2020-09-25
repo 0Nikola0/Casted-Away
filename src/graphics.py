@@ -34,8 +34,8 @@ class SpriteSheet:
     self.image = self.animation_sets[self.current_state][self.current_frame]
     """
     def __init__(self, sheet_path):
-        self.source_image = pygame.image.load(sheet_path).convert()
-        self.source_image.set_colorkey(s.WHITE)
+        self.source_image = pygame.image.load(sheet_path).convert_alpha()
+        # self.source_image.set_colorkey(s.WHITE)
         # x = pygame.transform.threshold(self.source_image, self.source_image, s.WHITE) # For testing
 
     def get_image(self, name, scale=False):
