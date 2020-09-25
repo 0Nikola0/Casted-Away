@@ -174,7 +174,6 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
 
         if self.health <= 0:
             console_print_event(f"{self.name} has died!")
-            # TODO put dying code here, we must clean up pymunk maybe?
             self.kill()
 
         for state in self.state.values():
@@ -190,8 +189,10 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
                     self.time_in_frame = 0
 
     def kill(self):
+        """Clean up actor's pymunk stuff and remove the actor from all sprite groups"""
         s.unbind_id(self.shape.collision_type, Actor.__ACTORS_IDS)
         print(f"ID[{self.shape.collision_type}] was unbind")
+        ActorRigidBody.kill(self)
         pygame.sprite.Sprite.kill(self)
 
 

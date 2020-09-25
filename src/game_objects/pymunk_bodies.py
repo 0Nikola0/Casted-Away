@@ -4,6 +4,8 @@ import src.settings as s
 
 class KinematicRigidBody:
     def __init__(self, pos, size, collision_type, space):
+        self.space = space
+
         self.body = pm.Body(mass=1, moment=pm.inf, body_type=pm.Body.DYNAMIC)
         self.control_body = pm.Body(body_type=pm.Body.KINEMATIC)
 
@@ -21,7 +23,10 @@ class KinematicRigidBody:
         self.pivot.max_bias = 0  # disable joint correction
         self.pivot.max_force = 1000  # Emulate linear friction
 
-        space.add(self.control_body, self.body, self.shape, self.pivot)
+        self.space.add(self.control_body, self.body, self.shape, self.pivot)
+
+    def kill(self):
+        self.space.remove(self.control_body, self.body, self.shape, self.pivot)
 
 
 class ActorRigidBody(KinematicRigidBody):
