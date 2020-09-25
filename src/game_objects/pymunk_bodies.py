@@ -24,7 +24,7 @@ class KinematicRigidBody:
         space.add(self.control_body, self.body, self.shape, self.pivot)
 
 
-class ActorAdultRigidBody(KinematicRigidBody):
+class ActorRigidBody(KinematicRigidBody):
     def __init__(self, pos, size, collision_type, space):
         KinematicRigidBody.__init__(self, pos, size, collision_type, space)
 

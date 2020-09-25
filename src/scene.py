@@ -1,7 +1,7 @@
 import pygame
 from pymunk import Vec2d
 
-from src.game_objects.actors import ActorAdult, TestActor
+from src.game_objects.actors import Actor, TestActor
 from src.game_objects.background import Background
 from src.game_objects.floor import TestFloor
 from src.game_objects.gui import GUI
@@ -77,7 +77,7 @@ class Scene:
             dist, info = shape.point_query(pos)
             if dist < 0:
                 clicked_object = self.main_loop.take_object_by_id(shape.collision_type)
-                if isinstance(clicked_object, ActorAdult):
+                if isinstance(clicked_object, Actor):
                     actor = clicked_object
                     if len(self.selected_actor) == 0:
                         print(f"Actor with ID[{actor.id}] was selected")
@@ -149,8 +149,8 @@ class GameScene(Scene):
         # TODO This is a hack; remove old layer code
         self.main_loop.drawing_layers[0].add(self.all)
 
-    def create_actor(self, position) -> ActorAdult:
-        actor = ActorAdult(position, s.OLD_MAN_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space)
+    def create_actor(self, position) -> Actor:
+        actor = Actor(position, s.OLD_MAN_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space)
 
         # set up collisions
         for lb_id in self.level_borders_ids.keys():
@@ -186,9 +186,9 @@ class TestScene(GameScene):
         super().__init__(*args)
 
         self.test = pygame.sprite.LayeredUpdates()
-        self.test.add(ActorAdult((200, 200), s.BOY_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space,
+        self.test.add(Actor((200, 200), s.BOY_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space,
                                 name="Jimmy", health=5, food=5), layer=0)
-        self.test.add(ActorAdult((200, 250), s.GIRL_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space,
+        self.test.add(Actor((200, 250), s.GIRL_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space,
                                 name="Sally"), layer=0)
 
         # TODO, this is broken as we cannot simply add to self.all,

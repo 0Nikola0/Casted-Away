@@ -4,17 +4,17 @@ import pygame
 from pymunk.vec2d import Vec2d
 
 import src.settings as s
-from src.game_objects.pymunk_bodies import ActorAdultRigidBody
+from src.game_objects.pymunk_bodies import ActorRigidBody
 from src.graphics import SpriteSheet
 from src.game_objects.gui import console_print_event
 
 
-class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
+class Actor(pygame.sprite.Sprite, ActorRigidBody):
     __ACTORS_IDS = {}
 
     def __init__(self, pos, sprite_sheets, sounds, space, name=None, health=100, food=100):
-        self.id = s.get_id(self, ActorAdult.__ACTORS_IDS)
-        ActorAdultRigidBody.__init__(self, pos, s.ADULT_ACTOR_SIZE, self.id, space)
+        self.id = s.get_id(self, Actor.__ACTORS_IDS)
+        ActorRigidBody.__init__(self, pos, s.ADULT_ACTOR_SIZE, self.id, space)
         pygame.sprite.Sprite.__init__(self)
 
         self.sounds = {key: pygame.mixer.Sound(sound) for key, sound in sounds.items()}
@@ -190,12 +190,12 @@ class ActorAdult(pygame.sprite.Sprite, ActorAdultRigidBody):
                     self.time_in_frame = 0
 
     def kill(self):
-        s.unbind_id(self.shape.collision_type, ActorAdult.__ACTORS_IDS)
+        s.unbind_id(self.shape.collision_type, Actor.__ACTORS_IDS)
         print(f"ID[{self.shape.collision_type}] was unbind")
         pygame.sprite.Sprite.kill(self)
 
 
-class TestActor(ActorAdult):
+class TestActor(Actor):
     """Test actor for physics tests"""
 
     def __init__(self, pos, sprite_sheets, space):
