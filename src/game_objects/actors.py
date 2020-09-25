@@ -35,17 +35,11 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
 
         # self.image, self.rect, and animation
         shs = {key: SpriteSheet(value) for key, value in sprite_sheets.items()}
-        animation_length = 4
-        # self.images = [[shs[sh].get_image(i) for i in range(4)] for sh in shs] could replace double for loop
-        self.animation_sets = []
-        for sh in shs:
-            image_set = []
-            for i in range(animation_length):
-                image_set.append(shs[sh].get_image(i))
-            self.animation_sets.append(image_set)
-
+        animation_length = 4  # 4 images in 1 animation
+        self.animation_sets = [[shs[sh].get_image(i) for i in range(animation_length)] for sh in shs]
         self.state = {state_name: i for i, state_name in enumerate(shs)}
-        # "HURT" is only 2 frames not 4 like the others, might create problems
+
+        self.animation_sets[self.state["HURT"]] = self.animation_sets[self.state["HURT"]][:2]
 
         self.current_state = self.state["IDLE"]
         self.current_frame = 0
