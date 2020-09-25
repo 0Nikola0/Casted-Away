@@ -26,7 +26,7 @@ class SelectionBox(EmptySprite):
 
     def update(self, *args):
         if self.target:
-            if self.target.groups():  # if target died
+            if self.target.groups():
                 self.rect.center = self.target.rect.center
-            else:
+            else:  # if target died
                 self.reset()

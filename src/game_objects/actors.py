@@ -34,8 +34,8 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
         self.selected = False
 
         # self.image, self.rect, and animation
+        animation_length = 4  # 4 images in 1 animation set
         shs = {key: SpriteSheet(value) for key, value in sprite_sheets.items()}
-        animation_length = 4  # 4 images in 1 animation
         self.animation_sets = [[shs[sh].get_image(i) for i in range(animation_length)] for sh in shs]
         self.state = {state_name: i for i, state_name in enumerate(shs)}
 
