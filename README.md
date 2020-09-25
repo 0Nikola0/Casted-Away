@@ -9,7 +9,6 @@ enters the scene. Can you make the right choices and survive?
 
 https://en.wikipedia.org/wiki/Casta
 
-
 ## Running
 
 Dependencies:
@@ -30,15 +29,17 @@ Keep in mind all the things your family will need to survive and the
 _risks_ of going out.
 
 You have limited time to decide and each choice affects the next. After
-you meet your doom, reflect on your mistakes and try again. If only life
-was as forgiving
+you meet your doom, reflect on your mistakes and try again. Explore ways
+to keep yourself and your family alive during these deadly seasons. If only
+you could undo every mistake you made, if only life was just as forgiving...
 
-## Content
+## Content & warnings
 
-As we are dealing with historical racial issues, no insensitivity to
-present-day peoples is intended. We hope this game may inspire some
-to do further reasearch into similar issues of mixed-race discrimination
-in history.
+This game explores historical racial issues, along with the topic of the
+1918 Spanish flu. We want to raise awareness of the issues of the past and
+present, and do not intend any harm to anyone. We hope this game may inspire
+some to do further reasearch into similar issues of mixed-race discrimination
+in history, and stand up for justice.
 
 ## Licensing and Copyright
 
