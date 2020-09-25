@@ -68,7 +68,7 @@ class Button(pygame.sprite.Sprite):
         surface.blit(self.surface_text, self.text_rect)
 
 
-class MainMenu():
+class MainMenu:
     def run(self):
         pygame.init()
         screen = pygame.display.set_mode(s.SCREEN_SIZE)
@@ -80,10 +80,10 @@ class MainMenu():
 
         buttons = [
             Button("Play", pos=(posx, posy + 240), size=(200, 80), font=font,
-                   callback=lambda : self.select('play')),
+                   callback=lambda: self.select('play')),
             Button("Help", pos=(s.SCREEN_WIDTH / 2, posy + 240), size=(200, 80), font=font),
             Button("Quit", pos=(s.SCREEN_WIDTH - posx, posy + 240), size=(200, 80), font=font,
-                   callback=lambda : self.select('quit')),
+                   callback=lambda: self.select('quit')),
         ]
 
         self.clock = pygame.time.Clock()
