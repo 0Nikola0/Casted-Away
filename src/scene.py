@@ -11,11 +11,12 @@ from src.game_objects.empty_sprite import EmptySprite
 from src.main_loop import MainLoop
 
 import src.settings as s
-from src.events import SWITCH_SCENE
+from src.events import COMMAND, SWITCH_SCENE
 
 from src.state import State
 
 
+FEED = pygame.event.Event(COMMAND, {'value' : 'feed'})
 MENU = pygame.event.Event(SWITCH_SCENE, {'scene': 'menu'})
 GAME = pygame.event.Event(SWITCH_SCENE, {'scene': 'game'})
 TEST = pygame.event.Event(SWITCH_SCENE, {'scene': 'test'})
@@ -132,11 +133,12 @@ class GameScene(Scene):
         # Gui and Buttons
         self.GUI = GUI()
         self.GUI.create_command_button(
-            "Quit to Menu", lambda: pygame.event.post(MENU))
+            "Feed Actor", lambda: pygame.event.post(FEED))
         self.GUI.create_command_button(
-            "Test Scene", lambda: pygame.event.post(TEST))
-        self.main_loop.add_event_handler(self.GUI)
+            "Quit to Menu", lambda: pygame.event.post(MENU))
 
+        self.main_loop.add_event_handler(self.GUI)
+        self.main_loop.add_event_handler(self)
 
         # Layers
         self.all.add(self.state, layer=0)  # add state so that it gets updates
@@ -178,6 +180,12 @@ class GameScene(Scene):
         )
 
         return f
+
+    def handle_event(self, event):
+        if event.type == COMMAND:
+            if event.value == 'feed':
+                if self.selected_actor.sprite:
+                    self.selected_actor.sprite.eat(25)
 
 
 class TestScene(GameScene):
