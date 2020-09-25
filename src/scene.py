@@ -12,6 +12,7 @@ from src.main_loop import MainLoop
 
 import src.settings as s
 from src.events import COMMAND, SWITCH_SCENE
+from src.map import TiledMap
 
 from src.state import State
 
@@ -140,9 +141,11 @@ class GameScene(Scene):
         self.main_loop.add_event_handler(self.GUI)
         self.main_loop.add_event_handler(self)
 
+        self.map = TiledMap(s.MAP)
+
         # Layers
         self.all.add(self.state, layer=0)  # add state so that it gets updates
-        self.all.add(Background(s.SCREEN_SIZE, s.GRAY), layer=0)
+        self.all.add(self.map, layer=0)
         self.all.add(self.create_map(), layer=2)
         self.all.add(self.create_actor((200, 200)), layer=3)
         self.all.add(self.create_actor((200, 250)), layer=3)

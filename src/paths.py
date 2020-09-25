@@ -7,6 +7,9 @@ REQUIREMENTS = os.path.join(PROJECT_DIRECTORY, "requirements.txt")
 # Assets
 ASSETS_DIRECTORY = os.path.join(PROJECT_DIRECTORY, "assets")
 
+MAP_DIRECTORY = os.path.join(ASSETS_DIRECTORY, "map")
+MAP = os.path.join(MAP_DIRECTORY, "samplemap.tmx")
+
 IMGS_DIRECTORY = os.path.join(ASSETS_DIRECTORY, "imgs")
 
 ACTORS_DIRECTORY = os.path.join(IMGS_DIRECTORY, "actors")
