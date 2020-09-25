@@ -3,3 +3,5 @@ pycparser==2.20
 pygame==1.9.6
 pygame-gui==0.5.7
 pymunk==5.7.0
+PyTMX==3.21.7
+six==1.15.0
