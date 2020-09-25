@@ -46,20 +46,20 @@ class Scene:
         pass
 
     def feed_selected_actor(self):
-        pass
+        if self.selected_actor.sprite is not None:
+            if s.FOOD_SUPPLY > 15:
+                self.selected_actor.sprite.eat(15)
+                s.FOOD_SUPPLY -= 15
+                print(f"FOOD_SUPPLY = {s.FOOD_SUPPLY}")
+            else:
+                print("Need more food!")
 
     def handle_key_down(self, key):
         pass
 
     def handle_key_up(self, key):
         if key == self.shortcuts["FEED_SELECTED_ACTOR"]:
-            if self.selected_actor.sprite is not None:
-                if s.FOOD_SUPPLY > 15:
-                    self.selected_actor.sprite.eat(15)
-                    s.FOOD_SUPPLY -= 15
-                    print(f"FOOD_SUPPLY = {s.FOOD_SUPPLY}")
-                else:
-                    print("Need more food!")
+            self.feed_selected_actor()
 
     def handle_mouse_event(self, ev, pos):
         if ev == pygame.MOUSEMOTION:

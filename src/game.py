@@ -43,9 +43,6 @@ class Game(MainLoop):
     def update(self):
         super(Game, self).update()
 
-        if self.scene.selected_actor.sprite is not None:
-            pass
-
     @staticmethod
     def take_object_by_id(id_):
         for key, value in s.ALL_ID.items():
