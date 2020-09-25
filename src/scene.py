@@ -146,7 +146,8 @@ class GameScene(Scene):
         # Layers
         self.all.add(self.state, layer=0)  # add state so that it gets updates
         self.all.add(self.map, layer=0)
-        self.all.add(self.create_map(), layer=2)
+        # TODO idk if i should remove this completly
+        # self.all.add(self.create_map(), layer=2)
         self.all.add(self.create_actor((200, 200)), layer=3)
         self.all.add(self.create_actor((200, 250)), layer=3)
         self.all.add(self.GUI, layer=6)
