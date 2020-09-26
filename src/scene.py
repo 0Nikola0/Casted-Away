@@ -82,6 +82,8 @@ class Scene:
                 clicked_object = self.main_loop.take_object_by_id(shape.collision_type)
                 if isinstance(clicked_object, Actor):
                     actor = clicked_object
+
+                    # Select
                     if len(self.selected_actor) == 0:
                         print(f"Actor with ID[{actor.id}] was selected")
                         actor.switch_selection()
@@ -90,6 +92,7 @@ class Scene:
 
                         self.selection_box.bind_to(actor)
 
+                    # Unselect
                     elif self.selected_actor.sprite == actor:
                         print(f"Actor with ID[{actor.id}] was unselected")
                         self.selected_actor.sprite.switch_selection()  # unselect actor
@@ -97,6 +100,15 @@ class Scene:
                         self.GUI.select_actor(None)
 
                         self.selection_box.reset()
+
+                    # Unselect and Select
+                    else:
+                        self.selected_actor.sprite.switch_selection()
+                        self.selected_actor.remove(self.selected_actor.sprite)
+                        self.selected_actor.add(actor)
+                        self.GUI.select_actor(actor)
+
+                        self.selection_box.bind_to(actor)
 
     def handle_mouse_up(self, pos):
         pass
