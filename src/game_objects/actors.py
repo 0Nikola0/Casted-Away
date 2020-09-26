@@ -54,24 +54,26 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
         self.dir_delay = 0.5
 
     def move_by_mouse(self, pos):
-        if pos[0] == int(self.body.position.x):
-            self.directionx = 0
-        elif pos[0] > int(self.body.position.x):
-            self.directionx = 1
-        else:
-            self.directionx = -1
+        self.target_position = s.flip_y(pos)
 
-        current_y = s.flip_y(self.body.position.y)
-        if pos[1] == int(current_y):
-            self.directiony = 0
-        elif pos[1] < int(current_y):
-            self.directiony = 1
-        else:
-            self.directiony = -1
+        # if pos[0] == int(self.body.position.x):
+            # self.directionx = 0
+        # elif pos[0] > int(self.body.position.x):
+            # self.directionx = 1
+        # else:
+            # self.directionx = -1
+
+        # current_y = s.flip_y(self.body.position.y)
+        # if pos[1] == int(current_y):
+            # self.directiony = 0
+        # elif pos[1] < int(current_y):
+            # self.directiony = 1
+        # else:
+            # self.directiony = -1
 
         #self.dir_delay = -1
 
-        self.move()
+        # self.move()
 
     def synchronize_rect_body(self):
         """Synchronizes player rect with pymunk player shape"""
@@ -178,6 +180,8 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
 
         self.synchronize_rect_body()
 
+        self.get_hungry()
+
         if self.food < 30:
             if self.do_hungry_sound is True:
                 self.sounds["HUNGRY"].play()
@@ -202,53 +206,12 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
                     self.current_frame = (self.current_frame + 1) if self.current_frame < 3 else 0
                     self.time_in_frame = 0
 
-    def kill(self):
-        """Clean up actor's pymunk stuff and remove the actor from all sprite groups"""
-        s.unbind_id(self.shape.collision_type, Actor.__ACTORS_IDS)
-        print(f"ID[{self.shape.collision_type}] was unbind")
-        ActorRigidBody.kill(self)
-        pygame.sprite.Sprite.kill(self)
-
-
-class TestActor(Actor):
-    """Test actor for physics tests"""
-
-    def __init__(self, pos, sprite_sheets, space):
-        # physics stuff
-        super(TestActor, self).__init__(pos, sprite_sheets, space)
-        self.shape.color = (255, 0, 0, 0)
-
-        self.target_position = None
-
-    def select_target(self, target_pos):
-        self.target_position = s.flip_y(target_pos)
-
-    def handle_mouse_event(self, ev, pos):
-        if ev == pygame.MOUSEMOTION:
-            self.handle_mouse_move(pos)
-        elif ev == pygame.MOUSEBUTTONDOWN:
-            self.handle_mouse_down(pos)
-        elif ev == pygame.MOUSEBUTTONUP:
-            self.handle_mouse_up(pos)
-
-    def handle_mouse_move(self, pos):
-        pass
-
-    def handle_mouse_down(self, pos):
-        self.select_target(pos)
-
-    def handle_mouse_up(self, pos):
-        pass
-
-    def update(self, time_delta, *args):
-        super(TestActor, self).update(time_delta, *args)
-        self.synchronize_rect_body()  # yes, need to call it twice :(
-
+        # Handle targets
         if self.target_position is not None:
-
             target_delta = self.target_position - self.body.position
             if target_delta.get_length_sqrd() < self.vel ** 2:
                 self.control_body.velocity = 0, 0
+                self.current_state = 3
             else:
 
                 # Left-right direction
@@ -267,5 +230,18 @@ class TestActor(Actor):
                 else:
                     dir_y = 0
 
+                # Set animation
+                if dir_x == 0 and dir_y == 0:
+                    self.current_state = 3
+                else:
+                    self.current_state = 4 if dir_x == 1 else 5
+
                 dv = Vec2d(self.vel * dir_x, self.vel * dir_y)
                 self.control_body.velocity = self.body.rotation_vector.cpvrotate(dv)
+
+    def kill(self):
+        """Clean up actor's pymunk stuff and remove the actor from all sprite groups"""
+        s.unbind_id(self.shape.collision_type, Actor.__ACTORS_IDS)
+        print(f"ID[{self.shape.collision_type}] was unbind")
+        ActorRigidBody.kill(self)
+        pygame.sprite.Sprite.kill(self)

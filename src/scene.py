@@ -1,7 +1,7 @@
 import pygame
 from pymunk import Vec2d
 
-from src.game_objects.actors import Actor, TestActor
+from src.game_objects.actors import Actor
 from src.game_objects.background import Background
 from src.game_objects.floor import TestFloor
 from src.game_objects.gui import GUI
