@@ -11,6 +11,7 @@ from src.scenes.game_over import GameOver
 from src.game_objects.gui import console_print_event
 from src.game_objects.obstacles import Obstacle
 from src.game_objects.tasks import Task
+from src.game_objects.pymunk_bodies import ObstacleBody
 
 import src.settings as s
 from src.events import COMMAND, SWITCH_SCENE
@@ -143,9 +144,6 @@ class GameScene(Scene):
     def __init__(self, *args):
         super().__init__(*args)
 
-        self.level_borders_ids = {}
-        self.level_border_actor_collision = []
-
         self.state = State()
 
         self.GUI = GUI()
@@ -177,36 +175,42 @@ class GameScene(Scene):
             Task(2, 1.0, (420, 497), (125, 80))     # Resting place by the river
         ]
 
+        self.obstacle_bodies = []
+
         # Obstacles
+        Obstacle.space = self.main_loop.space
         self.obstacles = [  # House
-                        Obstacle(pos=(255, 96), size=(228, 222)),
+                        ((255, 96),(228, 222)),
                         # Garden fence
-                        Obstacle((20, 116), (30, 190)),
-                        Obstacle((20, 106), (235, 20)),
-                        Obstacle((45, 300), (160, 20)),
-                        Obstacle((235, 126), (15, 50)),
+                        ((20, 116), (30, 190)),
+                        ((20, 106), (235, 20)),
+                        ((45, 300), (160, 20)),
+                        ((235, 126), (15, 50)),
                         # Pond next to house
-                        Obstacle((483, 160), (257, 94)),
+                        ((483, 160), (257, 94)),
                         # River
-                        Obstacle((730, 160), (30, 240)),
-                        Obstacle((705, 380), (30, 55)),
-                        Obstacle((680, 420), (30, 60)),
-                        Obstacle((645, 480), (33, 45)),
-                        Obstacle((610, 515), (33, 45)),
-                        Obstacle((580, 552), (33, 45)),
+                        ((730, 160), (30, 240)),
+                        ((705, 380), (30, 55)),
+                        ((680, 420), (30, 60)),
+                        ((645, 480), (33, 45)),
+                        ((610, 515), (33, 45)),
+                        ((580, 552), (33, 45)),
                         # Bottom of map
-                        Obstacle((0, 565), (590, 20)),
+                        ((0, 565), (590, 20)),
                         # Right
-                        Obstacle((0, 0), (20, 570)),
+                        ((0, 0), (20, 570)),
                         # Left trees
-                        Obstacle((20, 390), (155, 178)),
+                        ((20, 390), (155, 178)),
                         # Middle bottom trees
-                        Obstacle((325, 480), (80, 90)),
+                        ((325, 480), (80, 90)),
                         # Right trees
-                        Obstacle((485, 387), (180, 100)),
-                        Obstacle((610, 352), (65, 40)),
-                        Obstacle((650, 250), (50, 60))
+                        ((485, 387), (180, 100)),
+                        ((610, 352), (65, 40)),
+                        ((650, 250), (50, 60))
                         ]
+
+        for obstacle in self.obstacles:
+            self.obstacle_bodies.append(Obstacle(obstacle[0], obstacle[1], self.main_loop.space))
 
         self.all.add(self.state, layer=0)  # add state so that it gets updates
         self.all.add(self.map, layer=0)
@@ -220,13 +224,13 @@ class GameScene(Scene):
         actor = Actor(position, s.OLD_MAN_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space)
 
         # set up collisions
-        for lb_id in self.level_borders_ids.keys():
-            self.level_border_actor_collision.append(self.main_loop.space.add_collision_handler(
-                    lb_id,  # level border id
-                    actor.shape.collision_type,  # current actor id
-                ))  # add collision handler
-            self.level_border_actor_collision[-1].data["actor"] = actor  # add ref to actor to collision handler
-            self.level_border_actor_collision[-1].begin = actor.change_direction  # collision handler's func
+        # for obstacle_id in self.obstacle_ids.keys():
+            # self.obstacle_actor_collision.append(self.main_loop.space.add_collision_handler(
+                    # lb_id,  # level border id
+                    # actor.shape.collision_type,  # current actor id
+                # ))  # add collision handler
+            # self.obstacle_actor_collision[-1].data["actor"] = actor  # add ref to actor to collision handler
+            # self.obstacle_actor_collision[-1].begin = actor.change_direction  # collision handler's func
 
         return actor
 

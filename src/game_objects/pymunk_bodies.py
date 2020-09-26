@@ -2,6 +2,34 @@ import pymunk as pm
 import src.settings as s
 
 
+
+class ObstacleBody:
+    def __init__(self, pos, size, collision_type, space):
+        self.space = space
+
+        self.body = pm.Body(mass=1, moment=pm.inf, body_type=pm.Body.STATIC)
+        self.control_body = pm.Body(body_type=pm.Body.KINEMATIC)
+
+        pm_x, pm_y = s.flip_y(pos)
+        pm_size_x, pm_size_y = size
+
+        self.body.position = pm_x + pm_size_x // 2, pm_y - pm_size_y // 2  # body.position == rect.center
+        self.control_body.position = self.body.position
+
+        self.shape = pm.Poly.create_box(self.body, size)
+
+        self.shape.collision_type = collision_type  # for collisions
+
+        self.pivot = pm.PivotJoint(self.control_body, self.body, (0, 0), (0, 0))
+        self.pivot.max_bias = 0  # disable joint correction
+        self.pivot.max_force = 1000  # Emulate linear friction
+
+        self.space.add(self.control_body, self.body, self.shape, self.pivot)
+
+    def kill(self):
+        self.space.remove(self.control_body, self.body, self.shape, self.pivot)
+
+
 class KinematicRigidBody:
     def __init__(self, pos, size, collision_type, space):
         self.space = space
