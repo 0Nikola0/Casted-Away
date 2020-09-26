@@ -56,25 +56,6 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
     def move_by_mouse(self, pos):
         self.target_position = s.flip_y(pos)
 
-        # if pos[0] == int(self.body.position.x):
-            # self.directionx = 0
-        # elif pos[0] > int(self.body.position.x):
-            # self.directionx = 1
-        # else:
-            # self.directionx = -1
-
-        # current_y = s.flip_y(self.body.position.y)
-        # if pos[1] == int(current_y):
-            # self.directiony = 0
-        # elif pos[1] < int(current_y):
-            # self.directiony = 1
-        # else:
-            # self.directiony = -1
-
-        #self.dir_delay = -1
-
-        # self.move()
-
     def synchronize_rect_body(self):
         """Synchronizes player rect with pymunk player shape"""
         self.rect.center = s.flip_y(self.body.position)

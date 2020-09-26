@@ -1,7 +1,4 @@
-import pygame
-
 import src.settings as s
-
 from src.game_objects.gui import console_print_event
 from src.game_objects.empty_sprite import EmptySprite
 

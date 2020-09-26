@@ -1,9 +1,5 @@
-import pygame
-import pymunk as pm
-
-from src.game_objects.selection_box import SelectionBox
 from src.main_loop import MainLoop
-from src.scene import Scene, MenuScene, GameScene, TestScene
+from src.scene import MenuScene, GameScene, TestScene
 from src.events import SWITCH_SCENE
 
 import src.settings as s
@@ -16,7 +12,7 @@ class Game(MainLoop):
 
         # If debugging we go to the TestScene
         # Else: We set up a Menu Scene, and let it fire the scene change events
-        if debug == True:
+        if debug:
             self.scene = MenuScene(self)
         else:
             self.scene = GameScene(self)

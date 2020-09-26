@@ -1,7 +1,7 @@
 import pygame
 import pygame_gui
-from typing import Callable
 
+from typing import Callable
 from src import settings as s
 
 
@@ -17,8 +17,8 @@ class BarValue(pygame.sprite.Sprite):
 
     It is necessary because UIScreenSpaceHealthBar requires a sprite
     with hardcoded 'health_capacity' and 'current_health' properties."""
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, *args):
+        super().__init__(*args)
         self.health_capacity = 100
         self.current_health = 0
 
@@ -83,7 +83,7 @@ class CommandPanel(pygame_gui.elements.UIPanel):
         self.button_start_at = (20, 10)
         self.button_size = (150, 50)
 
-        self.MAGIC = 30 # Something to do with inherent padding of panel?
+        self.MAGIC = 30  # Something to do with inherent padding of panel?
 
     def add_button(self, name, callback=None) -> CallbackButton:
         """Adds a button to the panel returns the created object"""
@@ -99,8 +99,8 @@ class CommandPanel(pygame_gui.elements.UIPanel):
         )
         self.button_n += 1
 
-        self.height = self.button_size[1] * self.button_n + self.MAGIC
-        self.set_dimensions((self.relative_rect.width, self.height))
+        height = self.button_size[1] * self.button_n + self.MAGIC
+        self.set_dimensions((self.relative_rect.width, height))
 
         return button
 
@@ -127,7 +127,7 @@ class ResourcePanel(pygame_gui.elements.UIPanel):
             self.old_food = s.FOOD_SUPPLY
 
 
-class Console():
+class Console:
     """A console you can print lines to, use .println(text) to add a line."""
     def __init__(self, relative_rect, manager):
         self.relative_rect = relative_rect

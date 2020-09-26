@@ -1,5 +1,5 @@
 import pygame
-from pymunk import Vec2d
+from pymunk.vec2d import Vec2d
 
 from src.game_objects.actors import Actor
 from src.game_objects.background import Background
@@ -7,8 +7,6 @@ from src.game_objects.floor import TestFloor
 from src.game_objects.gui import GUI
 from src.game_objects.level_borders import LevelBorders
 from src.game_objects.selection_box import SelectionBox
-from src.game_objects.empty_sprite import EmptySprite
-from src.main_loop import MainLoop
 from src.scenes.game_over import GameOver
 from src.game_objects.gui import console_print_event
 from src.game_objects.obstacles import Obstacle
@@ -20,7 +18,7 @@ from src.map import TiledMap
 from src.state import State
 
 
-FEED = pygame.event.Event(COMMAND, {'value' : 'feed'})
+FEED = pygame.event.Event(COMMAND, {'value': 'feed'})
 MENU = pygame.event.Event(SWITCH_SCENE, {'scene': 'menu'})
 GAME = pygame.event.Event(SWITCH_SCENE, {'scene': 'game'})
 TEST = pygame.event.Event(SWITCH_SCENE, {'scene': 'test'})
@@ -198,7 +196,7 @@ class GameScene(Scene):
 
         self.all.add(self.state, layer=0)  # add state so that it gets updates
         self.all.add(self.map, layer=0)
-        self.all.add(self.actors.sprites(), layer = 3)
+        self.all.add(self.actors.sprites(), layer=3)
         self.all.add(self.GUI, layer=6)
 
         # TODO This is a hack; remove old layer code
@@ -254,5 +252,5 @@ class TestScene(GameScene):
 
         self.test = pygame.sprite.LayeredUpdates()
         for actor in self.actors:
-            actor.food = 5 #testing death
+            actor.food = 5      # testing death
             actor.health = 5

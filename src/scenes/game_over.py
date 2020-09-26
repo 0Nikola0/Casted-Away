@@ -17,7 +17,7 @@ class GameOver(Background):
         self.rect.center = round(s.SCREEN_WIDTH / 2), 300
 
     def draw(self, surface):
-        super(Background, self).draw(surface)
+        super(GameOver, self).draw(surface)
         self.update_brightness()
 
     def update_brightness(self):

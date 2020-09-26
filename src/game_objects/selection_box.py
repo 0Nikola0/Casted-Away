@@ -20,7 +20,7 @@ class SelectionBox(EmptySprite):
         self.rect = self.image.get_rect(center=target.rect.center)
 
     def reset(self):
-        self.image = pygame.Surface((0,0))
+        self.image = pygame.Surface((0, 0))
         self.rect = pygame.Rect(0, 0, 0, 0)
         self.target = None
 
@@ -28,5 +28,6 @@ class SelectionBox(EmptySprite):
         if self.target:
             if self.target.groups():
                 self.rect.center = self.target.rect.center
-            else:  # if target died
+            # if target died
+            else:
                 self.reset()

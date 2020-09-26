@@ -1,10 +1,4 @@
-import pygame
-import pygame_gui
-from typing import Callable
-
-from src import settings as s
 from src.game_objects.gui_elements import *
-
 from src.events import CONSOLE_PRINT
 
 

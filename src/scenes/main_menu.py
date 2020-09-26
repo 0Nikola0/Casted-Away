@@ -87,9 +87,9 @@ class MainMenu:
                    callback=lambda: self.select('quit')),
         ]
 
-        self.clock = pygame.time.Clock()
+        clock = pygame.time.Clock()
         while True:
-            self.clock.tick(s.FPS)
+            clock.tick(s.FPS)
 
             # If something is selected, let our caller handle it
             if self.selection:
