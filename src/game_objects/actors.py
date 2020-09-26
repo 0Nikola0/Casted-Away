@@ -23,8 +23,10 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
 
         self.name = name or "Actor ID: " + str(self.id)
         self.health, self.food = health, food
+        self.energy = 100
         self.hungery = 0.04  # How fast the player gets hungry
         self.hunger_damage_rate = 0.1
+        self.energy_recovery_rate = 0.1
 
         self.directionx, self.directiony = 0, 0
         self.vel = s.CHILD_ACTOR_VELOCITY if speed.lower == "kid" else s.ADULT_ACTOR_VELOCITY
@@ -162,6 +164,9 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
         self.synchronize_rect_body()
 
         self.get_hungry()
+
+        if self.energy < 100:
+            self.energy += self.energy_recovery_rate
 
         if self.food < 30:
             if self.do_hungry_sound is True:

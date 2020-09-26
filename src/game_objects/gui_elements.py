@@ -41,17 +41,35 @@ class ActorPanel(pygame_gui.elements.UIPanel):
             text="NO ACTOR SELECTED",
             manager=self.manager, container=self)
 
+        self.hp_label = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect((0, 30), (50, 20)),
+            text="HP",
+            manager=self.manager, container=self)
         self.health_bar_value = BarValue()
         self.health_bar = pygame_gui.elements.UIScreenSpaceHealthBar(
             relative_rect=pygame.Rect((50, 30), (100, 20)),
             manager=self.manager, container=self)
         self.health_bar.set_sprite_to_monitor(self.health_bar_value)
 
+        self.food_label = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect((0, 50), (50, 20)),
+            text="Food",
+            manager=self.manager, container=self)
         self.food_bar_value = BarValue()
         self.food_bar = pygame_gui.elements.UIScreenSpaceHealthBar(
             relative_rect=pygame.Rect((50, 50), (100, 20)),
             manager=self.manager, container=self)
         self.food_bar.set_sprite_to_monitor(self.food_bar_value)
+
+        self.energy_label = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect((0, 70), (50, 20)),
+            text="Energy",
+            manager=self.manager, container=self)
+        self.energy_bar_value = BarValue()
+        self.energy_bar = pygame_gui.elements.UIScreenSpaceHealthBar(
+            relative_rect=pygame.Rect((50, 70), (100, 20)),
+            manager=self.manager, container=self)
+        self.energy_bar.set_sprite_to_monitor(self.energy_bar_value)
 
     def load_actor(self, actor):
         self.actor = actor
@@ -67,6 +85,7 @@ class ActorPanel(pygame_gui.elements.UIPanel):
             self.actor_name.rebuild()
             self.health_bar_value.set_value(self.actor.health)
             self.food_bar_value.set_value(self.actor.food)
+            self.energy_bar_value.set_value(self.actor.energy)
         else:
             self.actor_name.text = "No Actor"
             self.actor_name.rebuild()

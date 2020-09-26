@@ -19,13 +19,15 @@ class Task(pygame.sprite.Sprite):
 
     def do_task(self):
         # Checks which ID the task is assigned and calls the corresponding function
-        {0: self.harvest, 1: self.get_water, 2: self.increase_actor_stats}.get(self.task_id)()
+        return {0: self.harvest, 1: self.get_water, 2: self.increase_actor_stats}.get(self.task_id)()
 
     def harvest(self):
         s.FOOD_SUPPLY += self.increasement
+        return " harvested food."
 
     def get_water(self):
         s.WATER_SUPPLY += self.increasement
+        return " got some water."
 
     # Same method can be used to increase each of the actor's stats eg Food status, Sleep status..
     def increase_actor_stats(self, current):

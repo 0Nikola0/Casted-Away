@@ -58,6 +58,20 @@ class Scene:
             else:
                 console_print_event("Need more food!")
 
+    def do_task_selected_actor(self):
+        actor = self.selected_actor.sprite
+        #! We need to check if we are in a valid task area
+        if actor is not None:
+            for task in self.tasks:
+                if actor.rect.colliderect(task.rect):
+                    if actor.energy < 50:
+                        console_print_event(actor.name + " is too tired to do that!")
+                    else:
+                        task_text = task.do_task()
+                        actor.energy -= 50
+                        if task_text:
+                            console_print_event(actor.name + task_text)
+
     def handle_key_down(self, key):
         pass
 
@@ -149,7 +163,11 @@ class GameScene(Scene):
 
         self.GUI = GUI()
         self.GUI.create_command_button(
-            "Feed Actor", lambda: self.feed_selected_actor())
+            "Eat Food", lambda: self.feed_selected_actor())
+        self.GUI.create_command_button(
+            "Gather Resources", lambda: self.do_task_selected_actor())
+        # self.GUI.create_command_button(
+            # "Rest", lambda: self.do_task_selected_actor())
         self.GUI.create_command_button(
             "Quit", lambda: pygame.event.post(pygame.event.Event(pygame.QUIT)))
 
@@ -186,13 +204,13 @@ class GameScene(Scene):
 
         # Tasks
         self.tasks = [
-            Task(task_id=0, increasement=.0, pos=(73, 135), size=(140, 140)),   # Harvest
-            Task(1, 1.0, (535, 240), (110, 20)),    # Get water (1)
-            Task(1, 1.0, (625, 475), (33, 45)),     # Get water(
-            Task(1, 1.0, (590, 510), (33, 45)),
-            Task(1, 1.0, (560, 547), (33, 45)),               # 2)
-            Task(2, 1.0, (40, 325), (100, 55)),     # Resting place by the crops
-            Task(2, 1.0, (420, 497), (125, 80))     # Resting place by the river
+            Task(task_id=0, increasement=20.0, pos=(73, 135), size=(140, 140)),   # Harvest
+            Task(1, 20.0, (535, 240), (110, 20)),    # Get water (1)
+            Task(1, 20.0, (625, 475), (33, 45)),     # Get water(
+            Task(1, 20.0, (590, 510), (33, 45)),
+            Task(1, 20.0, (560, 547), (33, 45)),               # 2)
+            Task(2, 20.0, (40, 325), (100, 55)),     # Resting place by the crops
+            Task(2, 20.0, (420, 497), (125, 80))     # Resting place by the river
         ]
 
         self.obstacle_bodies = []
