@@ -14,8 +14,10 @@ class Task(pygame.sprite.Sprite):
         self.increasement = increasement    # How much you gain from doing the task per loop
         self.rect = pygame.Rect(pos, size)
 
-    def draw(self, surface):
-        pygame.draw.rect(surface, s.BLACK, self.rect, 1)
+        self.image = pygame.Surface((self.rect.width, self.rect.height))
+        self.empty_image = pygame.Surface((0,0))
+        self.outline_image = pygame.Surface((self.rect.width, self.rect.height), flags=pygame.SRCALPHA)
+        pygame.draw.rect(self.outline_image, (255,255,255,255), (0,0,self.rect.w, self.rect.h), 2)
 
     def do_task(self):
         # Checks which ID the task is assigned and calls the corresponding function
@@ -30,6 +32,14 @@ class Task(pygame.sprite.Sprite):
         return " got some water."
 
     # Same method can be used to increase each of the actor's stats eg Food status, Sleep status..
-    def increase_actor_stats(self, current):
-        current = (current + self.increasement) if (current + self.increasement) <= 100 else 100
-        return current
+    # Right now just does a rest message
+    def increase_actor_stats(self):
+        # current = (current + self.increasement) if (current + self.increasement) <= 100 else 100
+        # TODO doesnt actually rest
+        return " has rested a bit."
+
+    def show_border(self):
+        self.image = self.outline_image
+
+    def hide_border(self):
+        self.image = self.empty_image

@@ -45,6 +45,9 @@ the resources.
 When people run out of food they start starving and will **die**. Keep
 them **alive**!
 
+Hint: You can **mouse over** areas of the game to find valid gathering or task
+locations.
+
 ## Content & Warnings
 
 This game explores historical racial issues. We want to raise awareness of

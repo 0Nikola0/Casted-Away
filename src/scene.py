@@ -43,6 +43,9 @@ class Scene:
 
         self.shortcuts = s.SHORTCUTS
 
+        self.tasks = None
+        self.obstacles = None
+
         self.main_loop.mouse_handlers.append(self.handle_mouse_event)
         for key in self.shortcuts.values():
             self.main_loop.add_up_down_key_handlers(self, key)
@@ -60,10 +63,11 @@ class Scene:
 
     def do_task_selected_actor(self):
         actor = self.selected_actor.sprite
-        #! We need to check if we are in a valid task area
+        task_found = False
         if actor is not None:
             for task in self.tasks:
                 if actor.rect.colliderect(task.rect):
+                    task_found = True
                     if actor.energy < 50:
                         console_print_event(actor.name + " is too tired to do that!")
                     else:
@@ -71,6 +75,8 @@ class Scene:
                         actor.energy -= 50
                         if task_text:
                             console_print_event(actor.name + task_text)
+            if not task_found:
+                console_print_event(actor.name + " can not do anything here.")
 
     def handle_key_down(self, key):
         pass
@@ -92,7 +98,11 @@ class Scene:
             self.handle_mouse_up(pos)
 
     def handle_mouse_move(self, pos):
-        pass
+        for task in self.tasks:
+            if task.rect.collidepoint(pos):
+                task.show_border()
+            else:
+                task.hide_border()
 
     def handle_mouse_down(self, pos):
         pos = s.flip_y(pos)
@@ -180,7 +190,7 @@ class GameScene(Scene):
 
         # Music
         pygame.mixer.music.load(s.SOUNDTRACKS[randint(0, 2)])
-        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.set_volume(0.3)
         pygame.mixer.music.play(loops=-1)
 
         # Actors
@@ -212,6 +222,9 @@ class GameScene(Scene):
             Task(2, 20.0, (40, 325), (100, 55)),     # Resting place by the crops
             Task(2, 20.0, (420, 497), (125, 80))     # Resting place by the river
         ]
+
+        for task in self.tasks:
+            self.all.add(task, layer=6)
 
         self.obstacle_bodies = []
 
