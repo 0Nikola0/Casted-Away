@@ -61,13 +61,23 @@ class ActorPanel(pygame_gui.elements.UIPanel):
             manager=self.manager, container=self)
         self.food_bar.set_sprite_to_monitor(self.food_bar_value)
 
-        self.energy_label = pygame_gui.elements.UILabel(
+        self.water_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect((0, 70), (50, 20)),
+            text="Energy",
+            manager=self.manager, container=self)
+        self.water_bar_value = BarValue()
+        self.water_bar = pygame_gui.elements.UIScreenSpaceHealthBar(
+            relative_rect=pygame.Rect((50, 70), (100, 20)),
+            manager=self.manager, container=self)
+        self.water_bar.set_sprite_to_monitor(self.water_bar_value)
+
+        self.energy_label = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect((0, 90), (50, 20)),
             text="Energy",
             manager=self.manager, container=self)
         self.energy_bar_value = BarValue()
         self.energy_bar = pygame_gui.elements.UIScreenSpaceHealthBar(
-            relative_rect=pygame.Rect((50, 70), (100, 20)),
+            relative_rect=pygame.Rect((50, 90), (100, 20)),
             manager=self.manager, container=self)
         self.energy_bar.set_sprite_to_monitor(self.energy_bar_value)
 
@@ -85,6 +95,7 @@ class ActorPanel(pygame_gui.elements.UIPanel):
             self.actor_name.rebuild()
             self.health_bar_value.set_value(self.actor.health)
             self.food_bar_value.set_value(self.actor.food)
+            self.water_bar_value.set_value(self.actor.water)
             self.energy_bar_value.set_value(self.actor.energy)
         else:
             self.actor_name.text = "No Actor"

@@ -38,7 +38,7 @@ class Scene:
         self.GUI = None
         self.all = pygame.sprite.LayeredUpdates()
         self.selected_actor = pygame.sprite.GroupSingle()
-        self.selection_box = SelectionBox(s.GREEN)
+        self.selection_box = SelectionBox((100,100,255))
         self.all.add(self.selection_box, layer=SELECTION_L)
 
         self.shortcuts = s.SHORTCUTS
@@ -60,6 +60,14 @@ class Scene:
                 s.FOOD_SUPPLY -= 15
             else:
                 console_print_event("Need more food!")
+
+    def water_selected_actor(self):
+        if self.selected_actor.sprite is not None:
+            if s.WATER_SUPPLY > 15:
+                self.selected_actor.sprite.drink(15)
+                s.WATER_SUPPLY -= 15
+            else:
+                console_print_event("Need more water!")
 
     def do_task_selected_actor(self):
         actor = self.selected_actor.sprite
@@ -174,6 +182,8 @@ class GameScene(Scene):
         self.GUI = GUI()
         self.GUI.create_command_button(
             "Eat Food", lambda: self.feed_selected_actor())
+        self.GUI.create_command_button(
+            "Drink Water", lambda: self.water_selected_actor())
         self.GUI.create_command_button(
             "Gather Resources", lambda: self.do_task_selected_actor())
         # self.GUI.create_command_button(

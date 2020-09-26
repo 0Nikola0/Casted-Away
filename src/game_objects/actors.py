@@ -12,7 +12,8 @@ from src.game_objects.gui import console_print_event
 class Actor(pygame.sprite.Sprite, ActorRigidBody):
     __ACTORS_IDS = {}
 
-    def __init__(self, pos, sprite_sheets, sounds, space, name=None, health=100, food=100, speed="Adult"):
+    def __init__(self, pos, sprite_sheets, sounds, space, name=None,
+                 health=100, food=100, water=100, speed="Adult"):
         self.id = s.get_id(self, Actor.__ACTORS_IDS)
         ActorRigidBody.__init__(self, pos, s.ADULT_ACTOR_SIZE, self.id, space)
         pygame.sprite.Sprite.__init__(self)
@@ -23,8 +24,10 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
 
         self.name = name or "Actor ID: " + str(self.id)
         self.health, self.food = health, food
+        self.water = water
+        self.thirst_rate = 0.03
         self.energy = 100
-        self.hungery = 0.04  # How fast the player gets hungry
+        self.hungery = 0.03  # How fast the player gets hungry
         self.hunger_damage_rate = 0.1
         self.energy_recovery_rate = 0.1
 
@@ -144,6 +147,10 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
         self.food -= self.hungery
         self.food = max(0, self.food)
 
+    def get_thirsty(self):
+        self.water -= self.thirst_rate
+        self.water = max(0, self.water)
+
     def starve(self):
         self.health -= self.hunger_damage_rate
 
@@ -156,7 +163,11 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
         self.sounds["EAT"].play()
         self.food = (self.food + amount) if (self.food + amount) <= 100 else 100
         self.do_hungry_sound = True
-        print(f"Actor.food = {self.food}")
+
+    def drink(self, amount):
+        self.sounds["EAT"].play()
+        self.water = (self.water + amount) if (self.water + amount) <= 100 else 100
+        self.do_hungry_sound = True
 
     def update(self, time_delta, *args):
         self.time_in_frame += time_delta
@@ -164,8 +175,9 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
         self.synchronize_rect_body()
 
         self.get_hungry()
+        self.get_thirsty()
 
-        if self.energy < 100:
+        if self.energy < 100 and self.water > 0:
             self.energy += self.energy_recovery_rate
 
         if self.food < 30:
