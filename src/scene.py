@@ -55,17 +55,17 @@ class Scene:
 
     def feed_selected_actor(self):
         if self.selected_actor.sprite is not None:
-            if s.FOOD_SUPPLY > 15:
-                self.selected_actor.sprite.eat(15)
-                s.FOOD_SUPPLY -= 15
+            if s.FOOD_SUPPLY > 30:
+                self.selected_actor.sprite.eat(30)
+                s.FOOD_SUPPLY -= 30
             else:
                 console_print_event("Need more food!")
 
     def water_selected_actor(self):
         if self.selected_actor.sprite is not None:
-            if s.WATER_SUPPLY > 15:
-                self.selected_actor.sprite.drink(15)
-                s.WATER_SUPPLY -= 15
+            if s.WATER_SUPPLY > 30:
+                self.selected_actor.sprite.drink(30)
+                s.WATER_SUPPLY -= 30
             else:
                 console_print_event("Need more water!")
 
@@ -224,13 +224,13 @@ class GameScene(Scene):
 
         # Tasks
         self.tasks = [
-            Task(task_id=0, increasement=20.0, pos=(73, 135), size=(140, 140)),   # Harvest
-            Task(1, 20.0, (535, 240), (110, 20)),    # Get water (1)
-            Task(1, 20.0, (625, 475), (33, 45)),     # Get water(
-            Task(1, 20.0, (590, 510), (33, 45)),
-            Task(1, 20.0, (560, 547), (33, 45)),               # 2)
-            Task(2, 20.0, (40, 325), (100, 55)),     # Resting place by the crops
-            Task(2, 20.0, (420, 497), (125, 80))     # Resting place by the river
+            Task(task_id=0, increasement=40.0, pos=(73, 135), size=(140, 140)),   # Harvest
+            Task(1, 40.0, (535, 240), (110, 20)),    # Get water (1)
+            Task(1, 40.0, (625, 475), (33, 45)),     # Get water(
+            Task(1, 40.0, (590, 510), (33, 45)),
+            Task(1, 40.0, (560, 547), (33, 45)),               # 2)
+            Task(2, 40.0, (40, 325), (100, 55)),     # Resting place by the crops
+            Task(2, 40.0, (420, 497), (125, 80))     # Resting place by the river
         ]
 
         for task in self.tasks:
