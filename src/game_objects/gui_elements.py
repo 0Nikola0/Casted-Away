@@ -37,19 +37,19 @@ class ActorPanel(pygame_gui.elements.UIPanel):
         self.actor = None
 
         self.actor_name = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((0, 0), (200, 20)),
+            relative_rect=pygame.Rect((0, 10), (200, 20)),
             text="NO ACTOR SELECTED",
             manager=self.manager, container=self)
 
         self.health_bar_value = BarValue()
         self.health_bar = pygame_gui.elements.UIScreenSpaceHealthBar(
-            relative_rect=pygame.Rect((50, 20), (100, 20)),
+            relative_rect=pygame.Rect((50, 30), (100, 20)),
             manager=self.manager, container=self)
         self.health_bar.set_sprite_to_monitor(self.health_bar_value)
 
         self.food_bar_value = BarValue()
         self.food_bar = pygame_gui.elements.UIScreenSpaceHealthBar(
-            relative_rect=pygame.Rect((50, 40), (100, 20)),
+            relative_rect=pygame.Rect((50, 50), (100, 20)),
             manager=self.manager, container=self)
         self.food_bar.set_sprite_to_monitor(self.food_bar_value)
 
@@ -80,9 +80,10 @@ class CommandPanel(pygame_gui.elements.UIPanel):
         super(CommandPanel, self).__init__(*args, **kwargs)
         self.manager = kwargs['manager']
         self.button_n = 0
-        self.button_start_at = (20, 20)
+        self.button_start_at = (20, 10)
         self.button_size = (150, 50)
-        self.button_spacing = 20
+
+        self.MAGIC = 30 # Something to do with inherent padding of panel?
 
     def add_button(self, name, callback=None) -> CallbackButton:
         """Adds a button to the panel returns the created object"""
@@ -97,6 +98,9 @@ class CommandPanel(pygame_gui.elements.UIPanel):
             manager=self.manager
         )
         self.button_n += 1
+
+        self.height = self.button_size[1] * self.button_n + self.MAGIC
+        self.set_dimensions((self.relative_rect.width, self.height))
 
         return button
 

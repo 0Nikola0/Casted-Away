@@ -3,11 +3,11 @@
   {
     "colours":
     {
-      "normal_bg":"#45494e",
+      "normal_bg":"#648a04",
       "hovered_bg":"#35393e",
       "disabled_bg":"#25292e",
       "selected_bg":"#193754",
-      "dark_bg":"#15191e",
+      "dark_bg":"#133a26",
       "normal_text":"#c5cbd8",
       "hovered_text":"#FFFFFF",
       "selected_text":"#FFFFFF",
@@ -26,19 +26,41 @@
     }
   },
 
-  "button":
+  "panel":
   {
-    "colours":
-    {
-      "active_bg":"#666666",
-      "normal_border": "#333333",
-      "hovered_border": "#B0B0B0"
-    },
     "misc":
     {
       "shape": "rounded_rectangle",
       "shape_corner_radius": "10",
       "border_width": "3"
+    }
+  },
+
+  "text_box":
+  {
+    "misc":
+    {
+      "shape": "rounded_rectangle",
+      "shape_corner_radius": "10",
+      "border_width": "3"
+    }
+  },
+
+  "button":
+  {
+    "colours":
+    {
+      "normal_bg":"#ccffcc",
+      "active_bg":"#666666",
+      "normal_border": "#555555",
+      "hovered_border": "#B0B0B0",
+      "normal_text": "#222222"
+    },
+    "misc":
+    {
+      "shape": "rounded_rectangle",
+      "shape_corner_radius": "10",
+      "border_width": "4"
     }
   }
 }
