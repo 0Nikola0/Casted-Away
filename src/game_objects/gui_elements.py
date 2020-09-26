@@ -142,17 +142,18 @@ class ResourcePanel(pygame_gui.elements.UIPanel):
         self.manager = kwargs['manager']
 
         self.old_food = -1
+        self.old_water = -1
 
         self.label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((10, 10), (100, 20)),
+            relative_rect=pygame.Rect((10, 10), (200, 20)),
             text="",
             manager=self.manager, container=self)
 
         self.update()
 
     def update(self, *args):
-        if self.old_food != s.FOOD_SUPPLY:
-            self.label.text = "Food: " + str(s.FOOD_SUPPLY)
+        if self.old_food != s.FOOD_SUPPLY or self.old_water != s.WATER_SUPPLY:
+            self.label.text = "Food: " + str(s.FOOD_SUPPLY) + " Water: " + str(s.WATER_SUPPLY)
             self.label.rebuild()
             self.old_food = s.FOOD_SUPPLY
 
