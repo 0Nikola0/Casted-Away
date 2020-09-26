@@ -11,6 +11,7 @@ from src.game_objects.empty_sprite import EmptySprite
 from src.main_loop import MainLoop
 from src.scenes.game_over import GameOver
 from src.game_objects.gui import console_print_event
+from src.game_objects.obstacles import Obstacle
 
 import src.settings as s
 from src.events import COMMAND, SWITCH_SCENE
@@ -163,6 +164,37 @@ class GameScene(Scene):
         self.actors = pygame.sprite.Group()
         self.actors.add(self.create_actor((200, 200)))
         self.actors.add(self.create_actor((200, 250)))
+
+        # Obstacles
+        self.obstacles = [  # House
+                        Obstacle(pos=(255, 96), size=(228, 222)),
+                        # Garden fence
+                        Obstacle((20, 116), (30, 190)),
+                        Obstacle((20, 106), (235, 20)),
+                        Obstacle((45, 300), (160, 20)),
+                        Obstacle((235, 126), (15, 50)),
+                        # Pond next to house
+                        Obstacle((483, 160), (257, 94)),
+                        # River
+                        Obstacle((730, 160), (30, 240)),
+                        Obstacle((705, 380), (30, 55)),
+                        Obstacle((680, 420), (30, 60)),
+                        Obstacle((645, 480), (33, 45)),
+                        Obstacle((610, 515), (33, 45)),
+                        Obstacle((580, 552), (33, 45)),
+                        # Bottom of map
+                        Obstacle((0, 565), (590, 20)),
+                        # Right
+                        Obstacle((0, 0), (20, 570)),
+                        # Left trees
+                        Obstacle((20, 390), (155, 178)),
+                        # Middle bottom trees
+                        Obstacle((325, 480), (80, 90)),
+                        # Right trees
+                        Obstacle((485, 387), (180, 100)),
+                        Obstacle((610, 352), (65, 40)),
+                        Obstacle((650, 250), (50, 60))
+                        ]
 
         self.all.add(self.state, layer=0)  # add state so that it gets updates
         self.all.add(self.map, layer=0)

@@ -23,7 +23,7 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
 
         self.name = name or "Actor ID: " + str(self.id)
         self.health, self.food = health, food
-        self.hungery = 0.08  # How fast the player gets hungry
+        self.hungery = 0.04  # How fast the player gets hungry
         self.hunger_damage_rate = 0.1
 
         self.directionx, self.directiony = 0, 0

@@ -50,12 +50,6 @@ class MainLoop:
         self.task01 = Task(task_id=0, increasement=.0, pos=(73, 135), size=(140, 140))   # Harvest
         self.task02 = Task(1, 1.0, (540, 245), (60, 10))    # Get water
 
-        # Obstacles
-        self.obstacles = [Obstacle(pos=(255, 96), size=(228, 222)),
-                          Obstacle((530, 160), (200, 94)),
-                          Obstacle((730, 160), (50, 240))
-                          ]
-
     def update(self):
         """Update game state
 
@@ -80,8 +74,6 @@ class MainLoop:
 
         # Testing
         self.task01.draw(self.surface)
-        for obs in self.obstacles:
-            obs.draw(self.surface)
 
     def handle_events(self):
         """Handle the player's inputs
