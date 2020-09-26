@@ -85,9 +85,9 @@ SOUNDS_DIRECTORY = os.path.join(ASSETS_DIRECTORY, "sounds")
 SOUNDTRACKS_DIRECTORY = os.path.join(SOUNDS_DIRECTORY, "soundtracks")
 
 SOUNDTRACKS = [
-    os.path.join(SOUNDTRACKS_DIRECTORY, "soundtrack01.mp3"),
-    os.path.join(SOUNDTRACKS_DIRECTORY, "soundtrack02.mp3"),
-    os.path.join(SOUNDTRACKS_DIRECTORY, "soundtrack03.mp3"),
+    os.path.join(SOUNDTRACKS_DIRECTORY, "soundtrack01.ogg"),
+    os.path.join(SOUNDTRACKS_DIRECTORY, "soundtrack02.ogg"),
+    os.path.join(SOUNDTRACKS_DIRECTORY, "soundtrack03.ogg"),
 ]
 
 SOUNDS_ACTORS_DIRECTORY = os.path.join(SOUNDS_DIRECTORY, "actors")

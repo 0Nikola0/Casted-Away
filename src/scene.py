@@ -161,8 +161,9 @@ class GameScene(Scene):
         self.map = TiledMap(s.MAP)
 
         # Music
-        pygame.mixer_music.load(s.SOUNDTRACKS[randint(0, 2)])
-        pygame.mixer_music.play(loops=-1)
+        pygame.mixer.music.load(s.SOUNDTRACKS[randint(0, 2)])
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.play(loops=-1)
 
         # Actors
         self.a_names = [
