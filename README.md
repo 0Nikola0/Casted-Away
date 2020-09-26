@@ -1,53 +1,64 @@
-# Casta Way
+![banner](banner.png)
 
-## Setting: Spain, 1918 
+# Casted Away
 
-You and your family have come back from the New World and your children
-are of mixed race. As you are trying to find your place in the rigid 
-Casta (caste) system of Spain that discriminates by race, a deadly virus
-enters the scene. Can you make the right choices and survive?
+Created for [Pyweek30](https://pyweek.org/30/)
+by team **Dunder Mifflin**: Nikola (lead), jimthejelly, Taganov, fury, Imperfect_One 
+
+## Setting
+
+**Spain, The Age of Discovery**
+
+Your family was cast away because they're of mixed Spanish and New World. In
+the Casta system of Spain, they rank low. People of the village didn't accept
+other races because old times, and cast the whole family out. Now they live
+by themselves by a river where they harvest crops and fish for a living.
 
 https://en.wikipedia.org/wiki/Casta
 
 ## Running
 
-Dependencies:
+requirements.txt
 
-- pygame
-- pygame_gui
+    cffi==1.14.3
+    pycparser==2.20
+    pygame==1.9.6
+    pygame-gui==0.5.7
+    pymunk==5.7.0
+    PyTMX==3.21.7
+    six==1.15.0
 
-Install the requirements and run.
+Install requirements and run.
 
     pip install -r requirements.txt
     python run_game.py
 
+Or do it in a virtualenv to keep it clean.
+
 ## Controls and Gameplay
 
-Each _turn_ is a month in real time. You must make a plan for the coming
-month. Select your choice from the menu and observe the consequences.
-Keep in mind all the things your family will need to survive and the
-_risks_ of going out.
+Click people to select them. Click the ground to make them move there.  Click
+**FEED** on the sidebar to give them food from the **resources**.  Move
+them to the farm or the river to **gather** food or water which is added to
+the resources.
 
-You have limited time to decide and each choice affects the next. After
-you meet your doom, reflect on your mistakes and try again. Explore ways
-to keep yourself and your family alive during these deadly seasons. If only
-you could undo every mistake you made, if only life was just as forgiving...
+When people run out of food they start starving and will **die**. Keep
+them **alive**!
 
-## Content & warnings
+## Content & Warnings
 
-This game explores historical racial issues, along with the topic of the
-1918 Spanish flu. We want to raise awareness of the issues of the past and
-present, and do not intend any harm to anyone. We hope this game may inspire
-some to do further reasearch into similar issues of mixed-race discrimination
-in history, and stand up for justice.
+This game explores historical racial issues. We want to raise awareness of
+the issues of the past and present, and do not intend any harm to anyone. We
+hope this game may inspire some to do further reasearch into similar issues of
+mixed-race discrimination in history.
 
 ## Licensing and Copyright
 
-This project is licensed under the MIT license.
+This project code is licensed under the [MIT](https://mit-license.org/)
+license. Assets are licensed as specified below.
 
-https://mit-license.org/
+### Art Asset Links:
 
-### Art assets
-
-- https://craftpix.net/freebies/free-villagers-sprite-sheets-pixel-art/
-- https://craftpix.net/file-licenses/
+- Villagers: https://craftpix.net/freebies/free-villagers-sprite-sheets-pixel-art/
+- Buttons: https://adwitr.itch.io/button-asset-pack
+- Tiles: https://pipoya.itch.io/pipoya-rpg-tileset-32x32?download
