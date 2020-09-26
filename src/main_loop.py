@@ -5,6 +5,7 @@ import pymunk.pygame_util
 from collections import defaultdict
 
 from src.game_objects.tasks import Task
+from src.game_objects.obstacles import Obstacle
 
 
 class MainLoop:
@@ -47,8 +48,11 @@ class MainLoop:
         self.is_prototyping_mode = False
 
         # Testing for tasks
-        self.task01 = Task(0, 1.0, (73, 135), (140, 140))   # Harvest
+        self.task01 = Task(task_id=0, increasement=.0, pos=(73, 135), size=(140, 140))   # Harvest
         self.task02 = Task(1, 1.0, (540, 245), (60, 10))    # Get water
+
+        # Obstacles
+        self.obstacle01 = Obstacle(pos=(255, 96), size=(228, 222))
 
     def update(self):
         """Update game state
@@ -74,6 +78,7 @@ class MainLoop:
 
         # Testing
         self.task01.draw(self.surface)
+        self.obstacle01.draw(self.surface)
 
     def handle_events(self):
         """Handle the player's inputs
