@@ -178,8 +178,8 @@ class GameScene(Scene):
             "Gather Resources", lambda: self.do_task_selected_actor())
         # self.GUI.create_command_button(
             # "Rest", lambda: self.do_task_selected_actor())
-        self.GUI.create_command_button(
-            "Quit", lambda: pygame.event.post(pygame.event.Event(pygame.QUIT)))
+        # self.GUI.create_command_button(
+            # "Quit", lambda: pygame.event.post(pygame.event.Event(pygame.QUIT)))
 
         self.main_loop.add_event_handler(self.GUI)
         self.main_loop.add_event_handler(self)

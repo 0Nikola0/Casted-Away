@@ -7,7 +7,7 @@ class State(EmptySprite):
     """Manage the game state"""
     def __init__(self):
         super().__init__()
-        self.seconds_per_month = 5
+        self.seconds_per_month = 60
         self.month = 0
         self.seconds_passed = 0.0
         self.frame = 0
