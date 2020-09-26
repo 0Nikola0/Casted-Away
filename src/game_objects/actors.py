@@ -12,7 +12,7 @@ from src.game_objects.gui import console_print_event
 class Actor(pygame.sprite.Sprite, ActorRigidBody):
     __ACTORS_IDS = {}
 
-    def __init__(self, pos, sprite_sheets, sounds, space, name=None, health=100, food=100):
+    def __init__(self, pos, sprite_sheets, sounds, space, name=None, health=100, food=100, speed="Adult"):
         self.id = s.get_id(self, Actor.__ACTORS_IDS)
         ActorRigidBody.__init__(self, pos, s.ADULT_ACTOR_SIZE, self.id, space)
         pygame.sprite.Sprite.__init__(self)
@@ -27,7 +27,7 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
         self.hunger_damage_rate = 0.1
 
         self.directionx, self.directiony = 0, 0
-        self.vel = s.ADULT_ACTOR_VELOCITY
+        self.vel = s.CHILD_ACTOR_VELOCITY if speed.lower == "kid" else s.ADULT_ACTOR_VELOCITY
 
         self.target_position = None
 

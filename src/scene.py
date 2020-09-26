@@ -1,4 +1,5 @@
 import pygame
+from random import randint
 from pymunk.vec2d import Vec2d
 
 from src.game_objects.actors import Actor
@@ -159,12 +160,26 @@ class GameScene(Scene):
 
         self.map = TiledMap(s.MAP)
 
+        # Actors
+        self.a_names = [
+            ["Ernest", "Clyde", "Marvin", "Leroy", "Melvin", "Herbert"],    # Man
+            ["Agnes", "Elsie", "Kathryn", "Sylvia", "Helen", "Leona"],      # Woman
+            ["Ralph", "Earl", "Elmer", "Harold", "George", "Thomas"],       # Boy
+            ["Mary", "Evelyn", "Irene", "Betty", "Ruby", "Ethel"],          # Girl
+            ["Makin", "kelham", "Francis", "Hartshorn", "Owen", "Gladdle"]  # Family name
+        ]
+        family_name = self.a_names[4][randint(0, 5)]
         self.actors = pygame.sprite.Group()
-        self.actors.add(self.create_actor((200, 200)))
-        self.actors.add(self.create_actor((200, 250)))
+        self.actors.add(self.create_actor((300, 350), s.MAN_SPRITE_SHEETS,
+                                          name=f"{self.a_names[0][randint(0, 5)]} {family_name}", speed="Adult"))
+        self.actors.add(self.create_actor((330, 350), s.WOMAN_SPRITE_SHEETS,
+                                          name=f"{self.a_names[1][randint(0, 5)]} {family_name}", speed="Adult"))
+        self.actors.add(self.create_actor((300, 400), s.BOY_SPRITE_SHEETS,
+                                          name=f"{self.a_names[2][randint(0, 5)]} {family_name}", speed="Kid"))
+        self.actors.add(self.create_actor((330, 400), s.GIRL_SPRITE_SHEETS,
+                                          name=f"{self.a_names[3][randint(0, 5)]} {family_name}", speed="Kid"))
 
         # Tasks
-        # Testing for tasks
         self.tasks = [
             Task(task_id=0, increasement=.0, pos=(73, 135), size=(140, 140)),   # Harvest
             Task(1, 1.0, (535, 240), (110, 20)),    # Get water (1)
@@ -220,17 +235,8 @@ class GameScene(Scene):
         # TODO This is a hack; remove old layer code
         self.main_loop.drawing_layers[0].add(self.all)
 
-    def create_actor(self, position) -> Actor:
-        actor = Actor(position, s.OLD_MAN_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space)
-
-        # set up collisions
-        # for obstacle_id in self.obstacle_ids.keys():
-            # self.obstacle_actor_collision.append(self.main_loop.space.add_collision_handler(
-                    # lb_id,  # level border id
-                    # actor.shape.collision_type,  # current actor id
-                # ))  # add collision handler
-            # self.obstacle_actor_collision[-1].data["actor"] = actor  # add ref to actor to collision handler
-            # self.obstacle_actor_collision[-1].begin = actor.change_direction  # collision handler's func
+    def create_actor(self, position, sh, name=None, sound=s.OLD_MAN_SOUNDS, speed="Adult") -> Actor:
+        actor = Actor(position, sh, sound, self.main_loop.space, name, speed=speed)
 
         return actor
 
