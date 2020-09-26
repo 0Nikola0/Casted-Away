@@ -17,9 +17,9 @@ class Game(MainLoop):
         # If debugging we go to the TestScene
         # Else: We set up a Menu Scene, and let it fire the scene change events
         if debug == True:
-            self.scene = TestScene(self)
-        else:
             self.scene = MenuScene(self)
+        else:
+            self.scene = GameScene(self)
 
         self.add_event_handler(self)
 

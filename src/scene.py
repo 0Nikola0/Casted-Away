@@ -151,7 +151,7 @@ class GameScene(Scene):
         self.GUI.create_command_button(
             "Feed Actor", lambda: self.feed_selected_actor())
         self.GUI.create_command_button(
-            "Quit to Menu", lambda: pygame.event.post(MENU))
+            "Quit", lambda: pygame.event.post(pygame.event.Event(pygame.QUIT)))
 
         self.main_loop.add_event_handler(self.GUI)
         self.main_loop.add_event_handler(self)
