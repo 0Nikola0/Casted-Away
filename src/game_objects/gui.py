@@ -23,6 +23,12 @@ class GUI(pygame.sprite.Sprite):
         # Ths is just a mockup, once the layout is nailed down we can
         # organize it better.
 
+        self.resource_panel = ResourcePanel(
+            relative_rect=pygame.Rect(s.RESOURCE_POS, s.RESOURCE_SIZE),
+            manager=self.manager,
+            starting_layer_height=0
+        )
+
         self.actor_panel = ActorPanel(
             relative_rect=pygame.Rect(s.ACTOR_POS, s.ACTOR_SIZE),
             manager=self.manager,
@@ -73,6 +79,8 @@ class GUI(pygame.sprite.Sprite):
 
     def update(self, time_delta, *args):
         self.manager.update(time_delta)
+
+        self.resource_panel.update()
 
         self.image.fill((0, 0, 0, 0))
         self.manager.draw_ui(self.image)

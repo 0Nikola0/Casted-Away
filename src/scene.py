@@ -10,6 +10,7 @@ from src.game_objects.selection_box import SelectionBox
 from src.game_objects.empty_sprite import EmptySprite
 from src.main_loop import MainLoop
 from src.scenes.game_over import GameOver
+from src.game_objects.gui import console_print_event
 
 import src.settings as s
 from src.events import COMMAND, SWITCH_SCENE
@@ -52,9 +53,8 @@ class Scene:
             if s.FOOD_SUPPLY > 15:
                 self.selected_actor.sprite.eat(15)
                 s.FOOD_SUPPLY -= 15
-                print(f"FOOD_SUPPLY = {s.FOOD_SUPPLY}")
             else:
-                print("Need more food!")
+                console_print_event("Need more food!")
 
     def handle_key_down(self, key):
         pass
@@ -134,7 +134,7 @@ class GameScene(Scene):
 
         self.GUI = GUI()
         self.GUI.create_command_button(
-            "Feed Actor", lambda: pygame.event.post(FEED))
+            "Feed Actor", lambda: self.feed_selected_actor())
         self.GUI.create_command_button(
             "Quit to Menu", lambda: pygame.event.post(MENU))
 

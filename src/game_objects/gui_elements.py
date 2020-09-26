@@ -104,6 +104,29 @@ class CommandPanel(pygame_gui.elements.UIPanel):
 
         return button
 
+
+class ResourcePanel(pygame_gui.elements.UIPanel):
+    """Display information about resources"""
+    def __init__(self, *args, **kwargs):
+        super(ResourcePanel, self).__init__(*args, **kwargs)
+        self.manager = kwargs['manager']
+
+        self.old_food = -1
+
+        self.label = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect((10, 10), (100, 20)),
+            text="",
+            manager=self.manager, container=self)
+
+        self.update()
+
+    def update(self, *args):
+        if self.old_food != s.FOOD_SUPPLY:
+            self.label.text = "Food: " + str(s.FOOD_SUPPLY)
+            self.label.rebuild()
+            self.old_food = s.FOOD_SUPPLY
+
+
 class Console():
     """A console you can print lines to, use .println(text) to add a line."""
     def __init__(self, relative_rect, manager):
