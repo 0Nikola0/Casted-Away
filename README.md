@@ -45,8 +45,13 @@ the resources.
 When people run out of food they start starving and will **die**. Keep
 them **alive**!
 
-Hint: You can **mouse over** areas of the game to find valid gathering or task
+### Hints
+
+- You can **mouse over** areas of the game to find valid gathering or task
 locations.
+- When food is at zero, you lose health
+- When water is at zero, you no longer regenerate energy for tasks
+- Resting does nothing at the moment
 
 ## Content & Warnings
 
@@ -54,6 +59,8 @@ This game explores historical racial issues. We want to raise awareness of
 the issues of the past and present, and do not intend any harm to anyone. We
 hope this game may inspire some to do further reasearch into similar issues of
 mixed-race discrimination in history.
+
+Note: we never got around to implementing any of the above.
 
 ## Licensing and Copyright
 
@@ -65,6 +72,6 @@ license. Assets are licensed as specified below.
 - Villagers: https://craftpix.net/freebies/free-villagers-sprite-sheets-pixel-art/
 - Buttons: https://adwitr.itch.io/button-asset-pack
 - Tiles: https://pipoya.itch.io/pipoya-rpg-tileset-32x32?download
-- Soundtracks: https://www.fesliyanstudios.com/musicfiles/2020-03-22_-_8_Bit_Surf_-_FesliyanStudios.com_-_David_Renda/Slower-Tempo-2020-03-22_-_8_Bit_Surf_-_FesliyanStudios.com_-_David_Renda.mp3
-https://www.fesliyanstudios.com/musicfiles/2020-03-22_-_A_Bit_Of_Hope_-_David_Fesliyan/Slower-Tempo-2020-03-22_-_A_Bit_Of_Hope_-_David_Fesliyan.mp3
-https://www.fesliyanstudios.com/musicfiles/2019-08-25_-_8bit-Smooth_Presentation_-_David_Fesliyan.mp3
+- Music: https://www.fesliyanstudios.com/musicfiles/2020-03-22_-_8_Bit_Surf_-_FesliyanStudios.com_-_David_Renda/Slower-Tempo-2020-03-22_-_8_Bit_Surf_-_FesliyanStudios.com_-_David_Renda.mp3
+- Music: https://www.fesliyanstudios.com/musicfiles/2020-03-22_-_A_Bit_Of_Hope_-_David_Fesliyan/Slower-Tempo-2020-03-22_-_A_Bit_Of_Hope_-_David_Fesliyan.mp3
+- Music: https://www.fesliyanstudios.com/musicfiles/2019-08-25_-_8bit-Smooth_Presentation_-_David_Fesliyan.mp3
