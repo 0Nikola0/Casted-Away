@@ -69,7 +69,8 @@ class Scene:
             self.handle_mouse_down(pos)
             # TODO this might not the best way to do it
             if self.selected_actor.sprite is not None:
-                self.selected_actor.sprite.move_by_mouse(pos)
+                if pos[0] < s.PLAY_AREA[0] and pos[1] < s.PLAY_AREA[1]:
+                    self.selected_actor.sprite.move_by_mouse(pos)
         elif ev == pygame.MOUSEBUTTONUP:
             self.handle_mouse_up(pos)
 
