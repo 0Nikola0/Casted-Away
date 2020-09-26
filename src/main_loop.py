@@ -3,9 +3,6 @@ import pymunk
 import pymunk.pygame_util
 from collections import defaultdict
 
-from src.game_objects.tasks import Task
-from src.game_objects.obstacles import Obstacle
-
 
 class MainLoop:
     """Display initialization and the main loop
