@@ -35,6 +35,11 @@ Install requirements and run.
 
 Or do it in a virtualenv to keep it clean.
 
+    virtualenv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    python run_game.py
+
 ## Controls and Gameplay
 
 Click people to select them. Click the ground to make them move there.  Click

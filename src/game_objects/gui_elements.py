@@ -63,7 +63,7 @@ class ActorPanel(pygame_gui.elements.UIPanel):
 
         self.water_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect((0, 70), (50, 20)),
-            text="Energy",
+            text="Water",
             manager=self.manager, container=self)
         self.water_bar_value = BarValue()
         self.water_bar = pygame_gui.elements.UIScreenSpaceHealthBar(
