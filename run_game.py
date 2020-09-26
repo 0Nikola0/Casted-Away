@@ -24,10 +24,16 @@ Please ensure you have the following packages installed:
 You can run 'pip install -r requirements.txt' to install these.
         """)
 
+# Check environment variables
 try:
     debug = int(os.environ['DEBUG'])
 except KeyError:
     debug = 0
+
+# Check args
+if len(sys.argv) > 1:
+    if sys.argv[1] == "--debug":
+        debug = 1
 
 if debug != 0:
     print("debugging")
