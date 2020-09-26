@@ -51,7 +51,8 @@ class MainLoop:
         self.task02 = Task(1, 1.0, (540, 245), (60, 10))    # Get water
 
         # Obstacles
-        self.obstacle01 = Obstacle(pos=(255, 96), size=(228, 222))
+        self.house_obstacle = Obstacle(pos=(255, 96), size=(228, 222))
+        self.river_obstacle = Obstacle((530, 160), (200, 94))
 
     def update(self):
         """Update game state
@@ -77,7 +78,8 @@ class MainLoop:
 
         # Testing
         self.task01.draw(self.surface)
-        self.obstacle01.draw(self.surface)
+        self.house_obstacle.draw(self.surface)
+        self.river_obstacle.draw(self.surface)
 
     def handle_events(self):
         """Handle the player's inputs
