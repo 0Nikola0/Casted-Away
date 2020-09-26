@@ -61,12 +61,15 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
         else:
             self.directionx = -1
 
-        if pos[1] == int(self.body.position.y):
+        current_y = s.flip_y(self.body.position.y)
+        if pos[1] == int(current_y):
             self.directiony = 0
-        elif pos[1] > int(self.body.position.y):
+        elif pos[1] < int(current_y):
             self.directiony = 1
         else:
-            self.dir_delay = -1
+            self.directiony = -1
+
+        #self.dir_delay = -1
 
         self.move()
 
