@@ -9,6 +9,7 @@ from src.game_objects.level_borders import LevelBorders
 from src.game_objects.selection_box import SelectionBox
 from src.game_objects.empty_sprite import EmptySprite
 from src.main_loop import MainLoop
+from src.scenes.game_over import GameOver
 
 import src.settings as s
 from src.events import COMMAND, SWITCH_SCENE
@@ -131,7 +132,6 @@ class GameScene(Scene):
 
         self.state = State()
 
-        # Gui and Buttons
         self.GUI = GUI()
         self.GUI.create_command_button(
             "Feed Actor", lambda: pygame.event.post(FEED))
@@ -141,15 +141,17 @@ class GameScene(Scene):
         self.main_loop.add_event_handler(self.GUI)
         self.main_loop.add_event_handler(self)
 
+        self.main_loop.add_update_hook(self)
+
         self.map = TiledMap(s.MAP)
 
-        # Layers
+        self.actors = pygame.sprite.Group()
+        self.actors.add(self.create_actor((200, 200)))
+        self.actors.add(self.create_actor((200, 250)))
+
         self.all.add(self.state, layer=0)  # add state so that it gets updates
         self.all.add(self.map, layer=0)
-        # TODO idk if i should remove this completly
-        # self.all.add(self.create_map(), layer=2)
-        self.all.add(self.create_actor((200, 200)), layer=3)
-        self.all.add(self.create_actor((200, 250)), layer=3)
+        self.all.add(self.actors.sprites(), layer = 3)
         self.all.add(self.GUI, layer=6)
 
         # TODO This is a hack; remove old layer code
@@ -191,6 +193,12 @@ class GameScene(Scene):
                 if self.selected_actor.sprite:
                     self.selected_actor.sprite.eat(25)
 
+    def update(self, delta_time, *args):
+        if len(self.actors) == 0:
+            print("Game Over")
+            self.main_loop.drawing_layers[0].add(GameOver())
+            self.main_loop.del_update_hook(self)
+
 
 class TestScene(GameScene):
     """This scene is used for testing code. Put your hacks and test here."""
@@ -198,13 +206,6 @@ class TestScene(GameScene):
         super().__init__(*args)
 
         self.test = pygame.sprite.LayeredUpdates()
-        self.test.add(Actor((200, 200), s.BOY_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space,
-                                name="Jimmy", health=5, food=5), layer=0)
-        self.test.add(Actor((200, 250), s.GIRL_SPRITE_SHEETS, s.OLD_MAN_SOUNDS, self.main_loop.space,
-                                name="Sally"), layer=0)
-
-        # TODO, this is broken as we cannot simply add to self.all,
-        # the layering is incorrect
-        self.main_loop.drawing_layers[0].add(self.test)
-
-
+        for actor in self.actors:
+            actor.food = 5 #testing death
+            actor.health = 5

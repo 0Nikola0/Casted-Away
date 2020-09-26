@@ -7,17 +7,17 @@ from src.scenes.main_menu import Background
 IMGS_PATH = os.path.join("assets", "imgs", "menu", "")
 
 
-class Backgrund(Background):
+class GameOver(Background):
     def __init__(self):
-        super(Backgrund, self).__init__()
+        super(Background, self).__init__()
         self.brightness = 255
         # TEXT
-        self.logo = pygame.image.load(IMGS_PATH + "game_over.png")
-        self.logo_rect = self.logo.get_rect()
-        self.logo_rect.center = round(s.SCREEN_WIDTH / 2), 300
+        self.image = pygame.image.load(IMGS_PATH + "game_over.png")
+        self.rect = self.image.get_rect()
+        self.rect.center = round(s.SCREEN_WIDTH / 2), 300
 
     def draw(self, surface):
-        super(Backgrund, self).draw(surface)
+        super(Background, self).draw(surface)
         self.update_brightness()
 
     def update_brightness(self):

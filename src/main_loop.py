@@ -35,6 +35,8 @@ class MainLoop:
         self.mouse_handlers = []
         self.event_handlers = []
 
+        self.update_hooks = []
+
         # physics stuff
         self.space = pymunk.Space()
         self.space.gravity = 0, 0
@@ -53,6 +55,9 @@ class MainLoop:
         self.all_sprites group contains all pygame.sprite.Sprite object in the game. Every main loop iteration
         this method use the update method of every sprite. So by this method, we can create animations.
         """
+        for obj in self.update_hooks:
+            obj.update(self.time_delta)
+
         for layer in self.drawing_layers:
             # self.task01 - just for testing
             layer.update(self.time_delta, self.task01)
@@ -105,11 +110,19 @@ class MainLoop:
         self.keydown_handlers[key].append(obj.handle_key_down)
         self.keyup_handlers[key].append(obj.handle_key_up)
 
+    def add_update_hook(self, obj):
+        self.update_hooks.append(obj)
+
+    def del_update_hook(self, obj):
+        self.update_hooks.remove(obj)
+
     def reset(self):
         self.keydown_handlers = defaultdict(list)
         self.keyup_handlers = defaultdict(list)
         self.mouse_handlers = []
         self.event_handlers = []
+        self.update_hooks = []
+
         for group in self.drawing_layers:
             group.empty()
 
