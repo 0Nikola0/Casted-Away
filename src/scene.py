@@ -10,6 +10,7 @@ from src.game_objects.selection_box import SelectionBox
 from src.scenes.game_over import GameOver
 from src.game_objects.gui import console_print_event
 from src.game_objects.obstacles import Obstacle
+from src.game_objects.tasks import Task
 
 import src.settings as s
 from src.events import COMMAND, SWITCH_SCENE
@@ -163,6 +164,18 @@ class GameScene(Scene):
         self.actors = pygame.sprite.Group()
         self.actors.add(self.create_actor((200, 200)))
         self.actors.add(self.create_actor((200, 250)))
+
+        # Tasks
+        # Testing for tasks
+        self.tasks = [
+            Task(task_id=0, increasement=.0, pos=(73, 135), size=(140, 140)),   # Harvest
+            Task(1, 1.0, (535, 240), (110, 20)),    # Get water (1)
+            Task(1, 1.0, (625, 475), (33, 45)),     # Get water(
+            Task(1, 1.0, (590, 510), (33, 45)),
+            Task(1, 1.0, (560, 547), (33, 45)),               # 2)
+            Task(2, 1.0, (40, 325), (100, 55)),     # Resting place by the crops
+            Task(2, 1.0, (420, 497), (125, 80))     # Resting place by the river
+        ]
 
         # Obstacles
         self.obstacles = [  # House
