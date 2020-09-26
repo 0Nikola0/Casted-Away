@@ -4,7 +4,7 @@ from src.paths import *
 # General
 CAPTION = "Castaway"
 FPS = 60
-SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT) = (800, 600)
+SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT) = (1200, 680)
 
 # Layers
 NUM_OF_LAYERS = 7

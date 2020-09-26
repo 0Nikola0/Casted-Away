@@ -71,6 +71,7 @@ class Button(pygame.sprite.Sprite):
 class MainMenu:
     def run(self):
         pygame.init()
+        os.environ['SDL_VIDEO_WINDOW_POS'] = f"{70},{42}"
         screen = pygame.display.set_mode(s.SCREEN_SIZE)
         font = pygame.font.SysFont("Mono", 32, bold=True)
         background = Background()

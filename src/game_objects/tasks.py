@@ -29,5 +29,5 @@ class Task(pygame.sprite.Sprite):
 
     # Same method can be used to increase each of the actor's stats eg Food status, Sleep status..
     def increase_actor_stats(self, current):
-        current += self.increasement
+        current = (current + self.increasement) if (current + self.increasement) <= 100 else 100
         return current

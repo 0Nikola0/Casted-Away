@@ -1,3 +1,4 @@
+import os
 import pygame
 import pymunk
 import pymunk.pygame_util
@@ -15,7 +16,7 @@ class MainLoop:
     """
     def __init__(self, caption, screen_size, frame_rate, num_of_layers):
         # display-window top left corner always will be open in this coordinates (x=600; y=40)
-        # os.environ['SDL_VIDEO_WINDOW_POS'] = f"{600},{40}"
+        # os.environ['SDL_VIDEO_WINDOW_POS'] = f"{20},{20}"
 
         self.running = True
 
