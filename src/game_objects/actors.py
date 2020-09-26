@@ -23,7 +23,7 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
 
         self.name = name or "Actor ID: " + str(self.id)
         self.health, self.food = health, food
-        self.hungery = 0.2  # How fast the player gets hungry
+        self.hungery = 0.08  # How fast the player gets hungry
         self.hunger_damage_rate = 0.1
 
         self.directionx, self.directiony = 0, 0
@@ -149,7 +149,7 @@ class Actor(pygame.sprite.Sprite, ActorRigidBody):
 
     def eat(self, amount):
         self.sounds["EAT"].play()
-        self.food += amount
+        self.food = (self.food + amount) if (self.food + amount) <= 100 else 100
         self.do_hungry_sound = True
         print(f"Actor.food = {self.food}")
 
