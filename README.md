@@ -62,3 +62,6 @@ license. Assets are licensed as specified below.
 - Villagers: https://craftpix.net/freebies/free-villagers-sprite-sheets-pixel-art/
 - Buttons: https://adwitr.itch.io/button-asset-pack
 - Tiles: https://pipoya.itch.io/pipoya-rpg-tileset-32x32?download
+- Soundtracks: https://www.fesliyanstudios.com/musicfiles/2020-03-22_-_8_Bit_Surf_-_FesliyanStudios.com_-_David_Renda/Slower-Tempo-2020-03-22_-_8_Bit_Surf_-_FesliyanStudios.com_-_David_Renda.mp3
+https://www.fesliyanstudios.com/musicfiles/2020-03-22_-_A_Bit_Of_Hope_-_David_Fesliyan/Slower-Tempo-2020-03-22_-_A_Bit_Of_Hope_-_David_Fesliyan.mp3
+https://www.fesliyanstudios.com/musicfiles/2019-08-25_-_8bit-Smooth_Presentation_-_David_Fesliyan.mp3

@@ -82,6 +82,14 @@ GIRL_SPRITE_SHEETS = {
 # Sounds
 SOUNDS_DIRECTORY = os.path.join(ASSETS_DIRECTORY, "sounds")
 
+SOUNDTRACKS_DIRECTORY = os.path.join(SOUNDS_DIRECTORY, "soundtracks")
+
+SOUNDTRACKS = [
+    os.path.join(SOUNDTRACKS_DIRECTORY, "soundtrack01.mp3"),
+    os.path.join(SOUNDTRACKS_DIRECTORY, "soundtrack02.mp3"),
+    os.path.join(SOUNDTRACKS_DIRECTORY, "soundtrack03.mp3"),
+]
+
 SOUNDS_ACTORS_DIRECTORY = os.path.join(SOUNDS_DIRECTORY, "actors")
 
 SOUNDS_ACTOR_OLD_MAN_DIRECTORY = os.path.join(SOUNDS_ACTORS_DIRECTORY, "1 Old_man")
